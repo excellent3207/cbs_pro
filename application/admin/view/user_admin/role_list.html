@@ -1,0 +1,93 @@
+{include file="common/top" title="" metas='' /}
+<link rel="stylesheet" type="text/css" href="/admin/cleanzone/js/jquery.gritter/css/jquery.gritter.css" />
+ <link rel="stylesheet" type="text/css" href="/admin/cleanzone/js/jquery.niftymodals/css/component.css" />
+<div class="page-head">
+	<h2>角色列表</h2>
+	<ol class="breadcrumb">
+	  <li><a href="#">后台用户</a></li>
+	  <li class="active">角色列表</li>
+	</ol>
+</div>	
+<div class="cl-mcont">
+	<div class="con-wrap">
+		<div class="search-wrap">
+			<a href="/admin/useradmin/roleadd" class="btn btn-info pull-left" id="btn-add">添加</a>
+			<a class="btn btn-default pull-right" id="btn-del">删除</a>
+		</div>
+		<table class="table table-bordered table-hover" id="main-table" >
+			<thead>
+				<tr>
+					<th><input type="checkbox" data-id="0" class="check-all" /></th>
+					<th>编号</th>
+					<th>名称</th>
+					<th width="120">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{foreach name="list" item="item"}
+				<tr data-id="{$item.id}" data-title="{$item.name}">
+					<td><input type="checkbox" data-id="{$item.id}" class="check" /></td>
+					<td>{$item.id}</td>
+					<td>{$item.name}</td>
+					<td class="center">
+						<a class="btn btn-primary btn-xs" href="/admin/useradmin/roleedit?id={$item.id}" title="编辑">
+							<i class="fa fa-pencil"></i>
+						</a>
+					</td>
+				</tr>
+				{/foreach}
+			</tbody>
+		</table>
+	</div>
+</div>
+<script>
+	$('.check-all').on('click', function(){
+		if(this.checked){
+			$('.check').prop('checked', true);
+		}else{
+			$('.check').prop('checked', false);
+		}
+	});
+	var checkLength = $('.check').length;
+	$('.check').on('click', function(){
+		if($('.check:checked').length == checkLength){
+			$('.check-all').prop('checked', true);
+		}else{
+			$('.check-all').prop('checked', false);
+		}
+	});
+	$('#btn-del').on('click', function(){
+		var checked = $('.check:checked');
+		if(checked.length <= 0){
+			syhWarn('没有选择要删除的角色');
+			return;
+		}
+		var ids = [];
+		var titles = [];
+		checked.each(function(index, ele){
+			ids.push($(ele).data('id'));
+			titles.push($(ele).parent().parent().data('title'));
+		});
+		ids = ids.join(',');
+		titles = titles.join(',');
+		syhConfirm('确定要删除角色 ' + titles + ' 吗？', function(flag){
+			if(flag){
+				$.post('/admin/useradmin/roledel', {ids:ids}, function(res){
+					if(res.errorcode == 0){
+						modalHidden(function(){
+							syhSuccess('删除角色 ' + titles + ' 成功', function(){
+								location.reload();
+							});
+						});
+					}else{
+						modalHidden(function(){
+							syhError(res.msg);
+						});
+					}
+				}, 'json');
+			}
+		});
+	});
+</script>
+<script type="text/javascript" src="/admin/cleanzone/js/jquery.niftymodals/js/jquery.modalEffects.js"></script>  
+{include file="common/bottom" /}

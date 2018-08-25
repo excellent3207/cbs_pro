@@ -1,0 +1,176 @@
+{include file="common/top" title="首页" metas='' /}
+<link rel="StyleSheet" href="/admin/dtree/dtree-opt.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="/admin/cleanzone/js/jquery.gritter/css/jquery.gritter.css" />
+ <link rel="stylesheet" type="text/css" href="/admin/cleanzone/js/jquery.niftymodals/css/component.css" />
+<script type="text/javascript" src="/admin/dtree/dtree-opt.js"></script>
+<style>
+</style>
+<div class="page-head">
+	<h2>导航管理</h2>
+	<ol class="breadcrumb">
+	  <li><a href="#">系统设置</a></li>
+	  <li class="active">导航管理</li>
+	</ol>
+</div>	
+<div class="cl-mcont">
+	<div class="con-wrap">
+		<p><a href="javascript:  d.closeAll();">全部打开</a> | <a href="javascript: d.openAll();">全部关闭</a></p>
+		<div id="main-list"></div>
+	
+		<script type="text/javascript">
+			var originData = {:json_encode($list)};
+			var data = {};
+			var d;
+			for(var k in originData){
+				var item = originData[k];
+				data[item['navid']] = item;
+			}
+			delete originData;
+			createTree(data);
+			
+			function createTree(data){
+				var obj = document.getElementById('main-list');
+				d = new dTree('d');
+				d.add(0,-1,'导航管理');
+				for(var k in data){
+					d.add(data[k]['navid'], data[k]['parentid'], 'authority', data[k]['navid'], data[k]['title']);
+				}
+				obj.innerHTML = d;
+				d.openAll();
+				$('.dTreeNode .opt-edit').on('click', function(){
+					var title = $(this).parent().data('title');
+					var id = $(this).parent().data('id');
+					var pid = $(this).parent().data('pid');
+					if(pid == -1){
+						title = '';
+					}else if(pid == 0){
+						title = '导航管理';
+					}else{
+						title = data[pid].title;
+					}
+					$.get('/admin/useradmin/getnav', {navid:id}, function(res){
+						if(res.errorcode == 0){
+							var resData = res.data;
+							syhInfo('编辑导航', '<form class="form-horizontal group-border-dashed" id="add-nav-form">' +
+									  '<input type="hidden" name="navid" value="'+resData.navid+'" />'+
+								  '<input type="hidden" name="parentid" value="'+resData.parentid+'" />'+
+								  '<div class="form-group">' +
+								  '<label class="col-xs-1 control-label">名称</label>' +
+								  '<div class="col-xs-2">' +
+					                  '<input type="text" class="form-control" name="title" value="'+resData.title+'" />' +	
+								  '</div>' +
+								  '<label class="col-xs-1 control-label">tag</label>' +
+								  '<div class="col-xs-2">' +
+					                  '<input type="text" class="form-control" name="tag" value="'+resData.tag+'" />' +	
+								  '</div>' +
+								  '<label class="col-xs-1 control-label">父导航</label>' +
+								  '<div class="col-xs-2">' +
+					                  '<input type="" class="form-control" value="'+title+'" disabled="disabled" />' +	
+								  '</div>' +
+								  '<label class="col-xs-1 control-label">排序</label>' +
+								  '<div class="col-xs-2">' +
+					                  '<input type="text" class="form-control" name="orderid" value="'+resData.orderid+'" />' +	
+								  '</div>' +
+								'</div>' +
+								  '<div class="form-group">' +
+								  '<label class="col-xs-1 control-label">URI</label>' +
+								  '<div class="col-xs-3">' +
+					                  '<input type="text" class="form-control" name="uri" value="'+resData.uri+'" />' +	
+								  '</div>' +
+								'</div>' +
+								  '</form>', function(obj){
+									  var formData = getFormData('#add-nav-form');
+									  $.post('/admin/useradmin/editnav', formData, function(res){
+										  if(res.errorcode == 0){
+											  syhInfoError('');
+											  syhTableHidden();
+											  location.reload();
+										  }else{
+											  syhInfoError(res.msg);
+											  return false;
+										  }
+									  }, 'json');
+								  })
+						}else{
+							syhError(res.msg);
+						}
+					}, 'json')
+				});
+				$('.dTreeNode .opt-add').on('click', function(){
+					var title = $(this).parent().data('title');
+					var id = $(this).parent().data('id');
+					if(id == 0){
+						title = '导航管理';
+					}else{
+						title = data[id].title;
+					}
+					syhInfo('添加导航', '<form class="form-horizontal group-border-dashed" id="add-nav-form">' +
+							  '<input type="hidden" name="parentid" value="'+id+'" />'+
+							  '<div class="form-group">' +
+							  '<label class="col-xs-1 control-label">名称</label>' +
+							  '<div class="col-xs-2">' +
+				                  '<input type="text" class="form-control" name="title" />' +	
+							  '</div>' +
+							  '<label class="col-xs-1 control-label">tag</label>' +
+							  '<div class="col-xs-2">' +
+				                  '<input type="text" class="form-control" name="tag" />' +	
+							  '</div>' +
+							  '<label class="col-xs-1 control-label">父导航</label>' +
+							  '<div class="col-xs-2">' +
+				                  '<input type="" class="form-control" value="'+title+'" disabled="disabled" />' +	
+							  '</div>' +
+							  '<label class="col-xs-1 control-label">排序</label>' +
+							  '<div class="col-xs-2">' +
+				                  '<input type="text" class="form-control" name="orderid" value="1000" />' +	
+							  '</div>' +
+							'</div>' +
+							  '<div class="form-group">' +
+							  '<label class="col-xs-1 control-label">URI</label>' +
+							  '<div class="col-xs-3">' +
+				                  '<input type="text" class="form-control" name="uri" />' +	
+							  '</div>' +
+							'</div>' +
+							  '</form>', function(obj){
+								  var formData = getFormData('#add-nav-form');
+								  $.post('/admin/useradmin/addnav', formData, function(res){
+									  if(res.errorcode == 0){
+										  syhInfoError('');
+										  syhTableHidden();
+										  location.reload();
+									  }else{
+										  syhInfoError(res.msg);
+										  return false;
+									  }
+								  }, 'json');
+							  })
+				});
+				$('.dTreeNode .opt-del').on('click', function(){
+					var id = $(this).parent().data('id');
+					var title = data[id].title;
+					syhConfirm('确定要删除 ' + title + ' 吗？', function(flag){
+						if(flag){
+							$.post('/admin/useradmin/delnav', {navid:id}, function(res){
+								if(res.errorcode == 0){
+									location.reload();
+								}else{
+									modalHidden(function(){
+										syhError(res.msg);
+									});
+								}
+							}, 'json')
+						}
+					});
+				});
+			}
+			function addNode(id, pid, title){
+				data.push({navid:id,title:title,parentid:pid});
+				createTree(data);
+			}
+		</script>
+	</div>
+</div>
+ <script src="/admin/cleanzone/js/jquery.parsley/dist/parsley.min.js" type="text/javascript"></script>
+ <script src="/admin/cleanzone/js/jquery.parsley/dist/zh_cn.js" type="text/javascript"></script>
+<script type="text/javascript" src="/admin/cleanzone/js/jquery.icheck/icheck.min.js"></script>
+<script type="text/javascript" src="/admin/cleanzone/js/jquery.niftymodals/js/jquery.modalEffects.js"></script>
+{include file="common/bottom" /}

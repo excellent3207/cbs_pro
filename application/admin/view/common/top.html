@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>管理平台</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/font-awesome/4.6.0/css/font-awesome.min.css">
+	<script src="/common/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="/admin/cleanzone/js/behaviour/general.js"></script>
+</head>
+<body>
+	{php}
+		$user = config('user');
+	{/php}
+  <!-- Fixed navbar -->
+  <div id="head-nav" class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="fa fa-gear"></span>
+        </button>
+        <a class="navbar-brand" href="#"><span>管理平台</span></a>
+      </div>
+      <div class="navbar-collapse collapse">
+        {:config('topNav')}
+		<ul class="nav navbar-nav navbar-right user-nav">
+		  <li class="dropdown profile_menu">
+		    <a href="#" class="dropdown-toggle" data-toggle="dropdown">用户：<span>{$user.username}</span> <b class="caret"></b></a>
+		    <ul class="dropdown-menu">
+		      <li><a href="#" id="top-edit-pwd">修改密码</a></li>
+		      <li class="divider"></li>
+		      <li><a href="/admin/useradmin/logout">注销</a></li>
+		    </ul>
+		  </li>
+		</ul>	
+      </div><!--/.nav-collapse animate-collapse -->
+    </div>
+  </div>
+  <script>
+  	$('#top-edit-pwd').on('click', function(){
+		syhInfo('修改密码', '<form class="form-horizontal group-border-dashed" id="edit-pwd-form">' +
+				  '<div class="form-group">' +
+				  '<label class="col-xs-2 control-label">原始密码</label>' +
+				  '<div class="col-xs-5">' +
+	                  '<input type="password" class="form-control" name="oldPwd" />' +	
+				  '</div>' +
+				'</div>' +
+				  '<div class="form-group">' +
+				  '<label class="col-xs-2 control-label">新密码</label>' +
+				  '<div class="col-xs-5">' +
+	                  '<input type="password" class="form-control" name="pwd1" />' +	
+				  '</div>' +
+				  '<div class="col-xs-4" style="padding:0;text-align:left;color:#CDC0B0;">必须包含大写字符，小写字母，数字</div>' +
+				'</div>' +
+				  '<div class="form-group">' +
+				  '<label class="col-xs-2 control-label">确认密码</label>' +
+				  '<div class="col-xs-5">' +
+	                  '<input type="password" class="form-control" name="pwd2" />' +	
+				  '</div>' +
+				'</div>' +
+				  '</form>', function(obj){
+					  var data = getFormData('#edit-pwd-form');
+					  $.post('/admin/useradmin/editpwd', data, function(res){
+						  if(res.errorcode == 0){
+							  location.reload();
+						  }else{
+							  syhInfoError(res.msg);
+							  return false;
+						  }
+					  }, 'json');
+				  })
+  	});
+  </script>
+	<div id="cl-wrapper" class="fixed-menu">
+		<div class="cl-sidebar" data-position="right" data-step="1" data-intro="<strong>Fixed Sidebar</strong> <br/> It adjust to your needs." >
+			<div class="cl-toggle"><i class="fa fa-bars"></i></div>
+			<div class="cl-navblock">
+			<div class="menu-space">
+			<div class="content">
+			  {:config('leftNav')}
+			</div>
+			</div>
+			<div class="text-right collapse-button" style="padding:7px 9px;">
+			<button id="sidebar-collapse" class="btn btn-default" style=""><i style="color:#fff;" class="fa fa-angle-left"></i></button>
+			</div>
+			</div>
+			</div>
+			<div class="container-fluid" id="pcont">

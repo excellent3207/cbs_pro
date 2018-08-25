@@ -1,0 +1,94 @@
+{include file="common/top" title="" metas='' /}
+<link rel="StyleSheet" href="/admin/dtree/dtree.css" type="text/css" />
+<script type="text/javascript" src="/admin/dtree/dtree.js"></script>
+<style>
+.con-wrap{background:#fff;padding:10px;margin-top:20px;border-radius:3px;}
+.form-group .control-label{padding:0;}
+</style>
+<div class="page-head">
+	<h2>角色编辑</h2>
+	<ol class="breadcrumb">
+	  <li><a href="#">系统设置</a></li>
+	  <li><a href="{$prePage}">角色列表</a></li>
+	  <li class="active">角色编辑</li>
+	</ol>
+</div>	
+<div class="cl-mcont">
+	<div class="con-wrap">
+	<form class="form-horizontal group-border-dashed" data-parsley-validate id="main-form" method="post">
+		<input type="hidden" name="id" value="{$data.id}" />
+		<div class="form-group">
+		  <label class="col-xs-1 control-label"><i>*</i>名称</label>
+		  <div class="col-xs-2">
+		  	<input type="text" name="name" parsley-trigger="change" required class="form-control" value="{$data.name}">
+		  </div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-1 control-label">权限</label>
+			<div class="col-xs-2">
+				<p><a href="javascript:  d.closeAll();">全部打开</a> | <a href="javascript:  d.openAll();">全部关闭</a></p>
+				<div id="nav-list"></div>
+			</div>
+			<input type="hidden" name="navids" value="{$data.navids}" />
+		</div>
+		<div class="form-group">
+				{if condition="isset($data.error)"}<div class="error-all">{$data.error}</div>{/if}
+			<div class="col-xs-offset-2 col-xs-10">
+				<a class="btn btn-primary" id="btn-submit">提交</a>
+				<a href="{$prePage}" class="btn btn-default">取消</a>
+			</div>
+		</div>
+	</form>
+
+	<script type="text/javascript">
+		var originData = {:json_encode($navlist)};
+		var myids = '{$data.navids}';
+		myids = myids.split(',');
+		var data = {};
+		for(var k in originData){
+			var item = originData[k];
+			data[item['navid']] = item;
+		}
+		delete originData;
+		createTree(data);
+		
+		function createTree(data){
+			var obj = document.getElementById('nav-list');
+			d = new dTree('d');
+			d.add(0,-1,'导航管理');
+			for(var k in data){
+				var checked = false;
+				if($.inArray(data[k]['navid']+'', myids) !== -1){
+					checked = true;
+				}
+				d.add(data[k]['navid'], data[k]['parentid'], 'authority', data[k]['navid'], data[k]['title'], checked);
+			}
+			obj.innerHTML = d;
+			d.openAll();
+		}
+	</script>
+
+	</div>
+</div>
+ <script src="/admin/cleanzone/js/jquery.parsley/dist/parsley.min.js" type="text/javascript"></script>
+ <script src="/admin/cleanzone/js/jquery.parsley/dist/zh_cn.js" type="text/javascript"></script>
+<script type="text/javascript" src="/admin/cleanzone/js/jquery.icheck/icheck.min.js"></script>
+<script type="text/javascript" src="/admin/cleanzone/js/jquery.niftymodals/js/jquery.modalEffects.js"></script>
+<script>
+var validate = $('#main-form').parsley();
+$(function(){
+	$('#btn-submit').on('click', function(){
+		if(!validate.validate()) return;
+		var id = $('input[name="id"]').val();
+		var name = $('input[name="name"]').val();
+		var selected = $('input[name="authority"]:checked');
+		var navids = [];
+		selected.each(function(i, v){
+			navids.push(v.value);
+		});
+		$('input[name="navids"]').val(navids);
+		$('#main-form').submit();
+	});
+});
+</script>
+{include file="common/bottom" /}

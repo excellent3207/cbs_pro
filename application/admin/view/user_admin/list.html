@@ -1,0 +1,202 @@
+{include file="common/top" title="" metas='' /}
+<link rel="stylesheet" type="text/css" href="/admin/cleanzone/js/jquery.gritter/css/jquery.gritter.css" />
+ <link rel="stylesheet" type="text/css" href="/admin/cleanzone/js/jquery.niftymodals/css/component.css" />
+<div class="page-head">
+	<h2>用户列表</h2>
+	<ol class="breadcrumb">
+	  <li><a href="#">后台用户</a></li>
+	  <li class="active">用户列表</li>
+	</ol>
+</div>	
+<div class="cl-mcont">
+	<div class="con-wrap">
+		<form>
+		<div class="form-group clearFix">
+			<div class="col-sm-3">
+				<label class="col-sm-4 control-label">编号:</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" name="id" value="{$Request.get.id}" />
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<label class="col-sm-4 control-label">用户名:</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" name="username" value="{$Request.get.username}" />
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<label class="col-sm-4 control-label">角色:</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="roleid">
+						<option value="">----选择----</option>
+						{foreach name="roles" item="role"}
+						<option value="{$role.id}">{$role.name}</option>
+						{/foreach}
+					</select>
+				</div>
+				<script>
+					$('select[name="roleid"]').val({$Request.get.roleid});
+				</script>
+			</div>
+			<div class="col-sm-3">
+				<button class="btn btn-info" type="submit">搜索</button>
+			</div>
+		</div>
+		</form>
+	</div>
+	<div class="con-wrap">
+		<div class="search-wrap">
+			{if condition="checkAuth('system-user-add')"}<a href="/admin/UserAdmin/add" class="btn btn-info pull-left" id="btn-add">添加</a>{/if}
+			{if condition="checkAuth('system-user-del')"}<a class="btn btn-default pull-right" id="btn-del">删除</a>{/if}
+		</div>
+		<table class="table table-bordered table-hover" id="main-table" >
+			<thead>
+				<tr>
+					<th><input type="checkbox" data-id="0" class="check-all" /></th>
+					<th>编号</th>
+					<th>用户名</th>
+					<th>角色</th>
+					<th>备注</th>
+					<th>登录时间</th>
+					<th width="120">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{foreach name="list" item="item"}
+				<tr data-id="{$item.id}" data-title="{$item.username}">
+					<td><input type="checkbox" data-id="{$item.id}" class="check" /></td>
+					<td>{$item.id}</td>
+					<td>{$item.username}</td>
+					<td class="role cursor-pointer" data-id="{$item.roleid}">{$item.role.name}</td>
+					<td>{$item.remark}</td>
+					<td>{notempty name="item.logintime"}{$item.logintime|date="Y-m-d H:i:s"}{/notempty}</td>
+					<td class="center">
+						{if condition="checkAuth('system-user-edit')"}
+						<a class="btn btn-primary btn-xs" href="/admin/useradmin/edit?id={$item.id}" title="编辑">
+							<i class="fa fa-pencil"></i>
+						</a>{/if}
+					</td>
+				</tr>
+				{/foreach}
+			</tbody>
+		</table>
+		{$pagination->render()|raw}
+	</div>
+</div>
+<script>
+	$('.check-all').on('click', function(){
+		if(this.checked){
+			$('.check').prop('checked', true);
+		}else{
+			$('.check').prop('checked', false);
+		}
+	});
+	var checkLength = $('.check').length;
+	$('.check').on('click', function(){
+		if($('.check:checked').length == checkLength){
+			$('.check-all').prop('checked', true);
+		}else{
+			$('.check-all').prop('checked', false);
+		}
+	});
+	$('#reset-pwd').on('click', function(){
+		var title = $(this).parent().parent().data('title');
+		var userid = $(this).parent().parent().data('id');
+		syhConfirm('确定要重置用户 ' + title + ' 的密码吗？', function(flag){
+			if(flag){
+				$.post('/admin/UserAdmin/resetpwd', {userid:userid}, function(res){
+					if(res.errorcode == 0){
+						modalHidden(function(){
+							syhSuccess('重置用户 ' + title + ' 密码成功', function(){
+								location.href = location.href;
+							});
+						});
+					}else{
+						modalHidden(function(){
+							syhError(res.msg);
+						});
+					}
+				}, 'json');
+			}
+		});
+	})
+	$('#btn-del').on('click', function(){
+		var checked = $('.check:checked');
+		if(checked.length <= 0){
+			syhWarn('没有选择要删除的用户');
+			return;
+		}
+		var ids = [];
+		var titles = [];
+		checked.each(function(index, ele){
+			ids.push($(ele).data('id'));
+			titles.push($(ele).parent().parent().data('title'));
+		});
+		ids = ids.join(',');
+		titles = titles.join(',');
+		syhConfirm('确定要删除用户 ' + titles + ' 吗？', function(flag){
+			if(flag){
+				$.post('/admin/useradmin/del', {ids:ids}, function(res){
+					if(res.errorcode == 0){
+						modalHidden(function(){
+							syhSuccess('删除用户 ' + titles + ' 成功', function(){
+								location.href = location.href;
+							});
+						});
+					}else{
+						modalHidden(function(){
+							syhError(res.msg);
+						});
+					}
+				}, 'json');
+			}
+		});
+	});
+	$('#main-table .role').dblclick(function(){
+		var roleid = $(this).data('id');
+		var rolename = $(this).html();
+		tableSelected = {};
+		syhGlobal.curSelectedId = $(this).parent().data('id');
+		syhGlobal.curSelectedName = $(this).parent().data('title');
+		if(roleid){
+			tableSelected[roleid] = {name:rolename,roleid:roleid};
+		}
+		$.get('/admin/RoleAdmin/listjson', function(res){
+			if(res.errorcode == 0){
+				var data = res.data;
+				modalTableRadio('选择角色('+syhGlobal.curSelectedName+')', data, 
+						['编号','名称'], [['roleid', 0], ['rolename', 0]], function(selected){
+					var ids = [];
+					for(var id in selected){
+						if(id)
+							ids.push(id);
+					}
+					$.post('/admin/UserAdmin/editrole', {userid:syhGlobal.curSelectedId,roleid:ids.join(',')}, function(res){
+						if(res.errorcode == 0){
+							location.reload();
+						}else{
+							syhError(res.msg);
+						}
+					});
+				}, '', function(page){
+					var name = $('#select-search-name').val();
+					$.get('/admin/RoleAdmin/listjson', function(res){
+						var data = res.data;
+						updateSelectModalTable(data, '');
+					}, 'json');
+				}, '<div class="col-md-4"><div class="form-group"><label class="col-xs-4 control-label">名称</label>'+
+				'<div class="col-xs-8"><input id="select-search-name" type="text" class="form-control" /></div></div></div>', function(){
+					var name = $('#select-search-name').val();
+					$.get('/admin/RoleAdmin/listjson', function(res){
+						var data = res.data;
+						updateSelectModalTable(data, '');
+					}, 'json');
+				});
+			}else{
+				syhError(res.msg);
+			}
+		}, 'json');
+	});
+</script>
+<script type="text/javascript" src="/admin/cleanzone/js/jquery.niftymodals/js/jquery.modalEffects.js"></script>  
+{include file="common/bottom" /}
