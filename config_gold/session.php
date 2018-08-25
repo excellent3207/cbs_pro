@@ -24,6 +24,6 @@ return [
     'auto_start'     => true,
     'host'   => '101.200.51.213',
     'port'   => '6379',
-    'password' => '',
+    'password' => 'Yqtjtdxcbsredis123',
     'expire' => 86400,
 ];
