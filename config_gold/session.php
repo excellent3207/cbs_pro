@@ -22,7 +22,7 @@ return [
     'type'           => 'redis',
     // 是否自动开启 SESSION
     'auto_start'     => true,
-    'host'   => '192.168.1.6',
+    'host'   => '101.200.51.213',
     'port'   => '6379',
     'password' => '',
     'expire' => 86400,
