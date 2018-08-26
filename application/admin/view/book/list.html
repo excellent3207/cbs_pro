@@ -82,7 +82,7 @@
 					<td>{$item.plotter}</td>
 					<td class="show cursor-pointer">{$item.is_show?'是':'否'}</td>
 					<td class="recommend cursor-pointer">{$item.is_recommend?'是':'否'}</td>
-					<td>{notempty name="item.logintime"}{$item.logintime|date="Y-m-d H:i:s"}{/notempty}</td>
+					<td>{notempty name="item.publishtime"}{$item.publishtime|date="Y-m-d H:i:s"}{/notempty}</td>
 					<td>{$item.description}</td>
 					<td class="center">
 						{if condition="checkAuth('system-user-edit')"}
