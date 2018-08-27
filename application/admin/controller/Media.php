@@ -63,4 +63,27 @@ class Media{
         }
         return json($ret);
     }
+    /**
+     * 文件sts授权
+     * @return \think\response\Json
+     */
+    public function fileSts(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        try{
+            $biz = new MediaBiz();
+            $ret['data'] = $biz->fileSts();
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
+    }
+    /**
+     * 图片sts授权
+     * @return \think\response\Json
+     */
+    public function editorUpload(){
+        $biz = new MediaBiz();
+        $biz->editorUpload();
+    }
 }

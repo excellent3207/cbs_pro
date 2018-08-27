@@ -9,6 +9,7 @@ namespace app\admin\controller;
 use think\Request;
 use app\admin\biz\BookBiz;
 use app\common\validate\BookValidate;
+use app\common\Pagination;
 
 class Book{
     protected $request;
@@ -24,10 +25,26 @@ class Book{
         $params = $this->request->get();
         $biz = new BookBiz();
         $cond = [];
+        if(isset($params['id']) && $params['id']){
+            array_push($cond, ['id', '=', $params['id']]);
+        }
+        if(isset($params['name']) && $params['name']){
+            array_push($cond, ['name', 'like', '%'.$params['name'].'%']);
+        }
+        if(isset($params['book_no']) && $params['book_no']){
+            array_push($cond, ['book_no', 'like', '%'.$params['book_no'].'%']);
+        }
+        if(isset($params['author']) && $params['author']){
+            array_push($cond, ['author', 'like', '%'.$params['author'].'%']);
+        }
+        if(isset($params['plotter']) && $params['plotter']){
+            array_push($cond, ['plotter', 'like', '%'.$params['plotter'].'%']);
+        }
         $page = $this->request->get('page', 1);
         $pageSize = 10;
         $list = $biz->list($cond, $page, $pageSize);
-        return view('', ['list' => $list]);
+        $pagination = new Pagination($page, $pageSize, $biz->listCount($cond));
+        return view('', ['list' => $list, 'params' => $params, 'pagination' => $pagination]);
     }
     /**
      * 创建用户

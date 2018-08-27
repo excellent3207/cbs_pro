@@ -4,7 +4,6 @@
  */
 namespace app\admin\biz;
 
-use app\admin\model\NavAdminModel;
 use app\common\exception\AppException;
 use app\common\model\BookModel;
 
@@ -18,7 +17,11 @@ class BookBiz{
      * @return \app\common\model\BookModel
      */
     public function get($id){
-        return BookModel::get($id)->hideField();
+        $res = BookModel::get($id)->hideField()->toArray();
+        if(!empty($res)){
+            $res['publishtime'] = date('Y-m-d H:i', $res['publishtime']);
+        }
+        return $res;
     }
     /**
      * 书籍列表
@@ -30,6 +33,14 @@ class BookBiz{
     public function list($cond, int $page, int $pageSize){
         $books = BookModel::where($cond)->hidden(BookModel::hiddenFields())->page($page, $pageSize)->select();
         return $books;
+    }
+    /**
+     * 书籍列表数量
+     * @param unknown $cond
+     * @return unknown
+     */
+    public function listCount($cond){
+        return BookModel::where($cond)->count('id');
     }
     /**
      * 创建

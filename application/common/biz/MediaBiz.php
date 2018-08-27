@@ -7,7 +7,8 @@
 namespace app\common\biz;
 
 use app\common\model\AliOOS;
-use app\common\CbsTool;
+use app\common\AppTool;
+use app\common\model\Services_JSON;
 
 class MediaBiz{
     /**
@@ -17,7 +18,7 @@ class MediaBiz{
      */
     public function testSts(){
         $ali = new AliOOS();
-        $dir = 'test/'.date('Ymd').'/'.date('His').CbsTool::randString(6);
+        $dir = 'test/'.date('Ymd').'/'.date('His').AppTool::randString(6);
         $res = $ali->sts([AliOOS::POLICY_ACTION_PUT_OBJECT], [AliOOS::BUCKET_RESOURCE."/{$dir}*"]);
         $res['dir'] = $dir;
         $res['domain'] = $ali->getBucketDomain(AliOOS::BUCKET_RESOURCE);
@@ -32,7 +33,22 @@ class MediaBiz{
      */
     public function imgSts(){
         $ali = new AliOOS();
-        $dir = 'img/'.date('Ymd').'/'.date('His').CbsTool::randString(6);
+        $dir = 'img/'.date('Ymd').'/'.date('His').AppTool::randString(6);
+        $res = $ali->sts([AliOOS::POLICY_ACTION_PUT_OBJECT], [AliOOS::BUCKET_RESOURCE."/{$dir}*"]);
+        $res['dir'] = $dir;
+        $res['domain'] = $ali->getBucketDomain(AliOOS::BUCKET_RESOURCE);
+        $res['bucket'] = AliOOS::BUCKET_RESOURCE;
+        $res['region'] = 'oss-cn-beijing';
+        return $res;
+    }
+    /**
+     * 文件获取sts凭证 注意：$dir必须选择
+     * @throws SyhException
+     * @return string[]|NULL[]
+     */
+    public function fileSts(){
+        $ali = new AliOOS();
+        $dir = 'file/'.date('Ymd').'/'.date('His').AppTool::randString(6);
         $res = $ali->sts([AliOOS::POLICY_ACTION_PUT_OBJECT], [AliOOS::BUCKET_RESOURCE."/{$dir}*"]);
         $res['dir'] = $dir;
         $res['domain'] = $ali->getBucketDomain(AliOOS::BUCKET_RESOURCE);
@@ -91,6 +107,67 @@ class MediaBiz{
             $ret['msg'] = $e->getMessage();
         }
         return Response::create($ret, 'json');
+    }
+    /**
+     * 富文本编辑器文件上传
+     */
+    public function editorUpload(){
+        //PHP上传失败
+        if (!empty($_FILES['imgFile']['error'])) {
+            switch($_FILES['imgFile']['error']){
+                case '1':
+                    $error = '超过php.ini允许的大小。';
+                    break;
+                case '2':
+                    $error = '超过表单允许的大小。';
+                    break;
+                case '3':
+                    $error = '文件只有部分被上传。';
+                    break;
+                case '4':
+                    $error = '请选择文件。';
+                    break;
+                case '6':
+                    $error = '找不到临时目录。';
+                    break;
+                case '7':
+                    $error = '写文件到硬盘出错。';
+                    break;
+                case '8':
+                    $error = 'File upload stopped by extension。';
+                    break;
+                case '999':
+                default:
+                    $error = '未知错误。';
+            }
+            $this->alert($error);
+        }
+        if(!empty($_FILES)){
+            //原文件名
+            $file_name = $_FILES['imgFile']['name'];
+            //服务器上临时文件名
+            $tmp_name = $_FILES['imgFile']['tmp_name'];
+            //文件大小
+            $file_size = $_FILES['imgFile']['size'];
+            //获得文件扩展名
+            $temp_arr = explode(".", $file_name);
+            $file_ext = array_pop($temp_arr);
+            $file_ext = trim($file_ext);
+            $file_ext = strtolower($file_ext);
+            
+            $filename = 'img/kindeditor/'.date('Ymd').'/'.date('His').AppTool::randString(6).'.'.$file_ext;
+            try{
+                $oosModel = new AliOOS();
+                $mediaUrl = $oosModel->multiUploadFile(AliOOS::BUCKET_RESOURCE, $filename, $tmp_name);
+                $mediaUrl = AppTool::formatImgUrl($mediaUrl);
+                header('Content-type: text/html; charset=UTF-8');
+                $json = new Services_JSON();
+                echo $json->encode(array('error' => 0, 'url' => $mediaUrl));
+                exit;
+            }catch(SyhException $e){
+                $this->alert($e->getMessage());
+            }
+        }
     }
 }
 ?>

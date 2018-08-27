@@ -2,51 +2,126 @@
 <link href="/admin/cleanzone/js/jquery.icheck/skins/square/blue.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/admin/cleanzone/js/jquery.gritter/css/jquery.gritter.css" />
  <link rel="stylesheet" type="text/css" href="/admin/cleanzone/js/jquery.niftymodals/css/component.css" />
+<link rel="stylesheet" type="text/css" href="/admin/cleanzone/js/bootstrap.datetimepicker/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" type="text/css" href="/admin/cleanzone/js/bootstrap.daterangepicker/daterangepicker-bs3.css" />
 <style>
 .con-wrap{background:#fff;padding:10px;margin-top:20px;border-radius:3px;}
 .form-group .control-label{padding:0;}
 </style>
 <div class="page-head">
-	<h2>用户创建</h2>
+	<h2>图书创建</h2>
 	<ol class="breadcrumb">
 	  <li><a href="#">后台用户</a></li>
-	  <li><a href="{$prePage}">用户列表</a></li>
-	  <li class="active">用户创建</li>
+	  <li><a href="{$prePage}">图书列表</a></li>
+	  <li class="active">图书创建</li>
 	</ol>
 </div>	
 <div class="cl-mcont">
 	<div class="con-wrap">
 		<form class="form-horizontal group-border-dashed" action="" data-parsley-validate id="main-form" method="post"> 
 			<div class="form-group">
-			  <label class="col-xs-1 control-label"><i>*</i>用户名</label>
-			  <div class="col-xs-4">
-			  	<input type="text" name="username" parsley-trigger="change" required class="form-control" value="{$data.username??''}">
+			  <label class="col-xs-1 control-label"><i>*</i>书名</label>
+			  <div class="col-xs-2">
+			  	<input type="text" name="name" parsley-trigger="change" required class="form-control" value="{$data.name??''}">
+			  </div>
+			  <label class="col-xs-1 control-label"><i>*</i>书号</label>
+			  <div class="col-xs-2">
+			  	<input type="text" name="book_no" parsley-trigger="change" required class="form-control" value="{$data.book_no??''}">
+			  </div>
+			  <label class="col-xs-1 control-label"><i>*</i>作者</label>
+			  <div class="col-xs-2">
+			  	<input type="text" name="author" parsley-trigger="change" required class="form-control" value="{$data.author??''}">
+			  </div>
+			</div>
+			<div class="form-group">
+			  <label class="col-xs-1 control-label"><i>*</i>策划人</label>
+			  <div class="col-xs-2">
+			  	<input type="text" name="plotter" parsley-trigger="change" required class="form-control" value="{$data.plotter??''}">
+			  </div>
+			  <label class="col-xs-1 control-label"><i>*</i>价格</label>
+			  <div class="col-xs-2">
+			  	<input type="text" name="price" parsley-trigger="change" required class="form-control" value="{$data.price??''}">
 			  </div>
 			</div>
 			<div class="form-group"> 
-			  <label class="col-xs-1 control-label"><i>*</i>角色</label>
-			  <div class="col-xs-2">
-				<select class="form-control" name="roleid" parsley-trigger="change" required>
-					<option value="">----选择----</option>
-					{foreach name="roleList" item="role"}
-					<option value="{$role.id}">{$role.name}</option>
-					{/foreach}
-				</select>	
-			  </div>
-			  <script>
-			  	$('select[name="roleid"]').val({$data.roleid??'""'});
-			  </script>
-			</div>
-			<div class="form-group">
-			  <label class="col-xs-1 control-label"><i>*</i>密码</label>
+			  <label class="col-xs-1 control-label">发布时间</label>
 			  <div class="col-xs-4">
-			  	<input type="password" name="pass" parsley-trigger="change" required class="form-control" value="{$data.pass??''}">
+			  	<div class="input-prepend input-group">
+                  <span class="add-on input-group-addon primary">
+                  	<span class="glyphicon glyphicon-th"></span>
+                  </span><input type="text"　width="100%" name="publishtime" class="datetime form-control"
+                  	value="{$data.publishtime??''}" autocomplete="off" disableautocomplete /> 
+                </div>
+			  </div>
+			</div> 
+			<div class="form-group"> 
+			  <label class="col-xs-1 control-label">试卷原文件</label>
+			  <div class="col-xs-8">
+			  	<input type="file" style="display:none;" id="paperFile" />
+			  	<div class="col-xs-18">
+			  	  <i class="paper-url">{if condition="isset($data.paper_source)&&$data.paper_source"}{:app\\common\\AppTool::formatUrl($data.paper_source)}{/if}</i>
+			  	</div>
+			  	<div class="col-xs-4" style="display:none;">
+				  	<div class="progress progress-striped active">
+				   	 <div class="progress-bar progress-bar-success" style="width: 0%" id="paper-bar">0%</div>
+				  	</div>
+			  	</div>
+			  	<div class="col-xs-1">
+              		<a class="btn btn-link" id="paper-btn"><i class="fa fa-cloud-upload"></i></a>	
+              	</div>	
+			  	<div class="col-xs-3 form-prompt">
+              		(尺寸：150*120 像素)
+              	</div>	
+			  	<input type="text" name="paper_source" style="opacity:0;" value="{$data.paper_source??''}" />
+			  </div>
+			</div> 
+			<div class="form-group"> 
+			  <label class="col-xs-1 control-label">ppt原文件</label>
+			  <div class="col-xs-8">
+			  	<input type="file" style="display:none;" id="pptFile" />
+			  	<div class="col-xs-18">
+			  	  <i class="ppt-url">{if condition="isset($data.ppt_source)&&$data.ppt_source"}{:app\\common\\AppTool::formatUrl($data.ppt_source)}{/if}</i>
+			  	</div>
+			  	<div class="col-xs-4" style="display:none;">
+				  	<div class="progress progress-striped active">
+				   	 <div class="progress-bar progress-bar-success" style="width: 0%" id="ppt-bar">0%</div>
+				  	</div>
+			  	</div>
+			  	<div class="col-xs-1">
+              		<a class="btn btn-link" id="ppt-btn"><i class="fa fa-cloud-upload"></i></a>	
+              	</div>	
+			  	<div class="col-xs-3 form-prompt">
+              		(尺寸：150*120 像素)
+              	</div>	
+			  	<input type="text" name="ppt_source" style="opacity:0;" value="{$data.ppt_source??''}" />
+			  </div>
+			</div> 
+			<div class="form-group"> 
+			  <label class="col-xs-1 control-label">ppt</label>
+			  <div class="col-xs-8">
+                  <textarea id="ppt" name="ppt_img" data-parsley-errors-container="#areaError" class="form-control">{$data.ppt_img??''}</textarea>		
+			  	  <div id="areaError"></div>
 			  </div>
 			</div>
-			<div class="form-group">
-			  <label class="col-xs-1 control-label"><i>*</i>确认密码</label>
-			  <div class="col-xs-4">
-			  	<input type="password" name="pass2" parsley-trigger="change" required class="form-control" value="{$data.pass2??''}">
+			<div class="form-group"> 
+			  <label class="col-xs-1 control-label">样章</label>
+			  <div class="col-xs-8">
+                  <textarea id="demo_chapter" name="demo_chapter" data-parsley-errors-container="#areaError" class="form-control">{$data.demo_chapter??''}</textarea>		
+			  	  <div id="areaError"></div>
+			  </div>
+			</div>
+			<div class="form-group"> 
+			  <label class="col-xs-1 control-label">课程标准</label>
+			  <div class="col-xs-8">
+                  <textarea id="standard" name="standard" data-parsley-errors-container="#areaError" class="form-control">{$data.standard??''}</textarea>		
+			  	  <div id="areaError"></div>
+			  </div>
+			</div>
+			<div class="form-group"> 
+			  <label class="col-xs-1 control-label">试卷</label>
+			  <div class="col-xs-8">
+                  <textarea id="paper_img" name="paper_img" data-parsley-errors-container="#areaError" class="form-control">{$data.paper_img??''}</textarea>		
+			  	  <div id="areaError"></div>
 			  </div>
 			</div>
 			<div class="form-group"> 
@@ -69,13 +144,94 @@
  <script src="/admin/cleanzone/js/jquery.parsley/dist/zh_cn.js" type="text/javascript"></script>
 <script type="text/javascript" src="/admin/cleanzone/js/jquery.icheck/icheck.min.js"></script>
 <script type="text/javascript" src="/admin/cleanzone/js/jquery.niftymodals/js/jquery.modalEffects.js"></script>  
+<script type="text/javascript" src="/admin/cleanzone/js/bootstrap.datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="/admin/cleanzone/js/bootstrap.daterangepicker/moment.min.js"></script>
+<script type="text/javascript" src="/admin/cleanzone/js/bootstrap.daterangepicker/daterangepicker.js"></script>
+<script src="/admin/kindeditor/kindeditor-all-min.js"></script>
+<script src="/admin/js/aliyun-upload-sdk/lib/es6-promise.min.js"></script>
+<script src="/admin/js/aliyun-upload-sdk/lib/aliyun-oss-sdk4.13.2.min.js"></script>
+<script src="/admin/js/aliyun-upload-sdk/sdk1.3.1.min.js"></script>
 <script>
 var validate = $('#main-form').parsley();
+var pptEditor, //ppt
+	demoEditor,//样章
+	standardEditor,//课程标准
+	paperEditor;//试卷
 $(function(){
+	$(".datetime").datetimepicker({autoclose: true});
 	$('#btn-submit').on('click', function(){
 		if(!validate.validate()) return;
+		KindEditor.sync('#ppt');
+		KindEditor.sync('#demo_chapter');
+		KindEditor.sync('#standard');
+		KindEditor.sync('#paper_img');
 		$('#main-form').submit();
 	});
 });
+//---------ppt原文件上传-----------
+$('#ppt-btn').on('click', function(){
+	$('#pptFile')[0].click();
+});
+$('#pptFile').on('change', function(){
+	uploadFile(this.files[0], '#ppt-bar', '.ppt-url', 'ppt_source');
+});
+//---------试卷原文件上传-----------
+$('#paper-btn').on('click', function(){
+	$('#paperFile')[0].click();
+});
+$('#paperFile').on('change', function(){
+	uploadFile(this.files[0], '#paper-bar', '.paper-url', 'paper_source');
+});
+var kConfig = {
+	items:['source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',
+		'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+		'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+		'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+		'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+		'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image',  'multiimage',
+		'insertfile', 'table', 'hr', 'emoticons', 'pagebreak', 'link', 'unlink'],
+	colorTable:[
+		['#E53333', '#E56600', '#FF9900', '#64451D', '#DFC5A4', '#FFE500'],
+		['#009900', '#006600', '#99BB00', '#B8D100', '#60D978', '#00D5FF'],
+		['#337FE5', '#003399', '#4C33E5', '#9933E5', '#CC33E5', '#EE33EE'],
+		['#FFFFFF', '#CCCCCC', '#999999', '#666666', '#333333', '#000000']],
+	fontSizeTable:['9px', '10px', '12px', '14px', '16px', '18px', '24px', '32px']
+     
+};
+KindEditor.ready(function(K) {
+	pptEditor = K.create('#ppt',{
+		height:'400px',
+		items:kConfig.items,
+		colorTable:kConfig.colorTable,
+		uploadJson:'/admin/media/editorupload',
+		fileManagerJson:'',
+		syncType:'form'
+	});
+	demoEditor = K.create('#demo_chapter',{
+		height:'400px',
+		items:kConfig.items,
+		colorTable:kConfig.colorTable,
+		uploadJson:'/admin/media/editorupload',
+		fileManagerJson:'',
+		syncType:'form'
+	});
+	standardEditor = K.create('#standard',{
+		height:'400px',
+		items:kConfig.items,
+		colorTable:kConfig.colorTable,
+		uploadJson:'/admin/media/editorupload',
+		fileManagerJson:'',
+		syncType:'form'
+	});
+	paperEditor = K.create('#paper_img',{
+		height:'400px',
+		items:kConfig.items,
+		colorTable:kConfig.colorTable,
+		uploadJson:'/admin/media/editorupload',
+		fileManagerJson:'',
+		syncType:'form'
+	});
+});
 </script>
+<script src="/admin/js/ali_upload.js"></script>
 {include file="common/bottom" /}

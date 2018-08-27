@@ -50,6 +50,8 @@ Route::group('admin', function(){
         Route::rule('vodauth', 'admin/Media/vodAuth');
         Route::rule('refreshvodauth', 'admin/Media/refreshVodAuth');
         Route::rule('imgsts', 'admin/Media/imgSts');
+        Route::rule('filests', 'admin/Media/fileSts');
+        Route::rule('editorupload', 'admin/Media/editorUpload');
     });
     Route::group('book', function(){
         Route::rule('list', 'admin/Book/list')->middleware(AdminNav::class, 'book-list');

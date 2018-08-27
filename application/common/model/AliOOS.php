@@ -78,7 +78,7 @@ class AliOOS{
 	 * @return 文件url
 	 */
 	public function multiUploadFile(string $bucket, string $target,  string $source){
-	    require_once env('app_path').'common/oss/OssClient.php';
+	    require_once env('app_path').'common/oss/autoload.php';
 		try {
 			$ossClient = new OssClient($this->id, $this->key, $this->endpoints[$bucket], true);
 			$ossClient->multiuploadFile($bucket, $target, $source);

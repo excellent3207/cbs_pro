@@ -12,7 +12,7 @@ class AppTool{
 		if(strpos($uri, 'http://') !== false || strpos($uri, 'https://') !== false){
 			return $uri;
 		}else{
-			return 'https://syh-resource.oss-cn-beijing.aliyuncs.com/'.$uri;
+			return 'https://cbs-resource.oss-cn-beijing.aliyuncs.com/'.$uri;
 		}
 	}
 	/**
@@ -31,7 +31,7 @@ class AppTool{
 			}else{
 				$uri = trim($uri, '/');
 			}
-			return 'https://syh-resource.oss-cn-beijing.aliyuncs.com/'.$uri;
+			return 'https://cbs-resource.oss-cn-beijing.aliyuncs.com/'.$uri;
 		}
 	}
 	/**
@@ -50,7 +50,7 @@ class AppTool{
 			}else{
 				$uri = trim($uri, '/');
 			}
-			return 'https://syh-resource.oss-cn-beijing.aliyuncs.com/'.$uri;
+			return 'https://cbs-resource.oss-cn-beijing.aliyuncs.com/'.$uri;
 		}
 	}
 	/**
@@ -71,7 +71,7 @@ class AppTool{
 					$uri = trim($uri, '/');
 				}
 			}
-			return 'https://syh-resource.oss-cn-beijing.aliyuncs.com/'.$uri;
+			return 'https://cbs-resource.oss-cn-beijing.aliyuncs.com/'.$uri;
 		}
 	}
 	/**
@@ -79,22 +79,7 @@ class AppTool{
 	 * @return string
 	 */
 	public static function kindEditorDomain(){
-		return 'https://syh-resource.oss-cn-beijing.aliyuncs.com';
-	}
-	/**
-	 * 富文本编辑气图片地址修改
-	 * @param string $content
-	 */
-	public static function kindEditorImgChangeDomain(string $content){
-		$pattern = 'http://img.zhongyishuyou.com/kindeditor';
-		if(strpos($content, $pattern) !== false){
-			$content = str_replace($pattern, self::kindEditorDomain().'/img/kindeditor', $content);
-		}
-		$pattern2 = 'http://img.zhongyishuyou.com/Public';
-		if(strpos($content, $pattern2) !== false){
-			$content = str_replace($pattern2, self::kindEditorDomain().'/img/Public', $content);
-		}
-		return $content;
+		return 'https://cbs-resource.oss-cn-beijing.aliyuncs.com';
 	}
 	/**
 	 * 格式化价格
@@ -171,15 +156,6 @@ class AppTool{
 			$str .= $chars[mt_rand(0, strlen($chars) - 1)];
 		}
 		return $str; 
-	}
-	/**
-	 * 检测访问加密密钥
-	 * @param unknown $key
-	 * @param string $type
-	 * @return boolean
-	 */
-	public static function checkAccessKey($ak, string $type){return true;
-		return $ak === md5('Linglanshuyuan_12345');
 	}
 	/**
 	 * 基于redis的锁定阻塞

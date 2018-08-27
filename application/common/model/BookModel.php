@@ -24,5 +24,21 @@ class BookModel extends Model{
     public static function hiddenFields(){
         return ['delete_time','create_time','update_time'];
     }
+    /**
+     * 设置价格转换
+     * @param unknown $value
+     * @return mixed
+     */
+    public function setPriceAttr($value){
+        return floor($value*100);
+    }
+    /**
+     * 设置发布时间转换
+     * @param unknown $value
+     * @return number
+     */
+    public function setPublishtimeAttr($value){
+        return strtotime($value);
+    }
 }
 ?>
