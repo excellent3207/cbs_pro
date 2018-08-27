@@ -70,5 +70,41 @@ class BookBiz{
             $query->where('id','in', $ids);
         });
     }
+    /**
+     * 前端展示图书
+     * @param unknown $id
+     * @return unknown
+     */
+    public function doShow($id){
+        $model = new BookModel();
+        return $model->save(['show_time' => $_SERVER['REQUEST_TIME']], ['id' => $id]);
+    }
+    /**
+     * 取消前端展示图书
+     * @param unknown $id
+     * @return unknown
+     */
+    public function cancelShow($id){
+        $model = new BookModel();
+        return $model->save(['show_time' => 0], ['id' => $id]);
+    }
+    /**
+     * 推荐图书
+     * @param unknown $id
+     * @return unknown
+     */
+    public function doRecomm($id){
+        $model = new BookModel();
+        return $model->save(['recommend_time' => $_SERVER['REQUEST_TIME']], ['id' => $id]);
+    }
+    /**
+     * 取消推荐图书
+     * @param unknown $id
+     * @return unknown
+     */
+    public function cancelRecomm($id){
+        $model = new BookModel();
+        return $model->save(['recommend_time' => 0], ['id' => $id]);
+    }
 }
 

@@ -57,6 +57,10 @@ Route::group('admin', function(){
         Route::rule('list', 'admin/Book/list')->middleware(AdminNav::class, 'book-list');
         Route::rule('save', 'admin/Book/save')->middleware(AdminNav::class, 'book-save');
         Route::rule('del', 'admin/Book/del');
+        Route::rule('doshow', 'admin/Book/doShow');
+        Route::rule('cancelshow', 'admin/Book/cancelShow');
+        Route::rule('dorecomm', 'admin/Book/doRecomm');
+        Route::rule('cancelrecomm', 'admin/Book/cancelRecomm');
     });
 })->middleware(AdminAuth::class);
 

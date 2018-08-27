@@ -27,7 +27,7 @@
 			<div class="col-sm-3">
 				<label class="col-sm-4 control-label">书号:</label>
 				<div class="col-sm-8">
-					<input type="text" class="form-control" name="username" value="{$Request.get.book_no}" />
+					<input type="text" class="form-control" name="book_no" value="{$Request.get.book_no}" />
 				</div>
 			</div>
 		</div>
@@ -35,13 +35,13 @@
 			<div class="col-sm-3">
 				<label class="col-sm-4 control-label">作者:</label>
 				<div class="col-sm-8">
-					<input type="text" class="form-control" name="name" value="{$Request.get.author}" />
+					<input type="text" class="form-control" name="author" value="{$Request.get.author}" />
 				</div>
 			</div>
 			<div class="col-sm-3">
 				<label class="col-sm-4 control-label">策划人:</label>
 				<div class="col-sm-8">
-					<input type="text" class="form-control" name="username" value="{$Request.get.plotter}" />
+					<input type="text" class="form-control" name="plotter" value="{$Request.get.plotter}" />
 				</div>
 			</div>
 			<div class="col-sm-3">
@@ -80,8 +80,8 @@
 					<td>{$item.book_no}</td>
 					<td>{$item.author}</td>
 					<td>{$item.plotter}</td>
-					<td class="isshow cursor-pointer">{$item.is_show?'是':'否'}</td>
-					<td class="recommend cursor-pointer">{$item.is_recommend?'是':'否'}</td>
+					<td class="is_show cursor-pointer">{$item.show_time?'是':'否'}</td>
+					<td class="is_recommend cursor-pointer">{$item.recommend_time?'是':'否'}</td>
 					<td>{notempty name="item.publishtime"}{$item.publishtime|date="Y-m-d H:i:s"}{/notempty}</td>
 					<td>{$item.description}</td>
 					<td class="center">
@@ -131,19 +131,73 @@
 			if(flag){
 				$.post('/admin/book/del', {ids:ids}, function(res){
 					if(res.errorcode == 0){
-						modalHidden(function(){
-							syhSuccess('删除图书 ' + titles + ' 成功', function(){
-								location.href = location.href;
-							});
+						syhSuccess('删除图书 ' + titles + ' 成功', function(){
+							location.reload();;
 						});
 					}else{
-						modalHidden(function(){
-							syhError(res.msg);
-						});
+						syhError(res.msg);
 					}
 				}, 'json');
 			}
 		});
+	});
+	$('#main-table .is_show').dblclick(function(){
+		var id = $(this).parent().data('id');
+		var title = $(this).parent().data('title');
+		if($(this).html() == '否'){
+			syhConfirm('确定要在前端展示图书 ' + title + ' 吗？', function(flag){
+				if(flag){
+					$.post('/admin/book/doshow', {id:id}, function(res){
+						if(res.errorcode == 0){
+							location.reload();
+						}else{
+							syhError(res.msg);
+						}
+					});
+				}
+			});
+		}else{
+			syhConfirm('确定要取消展示图书 ' + title + ' 吗？', function(flag){
+				if(flag){
+					$.post('/admin/book/cancelshow', {id:id}, function(res){
+						if(res.errorcode == 0){
+							location.reload();
+						}else{
+							syhError(res.msg);
+						}
+					});
+				}
+			});
+		}
+	});
+	$('#main-table .is_recommend').dblclick(function(){
+		var id = $(this).parent().data('id');
+		var title = $(this).parent().data('title');
+		if($(this).html() == '否'){
+			syhConfirm('确定要推荐图书 ' + title + ' 吗？', function(flag){
+				if(flag){
+					$.post('/admin/book/dorecomm', {id:id}, function(res){
+						if(res.errorcode == 0){
+							location.reload();
+						}else{
+							syhError(res.msg);
+						}
+					});
+				}
+			});
+		}else{
+			syhConfirm('确定要取消推荐图书 ' + title + ' 吗？', function(flag){
+				if(flag){
+					$.post('/admin/book/cancelrecomm', {id:id}, function(res){
+						if(res.errorcode == 0){
+							location.reload();
+						}else{
+							syhError(res.msg);
+						}
+					});
+				}
+			});
+		}
 	});
 </script>
 <script type="text/javascript" src="/admin/cleanzone/js/jquery.niftymodals/js/jquery.modalEffects.js"></script>  

@@ -96,4 +96,68 @@ class Book{
         }
         return json($ret);
     }
+    /**
+     * 前端展示图书
+     * @return \think\response\Json
+     */
+    public function doShow(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        $id = $this->request->post('id');
+        $biz = new BookBiz();
+        try{
+            $ret['data'] = $biz->doShow($id);
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
+    }
+    /**
+     * 取消前端展示图书
+     * @return \think\response\Json
+     */
+    public function cancelShow(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        $id = $this->request->post('id');
+        $biz = new BookBiz();
+        try{
+            $ret['data'] = $biz->cancelShow($id);
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
+    }
+    /**
+     * 推荐图书
+     * @return \think\response\Json
+     */
+    public function doRecomm(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        $id = $this->request->post('id');
+        $biz = new BookBiz();
+        try{
+            $ret['data'] = $biz->doRecomm($id);
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
+    }
+    /**
+     * 取消推荐图书
+     * @return \think\response\Json
+     */
+    public function cancelRecomm(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        $id = $this->request->post('id');
+        $biz = new BookBiz();
+        try{
+            $ret['data'] = $biz->cancelRecomm($id);
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
+    }
 }
