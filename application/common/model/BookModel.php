@@ -14,7 +14,7 @@ class BookModel extends Model{
     protected $pk = 'id';
     protected $table = 'cbs_book';
     protected $fields = array(
-        'id','name','book_no','author','price','has_ppt','plotter','ppt_img','ppt_source','demo_chapter','standard',
+        'id','name','book_no','author','img_list','img_info','price','has_ppt','plotter','ppt_img','ppt_source','demo_chapter','standard',
         'paper_img','paper_source','publishtime','is_show','show_time','is_recommend','recommend_time','description'
     );
     

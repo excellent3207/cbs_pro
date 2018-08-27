@@ -64,6 +64,7 @@
 					<th>书号</th>
 					<th>作者</th>
 					<th>策划人</th>
+					<th>列表图</th>
 					<th>前端展示</th>
 					<th>是否推荐</th>
 					<th>发布时间</th>
@@ -80,6 +81,7 @@
 					<td>{$item.book_no}</td>
 					<td>{$item.author}</td>
 					<td>{$item.plotter}</td>
+					<td><img style="width:50px;" src="{:app\\common\\AppTool::formatUrl($item.img_list)}" alt="" /></td>
 					<td class="is_show cursor-pointer">{$item.show_time?'是':'否'}</td>
 					<td class="is_recommend cursor-pointer">{$item.recommend_time?'是':'否'}</td>
 					<td>{notempty name="item.publishtime"}{$item.publishtime|date="Y-m-d H:i:s"}{/notempty}</td>

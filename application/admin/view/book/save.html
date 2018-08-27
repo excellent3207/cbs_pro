@@ -45,6 +45,48 @@
 			  </div>
 			</div>
 			<div class="form-group"> 
+			  <label class="col-xs-1 control-label">列表图</label>
+			  <div class="col-xs-8">
+			  	<input type="file" style="display:none;" id="imgListFile" />
+			  	<div class="col-xs-2">
+			  	  <i class="imgList-img">{notempty name="data.img_list"}<img src="{:app\\common\\AppTool::formatUrl($data.img_list)}" width="100%" />{/notempty}</i>
+			  	</div>
+			  	<div class="col-xs-4" style="display:none;">
+				  	<div class="progress progress-striped active">
+				   	 <div class="progress-bar progress-bar-success" style="width: 0%" id="imgList-bar">0%</div>
+				  	</div>
+			  	</div>
+			  	<div class="col-xs-1">
+              		<a class="btn btn-link" id="imgList-btn"><i class="fa fa-cloud-upload"></i></a>
+              	</div>
+			  	<div class="col-xs-3 form-prompt">
+              		(尺寸：150*120 像素)
+              	</div>	
+			  	<input type="text" name="img_list" value="{$data.img_list??''}" style="opacity:0;" />
+			  </div>
+			</div> 
+			<div class="form-group"> 
+			  <label class="col-xs-1 control-label">详情图</label>
+			  <div class="col-xs-8">
+			  	<input type="file" style="display:none;" id="imgInfoFile" />
+			  	<div class="col-xs-2">
+			  	  <i class="imgInfo-img">{notempty name="data.img_info"}<img src="{:app\\common\\AppTool::formatUrl($data.img_info)}" width="100%" />{/notempty}</i>
+			  	</div>
+			  	<div class="col-xs-4" style="display:none;">
+				  	<div class="progress progress-striped active">
+				   	 <div class="progress-bar progress-bar-success" style="width: 0%" id="imgInfo-bar">0%</div>
+				  	</div>
+			  	</div>
+			  	<div class="col-xs-1">
+              		<a class="btn btn-link" id="imgList-btn"><i class="fa fa-cloud-upload"></i></a>
+              	</div>
+			  	<div class="col-xs-3 form-prompt">
+              		(尺寸：150*120 像素)
+              	</div>	
+			  	<input type="text" name="img_info" value="{$data.img_info??''}" style="opacity:0;" />
+			  </div>
+			</div> 
+			<div class="form-group"> 
 			  <label class="col-xs-1 control-label">发布时间</label>
 			  <div class="col-xs-4">
 			  	<div class="input-prepend input-group">
@@ -168,6 +210,20 @@ $(function(){
 		KindEditor.sync('#paper_img');
 		$('#main-form').submit();
 	});
+});
+//--------列表图上传-----------
+$('#imgList-btn').on('click', function(){
+	$('#imgListFile')[0].click();
+})
+$('#imgListFile').on('change', function(){
+	uploadBase(this.files[0], '#imgList-bar', '.imgList-img', 'img_list');
+});
+//--------详情图上传-----------
+$('#imgInfo-btn').on('click', function(){
+	$('#imgInfoFile')[0].click();
+})
+$('#imgInfoFile').on('change', function(){
+	uploadBase(this.files[0], '#imgInfo-bar', '.imgInfo-img', 'img_info');
 });
 //---------ppt原文件上传-----------
 $('#ppt-btn').on('click', function(){
