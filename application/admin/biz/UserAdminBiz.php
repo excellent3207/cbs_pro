@@ -122,6 +122,26 @@ class UserAdminBiz{
         return $model->allowField(TRUE)->save($data, ['id' => $data['id']]);
     }
     /**
+     * 删除
+     * @param unknown $navid
+     * @return unknown
+     */
+    public function del($ids){
+        return UserAdminModel::destroy(function($query) use ($ids){
+            $query->where('id','in', $ids);
+        });
+    }
+    /**
+     * 重置密码
+     * @param unknown $navid
+     * @return unknown
+     */
+    public function resetPwd($id){
+        $model = new UserAdminModel();
+        $res = $model->save(['pass' => '123456'], ['id' => $id]);
+        return $res;
+    }
+    /**
      * 格式化导航数据
      * @param unknown $role
      * @return array[]|unknown[][]|array

@@ -32,6 +32,8 @@ Route::group('admin', function(){
         Route::post('add', 'admin/UserAdmin/add');
         Route::get('edit', 'admin/UserAdmin/edit')->middleware(AdminNav::class, 'system-user-edit');
         Route::post('edit', 'admin/UserAdmin/edit');
+        Route::post('del', 'admin/UserAdmin/del');
+        Route::post('resetpwd', 'admin/UserAdmin/resetPwd');
         Route::rule('editpwd', 'admin/UserAdmin/editPwd');
         Route::rule('rolelist', 'admin/UserAdmin/roleList')->middleware(AdminNav::class, 'system-role-list');
         Route::post('roleedit', 'admin/UserAdmin/roleEdit');

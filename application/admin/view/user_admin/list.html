@@ -75,6 +75,10 @@
 						<a class="btn btn-primary btn-xs" href="/admin/useradmin/edit?id={$item.id}" title="编辑">
 							<i class="fa fa-pencil"></i>
 						</a>{/if}
+						{if condition="checkAuth('system-user-resetpwd')"}
+						<a class="btn btn-primary btn-xs reset-pwd" title="重置密码">
+							<i class="fa fa-refresh"></i>
+						</a>{/if}
 					</td>
 				</tr>
 				{/foreach}
@@ -99,27 +103,23 @@
 			$('.check-all').prop('checked', false);
 		}
 	});
-	$('#reset-pwd').on('click', function(){
+	$('.reset-pwd').on('click', function(){
 		var title = $(this).parent().parent().data('title');
 		var userid = $(this).parent().parent().data('id');
 		syhConfirm('确定要重置用户 ' + title + ' 的密码吗？', function(flag){
 			if(flag){
-				$.post('/admin/UserAdmin/resetpwd', {userid:userid}, function(res){
+				$.post('/admin/useradmin/resetpwd', {id:userid}, function(res){
 					if(res.errorcode == 0){
-						modalHidden(function(){
-							syhSuccess('重置用户 ' + title + ' 密码成功', function(){
-								location.href = location.href;
-							});
+						syhSuccess('重置用户 ' + title + ' 密码成功', function(){
+							
 						});
 					}else{
-						modalHidden(function(){
-							syhError(res.msg);
-						});
+						syhError(res.msg);
 					}
 				}, 'json');
 			}
 		});
-	})
+	});
 	$('#btn-del').on('click', function(){
 		var checked = $('.check:checked');
 		if(checked.length <= 0){
@@ -138,15 +138,11 @@
 			if(flag){
 				$.post('/admin/useradmin/del', {ids:ids}, function(res){
 					if(res.errorcode == 0){
-						modalHidden(function(){
-							syhSuccess('删除用户 ' + titles + ' 成功', function(){
-								location.href = location.href;
-							});
+						syhSuccess('删除用户 ' + titles + ' 成功', function(){
+							location.href = location.href;
 						});
 					}else{
-						modalHidden(function(){
-							syhError(res.msg);
-						});
+						syhError(res.msg);
 					}
 				}, 'json');
 			}

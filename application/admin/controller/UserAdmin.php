@@ -33,7 +33,7 @@ class UserAdmin{
             try{
                 $biz = new UserAdminBiz();
                 $biz->doLogin($data);
-                return redirect('index/index');
+                return redirect('book/list');
             }catch(\Exception $e){
                 $data['error'] = $e->getMessage();
                 return redirect('useradmin/login')->with('login_data', $data);
@@ -56,7 +56,7 @@ class UserAdmin{
      * 修改密码
      * @return \think\response\Json
      */
-    public function editPwdJson(){
+    public function editPwd(){
         $ret = ['errorcode' => 0, 'msg' => '成功'];
         $data = $this->request->post();
         $biz = new UserAdminBiz();
@@ -185,6 +185,38 @@ class UserAdmin{
         $roleBiz = new RoleAdminBiz();
         $roleList = $roleBiz->all();
         return view('', ['data' => $user, 'roleList' => $roleList, 'prePage' => getPageHistory('userList')]);
+    }
+    /**
+     * 删除用户
+     * @return \think\response\Json
+     */
+    public function del(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        $ids = $this->request->post('ids');
+        $biz = new UserAdminBiz();
+        try{
+            $ret['data'] = $biz->del($ids);
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
+    }
+    /**
+     * 删除用户
+     * @return \think\response\Json
+     */
+    public function resetPwd(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        $id = $this->request->post('id');
+        $biz = new UserAdminBiz();
+        try{
+            $ret['data'] = $biz->resetPwd($id);
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
     }
     /**
      * 角色列表
