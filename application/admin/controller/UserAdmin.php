@@ -288,7 +288,7 @@ class UserAdmin{
         $list = $biz->all();
         return view('', ['list' => $list]);
     }
-    public function getNavJson(){
+    public function getNav(){
         $ret = ['errorcode' => 0, 'msg' => '成功'];
         $navid = $this->request->get('navid');
         $biz = new NavAdminBiz();

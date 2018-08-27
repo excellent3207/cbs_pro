@@ -52,7 +52,7 @@
 	</div>
 	<div class="con-wrap">
 		<div class="search-wrap">
-			{if condition="checkAuth('book-add')"}<a href="/admin/book/add" class="btn btn-info pull-left" id="btn-add">添加</a>{/if}
+			{if condition="checkAuth('book-add')"}<a href="/admin/book/save" class="btn btn-info pull-left" id="btn-add">添加</a>{/if}
 			{if condition="checkAuth('book-del')"}<a class="btn btn-default pull-right" id="btn-del">删除</a>{/if}
 		</div>
 		<table class="table table-bordered table-hover" id="main-table" >
@@ -86,7 +86,7 @@
 					<td>{$item.description}</td>
 					<td class="center">
 						{if condition="checkAuth('system-user-edit')"}
-						<a class="btn btn-primary btn-xs" href="/admin/book/edit?id={$item.id}" title="编辑">
+						<a class="btn btn-primary btn-xs" href="/admin/book/save?id={$item.id}" title="编辑">
 							<i class="fa fa-pencil"></i>
 						</a>{/if}
 					</td>

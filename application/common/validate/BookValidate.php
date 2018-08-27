@@ -16,8 +16,7 @@ class BookValidate extends Validate{
         'price.number' => '价格必须为数字'
     ];
     protected $scene = [
-        'create' => ['name', 'price'],
-        'edit' => ['id', 'name', 'price'],
+        'save' => ['name', 'price'],
     ];
 }
 

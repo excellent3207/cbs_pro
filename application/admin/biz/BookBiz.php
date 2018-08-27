@@ -43,26 +43,22 @@ class BookBiz{
         return BookModel::where($cond)->count('id');
     }
     /**
-     * 创建
-     * @param unknown $data
-     * @throws AppException
-     * @return unknown
-     */
-    public function add($data){
-        $model = new BookModel();
-        $res = $model->allowField(TRUE)->save($data);
-        if(!$res) throw new AppException('创建书籍失败');
-        return $model->id;
-    }
-    /**
      * 编辑
      * @param unknown $data
      * @throws AppException
      * @return boolean
      */
-    public function edit($data){
+    public function save($data){
         $model = new BookModel();
-        return $model->allowField(TRUE)->save($data, ['id' => $data['id']]);
+        if(isset($data['id']) && $data['id']){
+            $res = $model->allowField(TRUE)->save($data, ['id' => $data['id']]);
+            if(!$res) throw new AppException('编辑书籍失败');
+            return $res;
+        }else{
+            $res = $model->allowField(TRUE)->save($data);
+            if(!$res) throw new AppException('创建书籍失败');
+            return $model->id;
+        }
     }
     /**
      * 删除

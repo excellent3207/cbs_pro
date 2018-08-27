@@ -55,8 +55,7 @@ Route::group('admin', function(){
     });
     Route::group('book', function(){
         Route::rule('list', 'admin/Book/list')->middleware(AdminNav::class, 'book-list');
-        Route::rule('add', 'admin/Book/add')->middleware(AdminNav::class, 'book-add');
-        Route::rule('edit', 'admin/Book/edit')->middleware(AdminNav::class, 'book-edit');
+        Route::rule('save', 'admin/Book/save')->middleware(AdminNav::class, 'book-save');
         Route::rule('del', 'admin/Book/del');
     });
 })->middleware(AdminAuth::class);

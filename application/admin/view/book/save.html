@@ -9,16 +9,17 @@
 .form-group .control-label{padding:0;}
 </style>
 <div class="page-head">
-	<h2>图书创建</h2>
+	<h2>图书编辑</h2>
 	<ol class="breadcrumb">
 	  <li><a href="#">后台用户</a></li>
 	  <li><a href="{$prePage}">图书列表</a></li>
-	  <li class="active">图书创建</li>
+	  <li class="active">图书编辑</li>
 	</ol>
 </div>	
 <div class="cl-mcont">
 	<div class="con-wrap">
 		<form class="form-horizontal group-border-dashed" action="" data-parsley-validate id="main-form" method="post"> 
+			<input type="hidden" name="id" value="{$data.id??''}" />
 			<div class="form-group">
 			  <label class="col-xs-1 control-label"><i>*</i>书名</label>
 			  <div class="col-xs-2">

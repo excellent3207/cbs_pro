@@ -47,65 +47,35 @@ class Book{
         return view('', ['list' => $list, 'params' => $params, 'pagination' => $pagination]);
     }
     /**
-     * 创建用户
-     * @return \think\response\Redirect|unknown
-     */
-    public function add(){
-        $data = $this->request->post();
-        if(!empty($data)){
-            $validate = new BookValidate();
-            $error = '';
-            if(!$validate->check($data, [], 'create')){
-                $error = $validate->getError();
-            }else{
-                $biz = new BookBiz();
-                try{
-                    $biz->add($data);
-                }catch(\Exception $e){
-                    $error = $e->getMessage();
-                }
-            }
-            if($error){
-                $data['error'] = $error;
-                return redirect('book/add')->with('book_add_data', $data);
-            }else{
-                return redirect(getPageHistory('bookList'));
-            }
-        }
-        $book = session('book_add_data');
-        if(empty($book)) $book = [];
-        return view('', ['data' => $book, 'prePage' => getPageHistory('bookList')]);
-    }
-    /**
      * 编辑用户
      * @return \think\response\Redirect|unknown
      */
-    public function edit(){
+    public function save(){
         $data = $this->request->post();
         if(!empty($data)){
             $validate = new BookValidate();
             $error = '';
-            if(!$validate->check($data, [], 'edit')){
+            if(!$validate->check($data, [], 'save')){
                 $error = $validate->getError();
             }else{
                 $biz = new BookBiz();
                 try{
-                    $biz->edit($data);
+                    $biz->save($data);
                 }catch(\Exception $e){
                     $error = $e->getMessage();
                 }
             }
             if($error){
                 $data['error'] = $error;
-                return redirect('book/edit')->with('book_edit_data', $data);
+                return redirect('book/save')->with('book_save_data', $data);
             }else{
                 return redirect(getPageHistory('bookList'));
             }
         }
         $biz = new BookBiz();
         $id = $this->request->get('id');
-        $book = session('book_edit_data');
-        if(empty($book)){
+        $book = session('book_save_data');
+        if(empty($book) && $id){
             $book = $biz->get($id);
         }
         return view('', ['data' => $book, 'prePage' => getPageHistory('bookList')]);
