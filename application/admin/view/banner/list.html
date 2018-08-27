@@ -1,0 +1,175 @@
+{include file="common/top" title="" metas='' /}
+<link rel="stylesheet" type="text/css" href="/admin/cleanzone/js/jquery.gritter/css/jquery.gritter.css" />
+ <link rel="stylesheet" type="text/css" href="/admin/cleanzone/js/jquery.niftymodals/css/component.css" />
+<div class="page-head">
+	<h2>banner列表</h2>
+	<ol class="breadcrumb">
+	  <li><a href="#">banner</a></li>
+	  <li class="active">banner列表</li>
+	</ol>
+</div>	
+<div class="cl-mcont">
+	<div class="con-wrap">
+		<form>
+		<div class="form-group clearFix">
+			<div class="col-sm-3">
+				<label class="col-sm-4 control-label">编号:</label>
+				<div class="col-sm-8">
+					<input type="text" class="form-control" name="id" value="{$Request.get.id}" />
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<label class="col-sm-4 control-label">是否展示:</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="is_show">
+						<option value="-1">----选择----</option>
+						<option value="1">是</option>
+						<option value="0">否</option>
+					</select>
+				</div>
+			</div>
+			<script>
+				$('select[name="is_show"]').val({$params.is_show??-1});
+			</script>
+			<div class="col-sm-3">
+				<button class="btn btn-info" type="submit">搜索</button>
+			</div>
+		</div>
+		</form>
+	</div>
+	<div class="con-wrap">
+		<div class="search-wrap">
+			{if condition="checkAuth('banner-add')"}<a href="/admin/banner/save" class="btn btn-info pull-left" id="btn-add">添加</a>{/if}
+			{if condition="checkAuth('banner-del')"}<a class="btn btn-default pull-right" id="btn-del">删除</a>{/if}
+		</div>
+		<table class="table table-bordered table-hover" id="main-table" >
+			<thead>
+				<tr>
+					<th><input type="checkbox" data-id="0" class="check-all" /></th>
+					<th>编号</th>
+					<th>banner图</th>
+					<th>跳转地址</th>
+					<th>排序</th>
+					<th>前端展示</th>
+					<th>备注</th>
+					<th>创建时间</th>
+					<th width="120">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{foreach name="list" item="item"}
+				<tr data-id="{$item.id}">
+					<td><input type="checkbox" data-id="{$item.id}" class="check" /></td>
+					<td>{$item.id}</td>
+					<td><img style="width:50px;" src="{:app\\common\\AppTool::formatUrl($item.img)}" alt="" /></td>
+					<td>{$item.url}</td>
+					<td class="order cursor-pointer">{$item.orderid}</td>
+					<td class="is_show cursor-pointer">{$item.show_time?'是':'否'}</td>
+					<td>{$item.remark}</td>
+					<td>{notempty name="item.create_time"}{$item.create_time|date="Y-m-d H:i:s"}{/notempty}</td>
+					<td class="center">
+						{if condition="checkAuth('banner-save')"}
+						<a class="btn btn-primary btn-xs" href="/admin/banner/save?id={$item.id}" title="编辑">
+							<i class="fa fa-pencil"></i>
+						</a>{/if}
+					</td>
+				</tr>
+				{/foreach}
+			</tbody>
+		</table>
+		{$pagination->render()|raw}
+	</div>
+</div>
+<script>
+	$('.check-all').on('click', function(){
+		if(this.checked){
+			$('.check').prop('checked', true);
+		}else{
+			$('.check').prop('checked', false);
+		}
+	});
+	var checkLength = $('.check').length;
+	$('.check').on('click', function(){
+		if($('.check:checked').length == checkLength){
+			$('.check-all').prop('checked', true);
+		}else{
+			$('.check-all').prop('checked', false);
+		}
+	});
+	$('#btn-del').on('click', function(){
+		var checked = $('.check:checked');
+		if(checked.length <= 0){
+			syhWarn('没有选择要删除的banner');
+			return;
+		}
+		var ids = [];
+		checked.each(function(index, ele){
+			ids.push($(ele).data('id'));
+		});
+		ids = ids.join(',');
+		titles = titles.join(',');
+		syhConfirm('确定要删除banner吗？', function(flag){
+			if(flag){
+				$.post('/admin/banner/del', {ids:ids}, function(res){
+					if(res.errorcode == 0){
+						syhSuccess('删除banner ' + titles + ' 成功', function(){
+							location.reload();;
+						});
+					}else{
+						syhError(res.msg);
+					}
+				}, 'json');
+			}
+		});
+	});
+	$('#main-table .is_show').dblclick(function(){
+		var id = $(this).parent().data('id');
+		if($(this).html() == '否'){
+			syhConfirm('确定要在前端展示banner吗？', function(flag){
+				if(flag){
+					$.post('/admin/banner/doshow', {id:id}, function(res){
+						if(res.errorcode == 0){
+							location.reload();
+						}else{
+							syhError(res.msg);
+						}
+					});
+				}
+			});
+		}else{
+			syhConfirm('确定要取消展示banner吗？', function(flag){
+				if(flag){
+					$.post('/admin/banner/cancelshow', {id:id}, function(res){
+						if(res.errorcode == 0){
+							location.reload();
+						}else{
+							syhError(res.msg);
+						}
+					});
+				}
+			});
+		}
+	});
+	$('#main-table .order').dblclick(function(){
+		if(!$(this).data('flag')){
+			$(this).data('flag', true);
+			var orderid = $(this).html();
+			$(this).html('<input type="text" class="inp-order" value="'+orderid+'" style="width:50px;" />');
+			$('.inp-order').focus();
+			$('.inp-order').blur(function(){
+				$.post('/admin/banner/editorder', 
+					{id:$(this).parent().parent().data('id'), orderid:this.value}, function(res){
+					if(res.errorcode == 0){
+						//location.reload();
+					}else{
+						syError(res.msg);
+					}
+				}, 'json');
+				$(this).parent().data('flag', false);
+				$(this).parent().html(this.value);
+			});
+		}
+	});
+</script>
+<script type="text/javascript" src="/admin/cleanzone/js/jquery.niftymodals/js/jquery.modalEffects.js"></script>  
+{include file="common/bottom" /}

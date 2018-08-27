@@ -19,21 +19,22 @@
 	
 		<script type="text/javascript">
 			var originData = {:json_encode($list)};
-			var data = {};
+			var data = [];
+			var ids = [];
 			var d;
 			for(var k in originData){
 				var item = originData[k];
-				data[item['navid']] = item;
+				data.push(item);
+				ids.push(item.navid);
 			}
 			delete originData;
 			createTree(data);
-			
 			function createTree(data){
 				var obj = document.getElementById('main-list');
 				d = new dTree('d');
 				d.add(0,-1,'导航管理');
 				for(var k in data){
-					d.add(data[k]['navid'], data[k]['parentid'], 'authority', data[k]['navid'], data[k]['title']);
+					d.add(ids.indexOf(data[k]['navid']) + 1, ids.indexOf(data[k]['parentid']) + 1, 'authority', data[k]['navid'], data[k]['title']);
 				}
 				obj.innerHTML = d;
 				d.openAll();
@@ -46,9 +47,9 @@
 					}else if(pid == 0){
 						title = '导航管理';
 					}else{
-						title = data[pid].title;
+						title = data[id-1].title;
 					}
-					$.get('/admin/useradmin/getnav', {navid:id}, function(res){
+					$.get('/admin/useradmin/getnav', {navid:ids[id-1]}, function(res){
 						if(res.errorcode == 0){
 							var resData = res.data;
 							syhInfo('编辑导航', '<form class="form-horizontal group-border-dashed" id="add-nav-form">' +
@@ -102,10 +103,10 @@
 					if(id == 0){
 						title = '导航管理';
 					}else{
-						title = data[id].title;
+						title = data[id-1].title;
 					}
 					syhInfo('添加导航', '<form class="form-horizontal group-border-dashed" id="add-nav-form">' +
-							  '<input type="hidden" name="parentid" value="'+id+'" />'+
+							  '<input type="hidden" name="parentid" value="'+ids[id-1]+'" />'+
 							  '<div class="form-group">' +
 							  '<label class="col-xs-1 control-label">名称</label>' +
 							  '<div class="col-xs-2">' +
@@ -149,7 +150,7 @@
 					var title = data[id].title;
 					syhConfirm('确定要删除 ' + title + ' 吗？', function(flag){
 						if(flag){
-							$.post('/admin/useradmin/delnav', {navid:id}, function(res){
+							$.post('/admin/useradmin/delnav', {navid:ids[id-1]}, function(res){
 								if(res.errorcode == 0){
 									location.reload();
 								}else{

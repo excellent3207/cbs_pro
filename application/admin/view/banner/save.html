@@ -1,0 +1,95 @@
+{include file="common/top" title="首页" metas='' /}
+<link href="/admin/cleanzone/js/jquery.icheck/skins/square/blue.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/admin/cleanzone/js/jquery.gritter/css/jquery.gritter.css" />
+ <link rel="stylesheet" type="text/css" href="/admin/cleanzone/js/jquery.niftymodals/css/component.css" />
+<style>
+.con-wrap{background:#fff;padding:10px;margin-top:20px;border-radius:3px;}
+.form-group .control-label{padding:0;}
+</style>
+<div class="page-head">
+	<h2>banner编辑</h2>
+	<ol class="breadcrumb">
+	  <li><a href="#">后台用户</a></li>
+	  <li><a href="{$prePage}">banner列表</a></li>
+	  <li class="active">banner编辑</li>
+	</ol>
+</div>	
+<div class="cl-mcont">
+	<div class="con-wrap">
+		<form class="form-horizontal group-border-dashed" action="" data-parsley-validate id="main-form" method="post"> 
+			<input type="hidden" name="id" value="{$data.id??''}" />
+			<div class="form-group"> 
+			  <label class="col-xs-1 control-label"><i>*</i>banner图</label>
+			  <div class="col-xs-8">
+			  	<input type="file" style="display:none;" id="imgFile" />
+			  	<div class="col-xs-2">
+			  	  <i class="img-img">{notempty name="data.img"}<img src="{:app\\common\\AppTool::formatUrl($data.img)}" width="100%" />{/notempty}</i>
+			  	</div>
+			  	<div class="col-xs-4" style="display:none;">
+				  	<div class="progress progress-striped active">
+				   	 <div class="progress-bar progress-bar-success" style="width: 0%" id="img-bar">0%</div>
+				  	</div>
+			  	</div>
+			  	<div class="col-xs-1">
+              		<a class="btn btn-link" id="img-btn"><i class="fa fa-cloud-upload"></i></a>
+              	</div>
+			  	<div class="col-xs-3 form-prompt">
+              		(尺寸：150*120 像素)
+              	</div>	
+			  	<input type="text" name="img" value="{$data.img??''}" style="opacity:0;" required parsley-trigger="change" />
+			  </div>
+			</div> 
+			<div class="form-group">
+			  <label class="col-xs-1 control-label"><i>*</i>跳转地址</label>
+			  <div class="col-xs-4">
+			  	<input type="text" name="url" parsley-trigger="change" required class="form-control" value="{$data.url??''}">
+			  </div>
+			</div>
+			<div class="form-group">
+			  <label class="col-xs-1 control-label"><i>*</i>排序</label>
+			  <div class="col-xs-4">
+			  	<input type="text" name="orderid" parsley-trigger="change" required class="form-control" value="{$data.orderid??'1000'}">
+			  </div>
+			</div>
+			<div class="form-group"> 
+			  <label class="col-xs-1 control-label">备注</label>
+			  <div class="col-xs-6">
+                  <textarea class="form-control" style="height:100px;" name="remark">{$data.remark??''}</textarea>		
+			  </div>
+			</div> 
+			<div class="form-group">
+				{if condition="isset($data.error)"}<div class="error-all">{$data.error}</div>{/if}
+				<div class="col-xs-offset-2 col-xs-10">
+					<a class="btn btn-primary" id="btn-submit">提交</a>
+					<a href="{$prePage}" class="btn btn-default">取消</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+ <script src="/admin/cleanzone/js/jquery.parsley/dist/parsley.min.js" type="text/javascript"></script>
+ <script src="/admin/cleanzone/js/jquery.parsley/dist/zh_cn.js" type="text/javascript"></script>
+<script type="text/javascript" src="/admin/cleanzone/js/jquery.icheck/icheck.min.js"></script>
+<script type="text/javascript" src="/admin/cleanzone/js/jquery.niftymodals/js/jquery.modalEffects.js"></script>  
+<script src="/admin/js/aliyun-upload-sdk/lib/es6-promise.min.js"></script>
+<script src="/admin/js/aliyun-upload-sdk/lib/aliyun-oss-sdk4.13.2.min.js"></script>
+<script src="/admin/js/aliyun-upload-sdk/sdk1.3.1.min.js"></script>
+<script>
+var validate = $('#main-form').parsley();
+var contentEditor;
+$(function(){
+	$('#btn-submit').on('click', function(){
+		if(!validate.validate()) return;
+		$('#main-form').submit();
+	});
+});
+//--------列表图上传-----------
+$('#img-btn').on('click', function(){
+	$('#imgFile')[0].click();
+})
+$('#imgFile').on('change', function(){
+	uploadBase(this.files[0], '#img-bar', '.img-img', 'img');
+});
+</script>
+<script src="/admin/js/ali_upload.js"></script>
+{include file="common/bottom" /}

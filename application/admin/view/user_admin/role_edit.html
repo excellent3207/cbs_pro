@@ -44,10 +44,12 @@
 		var originData = {:json_encode($navlist)};
 		var myids = '{$data.navids}';
 		myids = myids.split(',');
-		var data = {};
+		var data = [];
+		var ids = [];
 		for(var k in originData){
 			var item = originData[k];
-			data[item['navid']] = item;
+			data.push(item);
+			ids.push(item.navid);
 		}
 		delete originData;
 		createTree(data);
@@ -61,7 +63,7 @@
 				if($.inArray(data[k]['navid']+'', myids) !== -1){
 					checked = true;
 				}
-				d.add(data[k]['navid'], data[k]['parentid'], 'authority', data[k]['navid'], data[k]['title'], checked);
+				d.add(ids.indexOf(data[k]['navid']) + 1, ids.indexOf(data[k]['parentid']) + 1, 'authority', data[k]['navid'], data[k]['title'], checked);
 			}
 			obj.innerHTML = d;
 			d.openAll();

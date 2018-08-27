@@ -7,11 +7,11 @@
 .form-group .control-label{padding:0;}
 </style>
 <div class="page-head">
-	<h2>图书编辑</h2>
+	<h2>文稿编辑</h2>
 	<ol class="breadcrumb">
 	  <li><a href="#">后台用户</a></li>
-	  <li><a href="{$prePage}">图书列表</a></li>
-	  <li class="active">图书编辑</li>
+	  <li><a href="{$prePage}">文稿列表</a></li>
+	  <li class="active">文稿编辑</li>
 	</ol>
 </div>	
 <div class="cl-mcont">
@@ -76,9 +76,6 @@
  <script src="/admin/cleanzone/js/jquery.parsley/dist/zh_cn.js" type="text/javascript"></script>
 <script type="text/javascript" src="/admin/cleanzone/js/jquery.icheck/icheck.min.js"></script>
 <script type="text/javascript" src="/admin/cleanzone/js/jquery.niftymodals/js/jquery.modalEffects.js"></script>  
-<script type="text/javascript" src="/admin/cleanzone/js/bootstrap.datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript" src="/admin/cleanzone/js/bootstrap.daterangepicker/moment.min.js"></script>
-<script type="text/javascript" src="/admin/cleanzone/js/bootstrap.daterangepicker/daterangepicker.js"></script>
 <script src="/admin/kindeditor/kindeditor-all-min.js"></script>
 <script src="/admin/js/aliyun-upload-sdk/lib/es6-promise.min.js"></script>
 <script src="/admin/js/aliyun-upload-sdk/lib/aliyun-oss-sdk4.13.2.min.js"></script>
@@ -87,7 +84,6 @@
 var validate = $('#main-form').parsley();
 var contentEditor;
 $(function(){
-	$(".datetime").datetimepicker({autoclose: true});
 	$('#btn-submit').on('click', function(){
 		if(!validate.validate()) return;
 		KindEditor.sync('#content');

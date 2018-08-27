@@ -75,6 +75,15 @@ Route::group('admin', function(){
         Route::post('dorecomm', 'admin/Draft/doRecomm');
         Route::post('cancelrecomm', 'admin/Draft/cancelRecomm');
     });
+    Route::group('banner', function(){
+        Route::get('list', 'admin/Banner/list')->middleware(AdminNav::class, 'banner-list');
+        Route::get('save', 'admin/Banner/save')->middleware(AdminNav::class, 'banner-save');
+        Route::post('save', 'admin/Banner/save');
+        Route::post('del', 'admin/Banner/del');
+        Route::post('doshow', 'admin/Banner/doShow');
+        Route::post('cancelshow', 'admin/Banner/cancelShow');
+        Route::post('editorder', 'admin/Banner/editOrder');
+    });
 })->middleware(AdminAuth::class);
 
 Route::rule('admin/useradmin/login', 'admin/UserAdmin/login');

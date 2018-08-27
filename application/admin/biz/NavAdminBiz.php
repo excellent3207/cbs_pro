@@ -12,7 +12,7 @@ class NavAdminBiz{
         
     }
     public function all(){
-        return NavAdminModel::order('navid desc')->hidden(NavAdminModel::hiddenFields())->select();
+        return NavAdminModel::order('orderid asc')->hidden(NavAdminModel::hiddenFields())->select();
     }
     public function get($navid){
         return NavAdminModel::get($navid)->hideField();
