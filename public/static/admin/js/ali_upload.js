@@ -4,7 +4,7 @@ function uploadBase(file, barEle, showEle, dataName){
     var index1 = name.lastIndexOf('.');
     var index2 = name.length;
     var ext = name.substring(index1, index2);
-	$.get('/admin/media/imgsts', function(res){
+	$.post('/admin/media/imgsts', function(res){
 		if(res.errorcode == 0){
 			sts = res.data;
 		    var filename = sts.dir + ext;
@@ -45,7 +45,7 @@ function uploadPicOrder(file, conEle, dataEle, callback){
     var index1 = name.lastIndexOf('.');
     var index2 = name.length;
     var ext = name.substring(index1, index2);
-	$.get('/admin/media/imgsts', function(res){
+	$.post('/admin/media/imgsts', function(res){
 		if(res.errorcode == 0){
 			sts = res.data;
 		    var filename = sts.dir + ext;
@@ -86,7 +86,7 @@ function uploadFile(file, barEle, showEle, dataName){
     var index1 = name.lastIndexOf('.');
     var index2 = name.length;
     var ext = name.substring(index1, index2);
-	$.get('/admin/media/filests', function(res){
+	$.post('/admin/media/filests', function(res){
 		if(res.errorcode == 0){
 			sts = res.data;
 		    var filename = sts.dir + ext;

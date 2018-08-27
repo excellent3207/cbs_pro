@@ -21,7 +21,7 @@ class DraftModel extends Model{
         return $this->hidden(self::hiddenFields());
     }
     public static function hiddenFields(){
-        return ['delete_time','create_time','update_time'];
+        return ['delete_time','update_time'];
     }
 }
 ?>

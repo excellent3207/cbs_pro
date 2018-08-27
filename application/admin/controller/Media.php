@@ -39,7 +39,7 @@ class Media{
     public function refreshVodAuth(){
         $ret = ['errorcode' => 0, 'msg' => '成功'];
         try{
-            $vid = $this->request->get('vid');
+            $vid = $this->request->post('vid');
             $biz = new MediaBiz();
             $ret['data'] = $biz->vodRefreshVideo($vid);
         }catch(\Exception $e){
