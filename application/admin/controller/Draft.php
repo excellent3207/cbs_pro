@@ -17,7 +17,7 @@ class Draft{
         $this->request = $request;
     }
     /**
-     * 书籍列表
+     * 文稿列表
      * @return \think\response\View
      */
     public function list(){
@@ -28,6 +28,14 @@ class Draft{
         if(isset($params['id']) && $params['id']){
             array_push($cond, ['id', '=', $params['id']]);
         }
+        if(isset($params['is_show']) && $params['is_show'] != -1){
+            $c = $params['is_show'] ? '<>' : '=';
+            array_push($cond, ['show_time', $c, 0]);
+        }
+        if(isset($params['is_recommend']) && $params['is_recommend'] != -1){
+            $c = $params['is_recommend'] ? '<>' : '=';
+            array_push($cond, ['recommend_time', $c, 0]);
+        }
         $page = $this->request->get('page', 1);
         $pageSize = 10;
         $list = $biz->list($cond, $page, $pageSize);
@@ -35,7 +43,7 @@ class Draft{
         return view('', ['list' => $list, 'params' => $params, 'pagination' => $pagination]);
     }
     /**
-     * 编辑用户
+     * 编辑文稿
      * @return \think\response\Redirect|unknown
      */
     public function save(){
@@ -69,7 +77,7 @@ class Draft{
         return view('', ['data' => $draft, 'prePage' => getPageHistory('draftList')]);
     }
     /**
-     * 删除导航
+     * 删除
      * @return \think\response\Json
      */
     public function del(){

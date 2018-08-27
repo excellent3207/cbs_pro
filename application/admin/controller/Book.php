@@ -40,6 +40,14 @@ class Book{
         if(isset($params['plotter']) && $params['plotter']){
             array_push($cond, ['plotter', 'like', '%'.$params['plotter'].'%']);
         }
+        if(isset($params['is_show']) && $params['is_show'] != -1){
+            $c = $params['is_show'] ? '<>' : '=';
+            array_push($cond, ['show_time', $c, 0]);
+        }
+        if(isset($params['is_recommend']) && $params['is_recommend'] != -1){
+            $c = $params['is_recommend'] ? '<>' : '=';
+            array_push($cond, ['recommend_time', $c, 0]);
+        }
         $page = $this->request->get('page', 1);
         $pageSize = 10;
         $list = $biz->list($cond, $page, $pageSize);

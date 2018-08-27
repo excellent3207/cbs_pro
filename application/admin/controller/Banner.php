@@ -29,7 +29,8 @@ class Banner{
             array_push($cond, ['id', '=', $params['id']]);
         }
         if(isset($params['is_show']) && $params['is_show'] != -1){
-            array_push($cond, ['show_time', '<>', 0]);
+            $c = $params['is_show'] ? '<>' : '=';
+            array_push($cond, ['show_time', $c, 0]);
         }
         $page = $this->request->get('page', 1);
         $pageSize = 10;

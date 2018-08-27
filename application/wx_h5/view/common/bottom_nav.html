@@ -1,0 +1,78 @@
+<style>
+.bottom-nav{
+	height:4.8rem;
+	background:#fff;
+	border-top:0.5px solid #ddd;
+	position:fixed;
+	left:0;
+	bottom:0;
+	width:100%;
+}
+.bottom-nav ul{
+	display:flex;
+}
+.bottom-nav ul li{
+	width:50%;
+	padding-top:0.8rem;
+}
+.bottom-nav ul li img{
+	display:block;
+	margin:0 auto;
+	height:2.4rem;
+	width:2.4rem;
+}
+.bottom-nav ul li p{
+	text-align:center;
+	font-size:1rem;
+	color:#999;
+	line-height:1rem;
+	margin-top:0.5rem;
+}
+.bottom-nav ul li.cur p{
+	color:#642323;
+}
+.icon-wrap{
+	width:2.1rem;
+	height:2.1rem;
+	margin:0 auto;
+}
+.red-point{position:relative;}
+.red-point:after{
+	content:'';
+	position:absolute;
+	top:0;
+	right:0;
+	width:0.9rem;
+	height:0.9rem;
+	border-radius:50%;
+	background:#9A4A4C;
+}
+</style>
+<div class="bottom-nav">
+	<ul>
+		<li data-id="study"><img src="" alt="" /><p>学习</p></li>
+		<li data-id="my"><img src="" alt=""/><p>我的</p></li>
+	</ul>
+</div>
+<script>
+var curNav = '{$bottomNav??"study"}';
+if(curNav == 'my'){
+	$('.bottom-nav ul li[data-id="my"] img').attr('src', '/wx_h5/icons/nav_my_cur.png');
+	$('.bottom-nav ul li[data-id="study"] img').attr('src', '/wx_h5/icons/nav_study.png');
+}else{
+	$('.bottom-nav ul li[data-id="study"] img').attr('src', '/wx_h5/icons/nav_study_cur.png');
+	$('.bottom-nav ul li[data-id="my"] img').attr('src', '/wx_h5/icons/nav_my.png');
+}
+$('.bottom-nav ul li[data-id="'+curNav+'"]').addClass('cur');
+$('.bottom-nav ul li').on('click', function(){
+	var id = $(this).data('id');
+	switch(id){
+	case 'study':
+		location.href='/wx_h5/Course/list?token=' + token + '&' + new Date().getTime();
+		break;
+	case 'my':
+		location.href='/wx_h5/User/index?token=' + token;
+		break;
+	}
+});
+</script>

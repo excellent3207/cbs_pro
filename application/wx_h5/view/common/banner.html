@@ -1,0 +1,77 @@
+<link rel="stylesheet" href="/swiper/idangerous.swiper.css">
+<style>
+a,img{margin:0;padding:0;border:0;}
+a, a:visited {
+	color: #E54028;
+	text-decoration: none;
+}
+a:hover {
+	color: #c22d18;
+	text-decoration: none;  
+	cursor: pointer;
+}
+.swiper-container {
+  width: 100%;
+  color: #fff;
+  text-align: center;
+  background-color:#e2e2e2;
+  height:15rem;
+}
+.swiper-slide .title {
+  font-style: italic;
+  font-size: 42px;
+  margin-top: 80px;
+  margin-bottom: 0;
+  line-height: 45px;
+}
+.pagination {
+  position: absolute;
+  z-index: 20;
+  text-align:center;
+  width:100%;
+  bottom: 10px;
+}
+.swiper-pagination-switch {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 5px;
+  background: white;
+  opacity: 0.35;  
+  margin-right: 10px;
+  margin-left:10px;
+  border: 0;
+  cursor: pointer;
+}
+.swiper-visible-switch {
+  background: #white;
+  opacity: 1;  
+}
+.swiper-active-switch {
+  background: #white;
+  opacity: 1;
+}
+</style>
+<div class="swiper-container" id="swiper-container">
+  <div class="swiper-wrapper">
+    {foreach name="banners" item="item"}
+     <div class="swiper-slide red-slide">
+     	<a data-url="/wx_h5/User/vippage/?token={$token}"><img src="{$item.img}" style="width:100%;height:100%;"/></a>
+     </div>
+    {/foreach}
+  </div>
+  <!-- <div class="pagination"></div> -->
+</div>
+<script src="/swiper/idangerous.swiper.js"></script>
+<script>
+var mySwiper = new Swiper('.swiper-container',{
+  //pagination: '.pagination',
+  //paginationClickable: false,
+  slidesPerView: 1,
+  loop: false,
+  //autoplay: 3000
+})
+$('.swiper-slide a').on('click', function(){
+	location.href = $(this).data('url');
+})
+</script>
