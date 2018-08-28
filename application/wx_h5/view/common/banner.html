@@ -34,17 +34,7 @@
   <div class="swiper-wrapper">
     {foreach name="banners" item="item"}
      <div class="swiper-slide red-slide">
-     	<img src="{:formatUrl($item.img)}"/>
-     </div>
-    {/foreach}
-    {foreach name="banners" item="item"}
-     <div class="swiper-slide red-slide">
-     	<img src="{:formatUrl($item.img)}"/>
-     </div>
-    {/foreach}
-    {foreach name="banners" item="item"}
-     <div class="swiper-slide red-slide">
-     	<img src="{:formatUrl($item.img)}"/>
+     	<img src="{:formatUrl($item.img)}" class="banner-img" data-url="{$item.url}"/>
      </div>
     {/foreach}
   </div>
@@ -62,7 +52,7 @@ var swiper = new Swiper('.swiper-container', {
 	  clickable: true,
 	},
 });
-$('.swiper-slide a').on('click', function(){
+$('.banner-img').on('click', function(){
 	location.href = $(this).data('url');
 })
 </script>
