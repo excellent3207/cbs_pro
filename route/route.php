@@ -91,6 +91,12 @@ Route::rule('admin/useradmin/login', 'admin/UserAdmin/login');
 Route::rule('admin/useradmin/tncode', 'admin/UserAdmin/tncode');
 Route::rule('admin/useradmin/checktncode', 'admin/UserAdmin/checkTncode');
 
+Route::group('wx_h5', function(){
+    Route::group('index', function(){
+        Route::get('index', 'wx_h5/Index/index');
+    });
+});
+
 return [
 
 ];
