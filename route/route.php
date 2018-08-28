@@ -46,6 +46,7 @@ Route::group('admin', function(){
         Route::post('addnav', 'admin/UserAdmin/addNav');
         Route::post('editnav', 'admin/UserAdmin/editNav');
         Route::post('delnav', 'admin/UserAdmin/delNav');
+        Route::post('logout', 'admin/UserAdmin/logout');
     });
     Route::group('media', function(){
         Route::get('test', 'admin/Media/test');
