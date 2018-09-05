@@ -1,7 +1,6 @@
 {include file="common/top" title="首页" keywords="" wrapclass="wrap-index" /}
 <style>
 body{background:#f6f6f6;}
-.wrap-index{padding-top:1rem;}
 .wrap-index .book-nav{
 	display:flex;
 	justify-content:space-between;
@@ -54,7 +53,39 @@ body{background:#f6f6f6;}
 	margin-top:0.8rem;
 }
 .wrap-index .book-recommend .img-wrap img{width:9.3rem;height:12.6rem;}
+.wrap-index .draft-recommend{
+	padding:0 1.5rem 5rem;
+	position:relative;
+	top:-1.5rem;
+}
+.wrap-index .draft-recommend li{
+	padding:1.5rem 0;
+	border-bottom:0.5px solid #ddd;
+}
+.wrap-index .draft-recommend li img{
+	width:7rem;
+	height:7rem;
+	float:left;
+}
+.wrap-index .draft-recommend li .con{
+	float:right;
+	width:25.3rem;
+}
+.wrap-index .draft-recommend li .con h3{
+	margin:0.3rem 0 0.6rem;
+	font-weight:normal;
+	font-size:1.5rem;
+	color:#333;
+	line-height:2.5rem;
+}
+.wrap-index .draft-recommend li .con p{
+	color:#666;
+	font-size:1.3rem;
+	line-height:1.8rem;
+}
 </style>
+<div class="main-scroll-wrap">
+<div class="main-scroller">
 {include file="common/banner" /}
 <ul class="book-nav">
 	<li>
@@ -94,13 +125,37 @@ body{background:#f6f6f6;}
 	<h2>文章精选</h2>
 	<img src="/wx_h5/img/icons/more.png" alt="" />
 </div>
+<ul class="draft-recommend">
+	
+</ul>
+</div>
+</div>
+{include file="common/bottom_nav" cur="home" /}
 <script src="/wx_h5/js/iscroll.js"></script>
 <script src="/wx_h5/js/iscroll-probe.js"></script>
 <script>
+var dataLoading = false,
+	curPage = 0;
+getNexPageData();
 var recommendSwiper = new Swiper('.swiper-recommend', {
 	slidesPerView: 3,
 	spaceBetween: 0,
 	freeMode: true,
+});
+var mainScroll = new IScroll('.main-scroll-wrap', {
+    probeType: 3,
+    mouseWheel: false,
+    scrollbars: false,
+    preventDefault: true,
+    fadeScrollbars: true,
+    tap:true
+});
+mainScroll.on('scroll', function() {
+    var height = this.y,
+        bottomHeight = this.maxScrollY - height;
+	if(!dataLoading && bottomHeight > 10){
+		getNexPageData();
+	}
 });
 var cateScroll = new IScroll('.book-recommend', {
     probeType: 3,
@@ -112,5 +167,51 @@ var cateScroll = new IScroll('.book-recommend', {
     scrollX:true,
     scrollY:false,
 });
+function getNexPageData(){
+	if(!dataLoading){
+		dataLoading = true;
+		if(curPage == 0){
+			$('.draft-recommend').html('');
+		};
+		$.get('/wx_h5/draft/recommend', {page:curPage + 1}, function(res){
+			var lis = '';
+			if(res.errorcode == 0){
+				var data = res.data;
+				if(data.length<=0){
+					dataLoading = false;
+					return;
+				}
+				var lis = generateLis(data);
+				$('.draft-recommend').append(lis);
+				$('.draft-recommend li.page-' + (curPage + 1)).on('tap', function () {
+	                console.log('test');
+	            });
+				setTimeout(function(){
+					mainScroll.refresh();
+				});
+				curPage++;
+			}else{
+				
+			}
+			dataLoading = false;
+		}, 'json');
+	}
+}
+function generateLis(data){
+	var lis = '';
+	if(data.length <= 0) return lis;
+	for(var i = 0; i < data.length; i++){
+		var item = data[i];
+		var digest = item.digest.length > 40 ? item.digest.substr(0, 40) + '...' : item.digest;
+		lis +=  '<li class="clearFix" class="page-'+(curPage + 1)+'">' +
+			'<img src="'+item.img_list+'" class="img-list" alt="" />' +
+				'<div class="con">' +
+					'<h3>'+item.title+'</h3>' +
+					'<p>'+digest+'</p>' +
+				'</div>' +
+			'</li>';
+	}
+	return lis;
+}
 </script>
 {include file="common/bottom" /}

@@ -14,7 +14,7 @@ class DraftModel extends Model{
     protected $pk = 'id';
     protected $table = 'cbs_draft';
     protected $fields = array(
-        'id','title','author','img_list','digest','content','show_time','recommend_time'
+        'id','title','author','img_list','digest','content','show_time','recommend_time','count_view'
     );
     
     public function hideField(){

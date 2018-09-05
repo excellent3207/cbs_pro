@@ -104,6 +104,9 @@ Route::group('wx_h5', function(){
     Route::group('index', function(){
         Route::get('index', 'wx_h5/Index/index');
     });
+    Route::group('draft', function(){
+        Route::get('recommend', 'wx_h5/Draft/recommend');
+    });
 });
 
 return [
