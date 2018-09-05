@@ -40,5 +40,12 @@ class BookModel extends Model{
     public function setPublishtimeAttr($value){
         return strtotime($value);
     }
+    /**
+     * 图书所属分类关联
+     * @return \think\model\relation\BelongsToMany
+     */
+    public function cates(){
+        return $this->belongsToMany('BookCateModel', '\\app\\common\\model\\BookCateLink', 'cateid', 'bookid');
+    }
 }
 ?>

@@ -1,6 +1,8 @@
 <?php
 namespace app\http\middleware;
 
+use think\Db;
+
 class AdminAuth {
     public function handle($request, \Closure $next){
         /*Db::listen(function ($sql, $time, $explain, $master) {

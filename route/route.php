@@ -65,6 +65,15 @@ Route::group('admin', function(){
         Route::post('cancelshow', 'admin/Book/cancelShow');
         Route::post('dorecomm', 'admin/Book/doRecomm');
         Route::post('cancelrecomm', 'admin/Book/cancelRecomm');
+        Route::post('addcate', 'admin/Book/addCate');
+    });
+    Route::group('bookcate', function(){
+        Route::get('list', 'admin/BookCate/list')->middleware(AdminNav::class, 'bookcate-list');
+        Route::get('save', 'admin/BookCate/save')->middleware(AdminNav::class, 'bookcate-save');
+        Route::post('save', 'admin/BookCate/save')->middleware(AdminNav::class, 'bookcate-save');
+        Route::post('del', 'admin/BookCate/del');
+        Route::post('editorder', 'admin/BookCate/editOrder');
+        Route::get('listselect', 'admin/BookCate/listSelect');
     });
     Route::group('draft', function(){
         Route::get('list', 'admin/Draft/list')->middleware(AdminNav::class, 'draft-list');

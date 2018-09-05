@@ -66,6 +66,17 @@
 					</select>
 				</div>
 			</div>
+			<div class="col-sm-3">
+				<label class="col-sm-4 control-label">分类:</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="cateid">
+						<option value="0">----选择----</option>
+						{foreach name="cates" item="cate"}
+						<option value="{$cate.id}">{$cate.catename}</option>
+						{/foreach}
+					</select>
+				</div>
+			</div>
 			<script>
 				$('select[name="is_show"]').val({$params.is_show??-1});
 				$('select[name="is_recommend"]').val({$params.is_recommend??-1});
@@ -90,6 +101,7 @@
 					<th>书号</th>
 					<th>作者</th>
 					<th>策划人</th>
+					<th>分类</th>
 					<th>列表图</th>
 					<th>前端展示</th>
 					<th>是否推荐</th>
@@ -107,6 +119,13 @@
 					<td>{$item.book_no}</td>
 					<td>{$item.author}</td>
 					<td>{$item.plotter}</td>
+					{php}$cateids = [];$catenames = [];
+						foreach($item['cates'] as $cate){
+							array_push($cateids, $cate['id']);
+							array_push($catenames, $cate['catename']);
+						}
+					{/php}
+					<td class="cate cursor-pointer" data-ids="{:implode(',', $cateids)}">{:implode(',', $catenames)}</td>
 					<td><img style="width:50px;" src="{:app\\common\\AppTool::formatUrl($item.img_list)}" alt="" /></td>
 					<td class="is_show cursor-pointer">{$item.show_time?'是':'否'}</td>
 					<td class="is_recommend cursor-pointer">{$item.recommend_time?'是':'否'}</td>
@@ -226,6 +245,54 @@
 				}
 			});
 		}
+	});
+	$('#main-table .cate').dblclick(function(){
+		var cateids = $(this).data('ids')+'';
+		var catenames = $(this).html()+'';
+		var bookid = $(this).parent().data('id');
+		cateids = cateids.split(',');
+		catenames = catenames.split(',');
+		tableSelected = {};
+		for(var i = 0; i < cateids.length; i++){
+			var cateid = cateids[i];
+			var catename = catenames[i];
+			tableSelected[cateid] = {name:catename,id:cateid};
+		}
+		$.get('/admin/bookcate/listselect', function(res){
+			if(res.errorcode == 0){
+				var data = res.data;
+				modalTableCheckBox('选择分类', data, 
+						['编号','名称'], [['id', 0], ['catename', 0]], function(selected){
+					var ids = [];
+					for(var id in selected){
+						if(id)
+							ids.push(id);
+					}
+					$.post('/admin/book/addcate', {bookid:bookid,cateids:ids.join(',')}, function(res){
+						if(res.errorcode == 0){
+							location.reload();
+						}else{
+							syhError(res.msg);
+						}
+					});
+				}, res.page, function(page){
+					var name = $('#select-search-name').val();
+					$.get('/admin/bookcate/listselect', function(res){
+						var data = res.data;
+						updateSelectModalTable(data, res.page);
+					}, 'json');
+				}, '<div class="col-md-4"><div class="form-group"><label class="col-xs-4 control-label">名称</label>'+
+				'<div class="col-xs-8"><input id="select-search-name" type="text" class="form-control" /></div></div></div>', function(){
+					var name = $('#select-search-name').val();
+					$.get('/admin/bookcate/listselect',{name:name}, function(res){
+						var data = res.data;
+						updateSelectModalTable(data, res.page);
+					}, 'json');
+				});
+			}else{
+				syhError(res.msg);
+			}
+		}, 'json');
 	});
 </script>
 <script type="text/javascript" src="/admin/cleanzone/js/jquery.niftymodals/js/jquery.modalEffects.js"></script>  

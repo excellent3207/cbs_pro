@@ -10,6 +10,7 @@ use think\Request;
 use app\admin\biz\BookBiz;
 use app\common\validate\BookValidate;
 use app\common\Pagination;
+use app\admin\biz\BookCateBiz;
 
 class Book{
     protected $request;
@@ -25,6 +26,7 @@ class Book{
         $params = $this->request->get();
         $biz = new BookBiz();
         $cond = [];
+        $cateid = 0;
         if(isset($params['id']) && $params['id']){
             array_push($cond, ['id', '=', $params['id']]);
         }
@@ -48,11 +50,16 @@ class Book{
             $c = $params['is_recommend'] ? '<>' : '=';
             array_push($cond, ['recommend_time', $c, 0]);
         }
+        if(isset($params['cateid']) && $params['cateid']){
+            $cateid = intval($params['cateid']);
+        }
         $page = $this->request->get('page', 1);
         $pageSize = 10;
-        $list = $biz->list($cond, $page, $pageSize);
-        $pagination = new Pagination($page, $pageSize, $biz->listCount($cond));
-        return view('', ['list' => $list, 'params' => $params, 'pagination' => $pagination]);
+        $list = $biz->list($cond, $cateid, $page, $pageSize);
+        $pagination = new Pagination($page, $pageSize, $biz->listCount($cond, $cateid));
+        $cateBiz = new BookCateBiz();
+        $cates = $cateBiz->all();
+        return view('', ['list' => $list, 'params' => $params, 'pagination' => $pagination, 'cates' => $cates]);
     }
     /**
      * 编辑用户
@@ -162,6 +169,23 @@ class Book{
         $biz = new BookBiz();
         try{
             $ret['data'] = $biz->cancelRecomm($id);
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
+    }
+    /**
+     * 图书添加分类
+     * @return \think\response\Json
+     */
+    public function addCate(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        $bookid = $this->request->post('bookid');
+        $cateids = $this->request->post('cateids');
+        $biz = new BookBiz();
+        try{
+            $ret['data'] = $biz->addCate($bookid, $cateids);
         }catch(\Exception $e){
             $ret['errorcode'] = 1;
             $ret['msg'] = $e->getMessage();

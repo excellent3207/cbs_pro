@@ -1,36 +1,35 @@
 <?php
 /**
- * banner
+ * 图书分类
  * Author xjp
  * CreateTime 2018/08/24
  */
 namespace app\admin\controller;
 
 use think\Request;
-use app\admin\biz\BannerBiz;
+use app\admin\biz\BookCateBiz;
 use app\common\Pagination;
-use app\common\validate\BannerValidate;
+use app\common\validate\BookCateValidate;
 
-class Banner{
+class BookCate{
     protected $request;
     public function __construct(Request $request){
         $this->request = $request;
     }
     /**
-     * 书籍列表
+     * 图书分类列表
      * @return \think\response\View
      */
     public function list(){
-        setPageHistory(['bannerList' => \think\facade\Request::url()], true);
+        setPageHistory(['bookCateList' => \think\facade\Request::url()], true);
         $params = $this->request->get();
-        $biz = new BannerBiz();
+        $biz = new BookCateBiz();
         $cond = [];
         if(isset($params['id']) && $params['id']){
             array_push($cond, ['id', '=', $params['id']]);
         }
-        if(isset($params['is_show']) && $params['is_show'] != -1){
-            $c = $params['is_show'] ? '<>' : '=';
-            array_push($cond, ['show_time', $c, 0]);
+        if(isset($params['catename']) && $params['catename']){
+            array_push($cond, ['catename', 'like', '%'.$params['catename'].'%']);
         }
         $page = $this->request->get('page', 1);
         $pageSize = 10;
@@ -39,18 +38,38 @@ class Banner{
         return view('', ['list' => $list, 'params' => $params, 'pagination' => $pagination]);
     }
     /**
-     * 编辑用户
+     * 图书分类选择列表列表
+     * @return \think\response\View
+     */
+    public function listSelect(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        $cond = [];
+        $name = input('get.name');
+        if($name){
+            $cond['catename'] = ['like', '%'.$name.'%'];
+        }
+        $biz = new BookCateBiz();
+        $cond = [];
+        $page = $this->request->get('page', 1);
+        $pageSize = 10;
+        $ret['data'] = $biz->list($cond, $page, $pageSize);
+        $pagination = new Pagination($page, $pageSize, $biz->listCount($cond));
+        $ret['page'] = $pagination->render2();
+        return json($ret);
+    }
+    /**
+     * 编辑图书分类
      * @return \think\response\Redirect|unknown
      */
     public function save(){
         $data = $this->request->post();
         if(!empty($data)){
-            $validate = new BannerValidate();
+            $validate = new BookCateValidate();
             $error = '';
             if(!$validate->check($data, [], 'save')){
                 $error = $validate->getError();
             }else{
-                $biz = new BannerBiz();
+                $biz = new BookCateBiz();
                 try{
                     $biz->save($data);
                 }catch(\Exception $e){
@@ -59,61 +78,29 @@ class Banner{
             }
             if($error){
                 $data['error'] = $error;
-                return redirect('banner/save')->with('banner_save_data', $data);
+                return redirect('bookcate/save')->with('bookcate_save_data', $data);
             }else{
-                return redirect(getPageHistory('bannerList'));
+                return redirect(getPageHistory('bookCateList'));
             }
         }
-        $biz = new BannerBiz();
+        $biz = new BookCateBiz();
         $id = $this->request->get('id');
-        $banner = session('banner_save_data');
-        if(empty($banner) && $id){
-            $banner = $biz->get($id);
+        $book = session('bookcate_save_data');
+        if(empty($book) && $id){
+            $book = $biz->get($id);
         }
-        return view('', ['data' => $banner, 'prePage' => getPageHistory('bannerList')]);
+        return view('', ['data' => $book, 'prePage' => getPageHistory('bookCateList')]);
     }
     /**
-     * 删除导航
+     * 删除图书分类
      * @return \think\response\Json
      */
     public function del(){
         $ret = ['errorcode' => 0, 'msg' => '成功'];
         $ids = $this->request->post('ids');
-        $biz = new BannerBiz();
+        $biz = new BookCateBiz();
         try{
             $ret['data'] = $biz->del($ids);
-        }catch(\Exception $e){
-            $ret['errorcode'] = 1;
-            $ret['msg'] = $e->getMessage();
-        }
-        return json($ret);
-    }
-    /**
-     * 前端展示banner
-     * @return \think\response\Json
-     */
-    public function doShow(){
-        $ret = ['errorcode' => 0, 'msg' => '成功'];
-        $id = $this->request->post('id');
-        $biz = new BannerBiz();
-        try{
-            $ret['data'] = $biz->doShow($id);
-        }catch(\Exception $e){
-            $ret['errorcode'] = 1;
-            $ret['msg'] = $e->getMessage();
-        }
-        return json($ret);
-    }
-    /**
-     * 取消前端展示banner
-     * @return \think\response\Json
-     */
-    public function cancelShow(){
-        $ret = ['errorcode' => 0, 'msg' => '成功'];
-        $id = $this->request->post('id');
-        $biz = new BannerBiz();
-        try{
-            $ret['data'] = $biz->cancelShow($id);
         }catch(\Exception $e){
             $ret['errorcode'] = 1;
             $ret['msg'] = $e->getMessage();
@@ -128,7 +115,7 @@ class Banner{
         $ret = ['errorcode' => 0, 'msg' => '成功'];
         $id = $this->request->post('id');
         $orderid = $this->request->post('orderid');
-        $biz = new BannerBiz();
+        $biz = new BookCateBiz();
         try{
             $ret['data'] = $biz->editOrder($id, $orderid);
         }catch(\Exception $e){

@@ -1,11 +1,15 @@
 <?php
 /**
- * 后台页面导航业务层
+ * 图书业务层
  */
 namespace app\admin\biz;
 
 use app\common\exception\AppException;
 use app\common\model\BookModel;
+use app\common\model\BookCateModel;
+use think\model\relation\BelongsToMany;
+use think\Db;
+use think\Exception;
 
 class BookBiz{
     public function getRole(){
@@ -30,8 +34,14 @@ class BookBiz{
      * @param int $pageSize
      * @return unknown
      */
-    public function list($cond, int $page, int $pageSize){
-        $books = BookModel::where($cond)->hidden(BookModel::hiddenFields())->page($page, $pageSize)->select();
+    public function list($cond, $cateid, int $page, int $pageSize){
+        if($cateid){
+            $cate = BookCateModel::get($cateid);
+            $books = $cate->books()->select();
+        }else{
+            $books = BookModel::where($cond)->hidden(BookModel::hiddenFields())->page($page, $pageSize)->select();
+        }
+        $books->load('cates');
         return $books;
     }
     /**
@@ -39,7 +49,10 @@ class BookBiz{
      * @param unknown $cond
      * @return unknown
      */
-    public function listCount($cond){
+    public function listCount($cond, $cateid){
+        if($cateid){
+            
+        }
         return BookModel::where($cond)->count('id');
     }
     /**
@@ -105,6 +118,35 @@ class BookBiz{
     public function cancelRecomm($id){
         $model = new BookModel();
         return $model->save(['recommend_time' => 0], ['id' => $id]);
+    }
+    /**
+     * 图书添加分类
+     * @param unknown $bookid
+     * @param unknown $cateids
+     */
+    public function addCate($bookid, $cateids){
+        if(!is_array($cateids)){
+            $cateids = explode(',', $cateids);
+        }
+        $cateids = array_filter($cateids);
+        $book = BookModel::get($bookid);
+        $oldCateids = $book->cates()->column('cbs_book_cate.id');
+        $addCateids = array_diff($cateids, $oldCateids);
+        $delCateids = array_diff($oldCateids, $cateids);
+        Db::startTrans();
+        try{
+            if(!empty($addCateids)){
+                $book->cates()->attach($addCateids);
+            }
+            if(!empty($delCateids)){
+                $book->cates()->detach($delCateids);
+            }
+            Db::commit();
+        }catch(Exception $e){
+            Db::rollback();
+            throw $e;
+        }
+        return true;
     }
 }
 

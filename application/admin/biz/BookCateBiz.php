@@ -1,43 +1,50 @@
 <?php
 /**
- * 后台banner业务层
+ * 图书分类业务层
  */
 namespace app\admin\biz;
 
 use app\common\exception\AppException;
-use app\common\model\BannerModel;
+use app\common\model\BookCateModel;
 
-class BannerBiz{
+class BookCateBiz{
     public function getRole(){
         
     }
     /**
-     * 获取banner详情
+     * 获取书籍详情
      * @param unknown $id
-     * @return \app\common\model\BannerModel
+     * @return \app\common\model\BookCateModel
      */
     public function get($id){
-        $res = BannerModel::get($id)->hideField();
+        $res = BookCateModel::get($id)->hideField()->toArray();
         return $res;
     }
     /**
-     * banner列表
+     * 所有分类
+     */
+    public function all(){
+        $books = BookCateModel::where([])->hidden(BookCateModel::hiddenFields())->order('orderid')->select();
+        return $books;
+    }
+    /**
+     * 图书分类列表
      * @param unknown $cond
      * @param int $page
      * @param int $pageSize
      * @return unknown
      */
     public function list($cond, int $page, int $pageSize){
-        $drafts = BannerModel::where($cond)->hidden(BannerModel::hiddenFields())->page($page, $pageSize)->select();
-        return $drafts;
+        $books = BookCateModel::where($cond)->hidden(BookCateModel::hiddenFields())->order('orderid')->page($page, $pageSize)->select();
+        return $books;
     }
     /**
-     * banner列表数量
+     * 图书分类列表数量
      * @param unknown $cond
      * @return unknown
      */
     public function listCount($cond){
-        return BannerModel::where($cond)->count('id');
+        return BookCateModel::where($cond)->count('id');
     }
     /**
      * 编辑
@@ -46,14 +53,14 @@ class BannerBiz{
      * @return boolean
      */
     public function save($data){
-        $model = new BannerModel();
+        $model = new BookCateModel();
         if(isset($data['id']) && $data['id']){
             $res = $model->allowField(TRUE)->save($data, ['id' => $data['id']]);
-            if(!$res) throw new AppException('编辑banner失败');
+            if(!$res) throw new AppException('编辑图书分类失败');
             return $res;
         }else{
             $res = $model->allowField(TRUE)->save($data);
-            if(!$res) throw new AppException('创建banner失败');
+            if(!$res) throw new AppException('创建图书分类失败');
             return $model->id;
         }
     }
@@ -63,35 +70,17 @@ class BannerBiz{
      * @return unknown
      */
     public function del($ids){
-        return BannerModel::destroy(function($query) use ($ids){
+        return BookCateModel::destroy(function($query) use ($ids){
             $query->where('id','in', $ids);
         });
     }
     /**
-     * 前端展示banner
-     * @param unknown $id
-     * @return unknown
-     */
-    public function doShow($id){
-        $model = new BannerModel();
-        return $model->save(['show_time' => $_SERVER['REQUEST_TIME']], ['id' => $id]);
-    }
-    /**
-     * 取消前端展示banner
-     * @param unknown $id
-     * @return unknown
-     */
-    public function cancelShow($id){
-        $model = new BannerModel();
-        return $model->save(['show_time' => 0], ['id' => $id]);
-    }
-    /**
-     * banner排序
+     * 分类排序
      * @param unknown $id
      * @return unknown
      */
     public function editOrder($id, $orderid){
-        $model = new BannerModel();
+        $model = new BookCateModel();
         return $model->save(['orderid' => $orderid], ['id' => $id]);
     }
 }
