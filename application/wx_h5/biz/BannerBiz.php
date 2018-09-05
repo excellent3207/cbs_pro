@@ -1,6 +1,6 @@
 <?php
 /**
- * banner业务层
+ * banner务层
  */
 namespace app\wx_h5\biz;
 
@@ -18,4 +18,3 @@ class BannerBiz{
         return BannerModel::where([])->hidden(BannerModel::hiddenFields())->select();
     }
 }
-

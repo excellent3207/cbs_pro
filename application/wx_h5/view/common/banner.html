@@ -1,56 +1,38 @@
 <link rel="stylesheet" href="/wx_h5/swiper/css/swiper.min.css">
 <style>
-.swiper-container {
+.swiper-banner {
   width: 100%;
-  height: 15rem;
+  height: 12.5rem;
 }
-.swiper-slide {
-  text-align: center;
-  font-size: 18px;
-  background: #fff;
-  width: 93%;
-
-  /* Center slide text vertically */
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
+.swiper-banner .swiper-slide {
+  width: 35.5rem;
   display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
   justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
   align-items: center;
 }
-.swiper-slide img{
+.swiper-banner .swiper-slide img{
 	border-radius:1rem;
 	width:100%;
 	height:100%;
 }
 </style>
-<div class="swiper-container">
-  <div class="swiper-wrapper">
+<div class="swiper-container swiper-banner">
+  <ul class="swiper-wrapper">
     {foreach name="banners" item="item"}
-     <div class="swiper-slide red-slide">
+     <li class="swiper-slide">
      	<img src="{:formatUrl($item.img)}" class="banner-img" data-url="{$item.url}"/>
-     </div>
+     </li>
     {/foreach}
-  </div>
-  <div class="swiper-pagination"></div>
+  </ul>
+  <!-- <div class="swiper-pagination"></div> -->
 </div>
 <script src="/wx_h5/swiper/js/swiper.min.js"></script>
 <script>
-var swiper = new Swiper('.swiper-container', {
+var swiperBanner = new Swiper('.swiper-banner', {
 	slidesPerView: 'auto',
-	spaceBetween: remToPx(0.5),
+	spaceBetween: remToPx(0.6),
 	centeredSlides: true,
 	loop: true,
-	pagination: {
-	  el: '.swiper-pagination',
-	  clickable: true,
-	},
 });
 $('.banner-img').on('click', function(){
 	location.href = $(this).data('url');

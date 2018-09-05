@@ -1,3 +1,116 @@
 {include file="common/top" title="首页" keywords="" wrapclass="wrap-index" /}
+<style>
+body{background:#f6f6f6;}
+.wrap-index{padding-top:1rem;}
+.wrap-index .book-nav{
+	display:flex;
+	justify-content:space-between;
+	padding:1.8rem 1.6rem 0;
+}
+.wrap-index .book-nav li{
+	text-align:center;
+	color:#333;
+	line-height:1.3rem;
+	font-size:1.3rem;
+}
+.wrap-index .book-nav li img{
+	display:block;
+	width:2.3rem;
+	margin:0 auto;
+	margin-bottom:0.5rem;
+}
+.wrap-index .con-title{
+	padding:1.6rem 1.5rem 1.3rem;
+	display:flex;
+	justify-content:space-between;
+	align-items:center;
+}
+.wrap-index .con-title h2{
+	font-weight:normal;
+	font-size:1.5rem;
+	color:#63B075;
+	line-height:1.8rem;
+}
+.wrap-index .con-title img{width:1.8rem;height:1.8rem;}
+.wrap-index .book-recommend{
+    position:relative;
+    height: 16.2rem;
+    overflow:hidden;
+}
+.wrap-index .book-recommend .scroller{
+    position: absolute;
+    min-width:110%;
+    display:flex;
+    flex-wrap:nowrap;
+}
+.wrap-index .book-recommend li{
+	margin:0 0.5rem 0 1.5rem;
+}
+.wrap-index .book-recommend li p{
+	line-height:1.6rem;
+	font-size:1.2rem;
+	color:#333;
+	height:3rem;
+	margin-top:0.8rem;
+}
+.wrap-index .book-recommend .img-wrap img{width:9.3rem;height:12.6rem;}
+</style>
 {include file="common/banner" /}
+<ul class="book-nav">
+	<li>
+		<img src="/wx_h5/img/icons/gaozhi.png" alt="" />
+		<span>高职高专</span>
+	</li>
+	<li>
+		<img src="/wx_h5/img/icons/benke.png" alt="" />
+		<span>本科精品</span>
+	</li>
+	<li>
+		<img src="/wx_h5/img/icons/all_book.png" alt="" />
+		<span>全部书目</span>
+	</li>
+	<li>
+		<img src="/wx_h5/img/icons/search.png" alt="" />
+		<span>搜索</span>
+	</li>
+</ul>
+<div class="con-title">
+	<h2>书籍推荐</h2>
+	<img src="/wx_h5/img/icons/more.png" alt="" />
+</div>
+<div class="book-recommend">
+  <ul class="scroller">
+  	{foreach name="books" item="book"}
+    <li>
+    	<div class="img-wrap">
+    		<img src="{:formatUrl($book.img_list)}" alt="" />
+    	</div>
+    	<p>{$book.name}</p>
+    </li>
+    {/foreach}
+  </ul>
+</div>
+<div class="con-title">
+	<h2>文章精选</h2>
+	<img src="/wx_h5/img/icons/more.png" alt="" />
+</div>
+<script src="/wx_h5/js/iscroll.js"></script>
+<script src="/wx_h5/js/iscroll-probe.js"></script>
+<script>
+var recommendSwiper = new Swiper('.swiper-recommend', {
+	slidesPerView: 3,
+	spaceBetween: 0,
+	freeMode: true,
+});
+var cateScroll = new IScroll('.book-recommend', {
+    probeType: 3,
+    mouseWheel: true,
+    scrollbars: false,
+    preventDefault: true,
+    fadeScrollbars: true,
+    tap:false,
+    scrollX:true,
+    scrollY:false,
+});
+</script>
 {include file="common/bottom" /}
