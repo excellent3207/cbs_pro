@@ -1,21 +1,20 @@
 <?php
 /**
- * 图书分类关联表模型
+ * 用户模型
  * Author xjp
  * CreateTime 2018/08/24
  */
 namespace app\common\model;
+use think\Model;
 use think\model\concern\SoftDelete;
-use think\model\Pivot;
-class BookCateLink extends Pivot{
+class UserModel extends Model{
     use SoftDelete;
     protected $deleteTime = 'delete_time';
     protected $defaultSoftDelete = 0;
-    protected $autoWriteTimestamp = true;
     protected $pk = 'id';
-    protected $table = 'cbs_book_cate_link';
+    protected $table = 'cbs_user';
     protected $fields = array(
-        'id','bookid','cateid'
+        'id','wx_openid','alias','face','sex','birth','school','professional'
     );
     
     public function hideField(){
@@ -23,6 +22,13 @@ class BookCateLink extends Pivot{
     }
     public static function hiddenFields(){
         return ['delete_time','create_time','update_time'];
+    }
+    /**
+     * 图书所属分类关联
+     * @return \think\model\relation\BelongsToMany
+     */
+    public function books(){
+        return $this->belongsToMany('BookModel', '\\app\\common\\model\\BookShelf', 'bookid', 'userid');
     }
 }
 ?>
