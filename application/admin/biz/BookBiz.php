@@ -7,7 +7,6 @@ namespace app\admin\biz;
 use app\common\exception\AppException;
 use app\common\model\BookModel;
 use app\common\model\BookCateModel;
-use think\model\relation\BelongsToMany;
 use think\Db;
 use think\Exception;
 
@@ -129,7 +128,8 @@ class BookBiz{
             $cateids = explode(',', $cateids);
         }
         $cateids = array_filter($cateids);
-        $book = BookModel::get($bookid);
+        $book = new BookModel();
+        $book->id = $bookid;
         $oldCateids = $book->cates()->column('cbs_book_cate.id');
         $addCateids = array_diff($cateids, $oldCateids);
         $delCateids = array_diff($oldCateids, $cateids);
