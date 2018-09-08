@@ -27,8 +27,7 @@ class DraftBiz{
      * @return unknown
      */
     public function list($cond, int $page, int $pageSize){
-        array_push($cond, ['show_time', '<>', 0]);
-        $drafts = DraftModel::where($cond)->hidden(DraftModel::hiddenFields())->page($page, $pageSize)->select();
+        $drafts = DraftModel::where([])->hidden(DraftModel::hiddenFields())->showQuery()->page($page, $pageSize)->select();
         return $drafts;
     }
     /**
@@ -39,7 +38,7 @@ class DraftBiz{
      * @return unknown
      */
     public function recommend(int $page, int $pageSize){
-        $drafts = DraftModel::where([['recommend_time', '<>', 0],['show_time', '<>', 0]])->hidden(DraftModel::hiddenFields())->page($page, $pageSize)->select();
+        $drafts = DraftModel::where([])->hidden(DraftModel::hiddenFields())->showQuery()->recommendQuery()->page($page, $pageSize)->select();
         foreach($drafts as &$draft){
             $draft['img_list'] = formatUrl($draft['img_list']);
         }

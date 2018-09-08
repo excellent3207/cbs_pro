@@ -51,7 +51,10 @@ class Book{
             array_push($cond, ['recommend_time', $c, 0]);
         }
         if(isset($params['cateid']) && $params['cateid']){
-            $cateid = intval($params['cateid']);
+            array_push($cond, ['cateid', '=', $params['cateid']]);
+        }
+        if(isset($params['type']) && $params['type']){
+            array_push($cond, ['type', '=', $params['type']]);
         }
         $page = $this->request->get('page', 1);
         $pageSize = 10;
@@ -182,10 +185,10 @@ class Book{
     public function addCate(){
         $ret = ['errorcode' => 0, 'msg' => '成功'];
         $bookid = $this->request->post('bookid');
-        $cateids = $this->request->post('cateids');
+        $cateid = $this->request->post('cateid');
         $biz = new BookBiz();
         try{
-            $ret['data'] = $biz->addCate($bookid, $cateids);
+            $ret['data'] = $biz->addCate($bookid, $cateid);
         }catch(\Exception $e){
             $ret['errorcode'] = 1;
             $ret['msg'] = $e->getMessage();

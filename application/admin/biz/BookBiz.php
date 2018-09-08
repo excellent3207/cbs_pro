@@ -34,13 +34,8 @@ class BookBiz{
      * @return unknown
      */
     public function list($cond, $cateid, int $page, int $pageSize){
-        if($cateid){
-            $cate = BookCateModel::get($cateid);
-            $books = $cate->books()->select();
-        }else{
-            $books = BookModel::where($cond)->hidden(BookModel::hiddenFields())->page($page, $pageSize)->select();
-        }
-        $books->load('cates');
+        $books = BookModel::where($cond)->hidden(BookModel::hiddenFields())->page($page, $pageSize)->select();
+        $books->load('cate');
         return $books;
     }
     /**
@@ -49,9 +44,6 @@ class BookBiz{
      * @return unknown
      */
     public function listCount($cond, $cateid){
-        if($cateid){
-            
-        }
         return BookModel::where($cond)->count('id');
     }
     /**
@@ -123,29 +115,9 @@ class BookBiz{
      * @param unknown $bookid
      * @param unknown $cateids
      */
-    public function addCate($bookid, $cateids){
-        if(!is_array($cateids)){
-            $cateids = explode(',', $cateids);
-        }
-        $cateids = array_filter($cateids);
-        $book = new BookModel();
-        $book->id = $bookid;
-        $oldCateids = $book->cates()->column('cbs_book_cate.id');
-        $addCateids = array_diff($cateids, $oldCateids);
-        $delCateids = array_diff($oldCateids, $cateids);
-        Db::startTrans();
-        try{
-            if(!empty($addCateids)){
-                $book->cates()->attach($addCateids);
-            }
-            if(!empty($delCateids)){
-                $book->cates()->detach($delCateids);
-            }
-            Db::commit();
-        }catch(Exception $e){
-            Db::rollback();
-            throw $e;
-        }
+    public function addCate($bookid, $cateid){
+        $cateid = $cateid?$cateid:0;
+        $this->save(['id' => $bookid, 'cateid' => $cateid]);
         return true;
     }
 }

@@ -14,7 +14,7 @@ class BookModel extends Model{
     protected $pk = 'id';
     protected $table = 'cbs_book';
     protected $fields = array(
-        'id','name','book_no','author','img_list','img_info','price','has_ppt','plotter','ppt_img','ppt_source','demo_chapter','standard',
+        'id','name','cateid','type','book_no','author','img_list','img_info','price','plotter','ppt_img','ppt_source','demo_chapter','standard',
         'paper_img','paper_source','publishtime','show_time','recommend_time','description','count_view'
     );
     
@@ -44,8 +44,34 @@ class BookModel extends Model{
      * 图书所属分类关联
      * @return \think\model\relation\BelongsToMany
      */
-    public function cates(){
-        return $this->belongsToMany('BookCateModel', '\\app\\common\\model\\BookCateLink', 'cateid', 'bookid');
+    public function cate(){
+        return $this->belongsTo('BookCateModel', 'cateid', 'id');
+    }
+    /**
+     * 前端展示查询条件
+     * @return \app\common\model\BookModel
+     */
+    public function showQuery(){
+        $this->where('show_time', '<>', 0);
+        return $this;
+    }
+    /**
+     * 推荐查询条件
+     * @return \app\common\model\BookModel
+     */
+    public function recommendQuery(){
+        $this->where('recommend_time', '<>', 0);
+        return $this;
+    }
+    /**
+     * 教材类型文本
+     * @param unknown $value
+     * @param unknown $data
+     * @return string
+     */
+    public function getTypeTextAttr($value,$data){
+        $status = [1=>'本科精品',2=>'高职高专',0=>''];
+        return $status[$data['type']];
     }
 }
 ?>

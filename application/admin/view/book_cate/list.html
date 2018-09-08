@@ -25,6 +25,19 @@
 				</div>
 			</div>
 			<div class="col-sm-3">
+				<label class="col-sm-4 control-label">教材类型:</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="type">
+						<option value="0">----选择----</option>
+						<option value="1">本科精品</option>
+						<option value="2">高职高专</option>
+					</select>
+				</div>
+			</div>
+			<script>
+				$('select[name="type"]').val({$params.type??0});
+			</script>
+			<div class="col-sm-3">
 				<button class="btn btn-info" type="submit">搜索</button>
 			</div>
 		</div>
@@ -41,6 +54,7 @@
 					<th><input type="checkbox" data-id="0" class="check-all" /></th>
 					<th>编号</th>
 					<th>分类名称</th>
+					<th>教材类型</th>
 					<th>排序</th>
 					<th>创建时间</th>
 					<th width="120">操作</th>
@@ -52,6 +66,7 @@
 					<td><input type="checkbox" data-id="{$item.id}" class="check" /></td>
 					<td>{$item.id}</td>
 					<td>{$item.catename}</td>
+					<td>{$item.type_text}</td>
 					<td class="order cursor-pointer">{$item.orderid}</td>
 					<td>{notempty name="item.create_time"}{$item.create_time|date="Y-m-d H:i:s"}{/notempty}</td>
 					<td class="center">

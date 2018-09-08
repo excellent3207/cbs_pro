@@ -13,7 +13,7 @@ class BookShelf extends Pivot{
     protected $defaultSoftDelete = 0;
     protected $autoWriteTimestamp = true;
     protected $pk = 'id';
-    protected $table = 'cbs_book_shelf';
+    protected $table = 'cbs_user_book_shelf';
     protected $fields = array(
         'id','userid','bookid'
     );

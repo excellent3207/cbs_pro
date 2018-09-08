@@ -31,6 +31,9 @@ class BookCate{
         if(isset($params['catename']) && $params['catename']){
             array_push($cond, ['catename', 'like', '%'.$params['catename'].'%']);
         }
+        if(isset($params['type']) && $params['type']){
+            array_push($cond, ['type', 'in', [$params['type'],3]]);
+        }
         $page = $this->request->get('page', 1);
         $pageSize = 10;
         $list = $biz->list($cond, $page, $pageSize);
@@ -46,10 +49,9 @@ class BookCate{
         $cond = [];
         $name = input('get.name');
         if($name){
-            $cond['catename'] = ['like', '%'.$name.'%'];
+            array_push($cond, ['catename', 'like', '%'.$name.'%']);
         }
         $biz = new BookCateBiz();
-        $cond = [];
         $page = $this->request->get('page', 1);
         $pageSize = 10;
         $ret['data'] = $biz->list($cond, $page, $pageSize);

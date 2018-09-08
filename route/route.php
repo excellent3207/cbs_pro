@@ -2,6 +2,7 @@
 
 use app\http\middleware\AdminAuth;
 use app\http\middleware\AdminNav;
+use app\http\middleware\Wxh5Auth;
 
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
@@ -107,7 +108,10 @@ Route::group('wx_h5', function(){
     Route::group('draft', function(){
         Route::get('recommend', 'wx_h5/Draft/recommend');
     });
-});
+    Route::group('user', function(){
+        Route::get('mybooks', 'wx_h5/User/myBooks');
+    });
+})->middleware(Wxh5Auth::class);
 
 return [
 

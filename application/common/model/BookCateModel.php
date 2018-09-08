@@ -14,7 +14,7 @@ class BookCateModel extends Model{
     protected $pk = 'id';
     protected $table = 'cbs_book_cate';
     protected $fields = array(
-        'id','catename','orderid'
+        'id','catename','type','orderid'
     );
     
     public function hideField(){
@@ -28,7 +28,17 @@ class BookCateModel extends Model{
      * @return \think\model\relation\BelongsToMany
      */
     public function books(){
-        return $this->belongsToMany('BookModel', '\\app\\common\\model\\BookCateLink', 'cateid', 'bookid');
+        return $this->hasMany('BookModel', 'cateid', 'id');
+    }
+    /**
+     * 教材类型文本
+     * @param unknown $value
+     * @param unknown $data
+     * @return string
+     */
+    public function getTypeTextAttr($value,$data){
+        $status = [0=>'',1=>'本科精品',2=>'高职高专',3=>'本科精品+高职高专'];
+        return $status[$data['type']];
     }
 }
 ?>

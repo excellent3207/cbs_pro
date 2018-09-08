@@ -23,5 +23,13 @@ class DraftModel extends Model{
     public static function hiddenFields(){
         return ['delete_time','update_time'];
     }
+    /**
+     * 推荐查询条件
+     * @return \app\common\model\BookModel
+     */
+    public function recommendQuery(){
+        $this->where('recommend_time', '<>', 0);
+        return $this;
+    }
 }
 ?>
