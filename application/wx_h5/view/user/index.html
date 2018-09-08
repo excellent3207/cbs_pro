@@ -1,0 +1,107 @@
+{include file="common/top" title="我的" keywords="" wrapclass="wrap-my" /}
+<style>
+body{background:#f6f6f6;}
+.wrap-my .user{
+	height:7.5rem;
+	background:#fff;
+	display:flex;
+	display:-webkit-flex;
+	align-items:center;
+	-webkit-align-items:center;
+	padding:0 1.6rem 0 1.9rem;
+	justify-content:space-between;
+	-webkit-justify-content:space-between;
+}
+.wrap-my .user .more{width:2.4rem;height:2.4rem;}
+.wrap-my .user .info{
+	display:flex;
+	display:-webkit-flex;
+}
+.wrap-my .user .info img{
+	width:5rem;
+	height:5rem;
+	border-radius:50%;
+}
+.wrap-my .user .info span{
+	font-size:1.5rem;
+	color:#333;
+	line-height:5rem;
+	padding-left:1.6rem;
+}
+.wrap-my .list{
+	background:#fff;
+	border-top:0.5px solid #E6E6E6;
+}
+.wrap-my .list li{
+	height:4.5rem;
+	border-bottom:0.5px solid #E6E6E6;
+	padding-left:1.5rem;
+	display:flex;
+	align-items:center;
+}
+.wrap-my .list li .img{width:2.4rem;height:2.4rem;}
+.wrap-my .list li span{
+	font-size:1.5rem;
+	color:#333;
+	line-height:2.4rem;
+	padding-left:1.3rem;
+}
+</style>
+<div class="user">
+	<div class="info">
+		<img src="{$user.face}" alt="" />
+		<span>{$user.alias}</span>
+	</div>
+	<img src="/wx_h5/img/icons/more_info.png" alt="" class="more" />
+</div>
+<ul class="list" style="margin-top:1rem;">
+	<li data-tag="draft_collect">
+		<img src="/wx_h5/img/icons/draft_collect.png" alt="" class="img" />
+		<span>文稿收藏</span>
+	</li>
+	<li data-tag="addr">
+		<img src="/wx_h5/img/icons/addr.png" alt="" class="img" />
+		<span>地址管理</span>
+	</li>
+</ul>
+<ul class="list" style="margin-top:1rem;">
+	<li data-tag="contact">
+		<img src="/wx_h5/img/icons/contact.png" alt="" class="img" />
+		<span>联系我们</span>
+	</li>
+	<li data-tag="publish">
+		<img src="/wx_h5/img/icons/publish.png" alt="" class="img" />
+		<span>合作出版</span>
+	</li>
+	<li data-tag="write">
+		<img src="/wx_h5/img/icons/write.png" alt="" class="img" />
+		<span>约稿</span>
+	</li>
+</ul>
+{include file="common/bottom_nav" cur="my" /}
+<script>
+	$('.user').on('click', function(){
+		location.href = '/wx_h5/user/info';
+	});
+	$('.list li').on('click', function(){
+		var tag = $(this).data('tag');
+		switch(tag){
+		case 'draft_collect':
+			location.href = '';
+			break;
+		case 'addr':
+			location.href = '';
+			break;
+		case 'contact':
+			location.href = '';
+			break;
+		case 'publish':
+			location.href = '';
+			break;
+		case 'write':
+			location.href = '/wx_h5/user/draftletter';
+			break;
+		}
+	});
+</script>
+{include file="common/bottom" /}

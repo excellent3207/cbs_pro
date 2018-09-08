@@ -8,7 +8,6 @@ namespace app\admin\controller;
 
 class Index{
     public function index(){
-        dump(config('user'));
         return view('', ['user' => config('user')]);
     }
     public function login(){

@@ -18,7 +18,7 @@ class BookBiz{
         $hiddenFields = ['book_no','author','img_info','price','plotter','ppt_img','ppt_source','demo_chapter','standard',
             'paper_img','paper_source','publishtime','show_time','recommend_time','description'];
         $hiddenFields = array_merge($hiddenFields, BookModel::hiddenFields());
-        return BookModel::where([])->order('recommend_time desc')->hidden($hiddenFields)->showQuery()->recommendQuery()->select();
+        return BookModel::where([['show_time', '<>', 0],['recommend_time', '<>', 0]])->order('recommend_time desc')->hidden($hiddenFields)->select();
     }
     /**
      * 图书列表
@@ -36,7 +36,7 @@ class BookBiz{
                 $cateids = explode($cateids);
             }
         }else{
-            return BookModel::where([])->order('recommend_time desc')->hidden($hiddenFields)->showQuery()->select();
+            return BookModel::where(['show_time', '<>', 0])->order('recommend_time desc')->hidden($hiddenFields)->select();
         }
     }
 }

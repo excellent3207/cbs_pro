@@ -23,13 +23,5 @@ class BannerModel extends Model{
     public static function hiddenFields(){
         return ['delete_time','update_time'];
     }
-    /**
-     * 前端展示查询条件
-     * @return \app\common\model\BookModel
-     */
-    public function showQuery(){
-        $this->where('show_time', '<>', 0);
-        return $this;
-    }
 }
 ?>

@@ -1,0 +1,230 @@
+{include file="common/top" title="书架" keywords="" wrapclass="wrap-shelf" /}
+<style>
+body{background:#f6f6f6;}
+.wrap-shelf{overflow:hidden;}
+.wrap-shelf .search{
+	width:34.5rem;
+	height:3.2rem;
+	position:absolute;
+	left:50%;
+	top:1.5rem;
+	margin-left:-17.25rem;
+	background:#fff;
+	border-radius:1.5rem;
+	z-index:11;
+}
+.wrap-shelf .search .search-img{
+	width:1.9rem;
+	height:1.9rem;
+	position:absolute;
+	left:1.4rem;
+	top:50%;
+	margin-top:-0.95rem;
+}
+.wrap-shelf .search input{
+	width:23rem;
+	padding:0;
+	margin:0;
+	margin-left:3.5rem;
+	font-size:1.5rem;
+	color:#333;
+	line-height:2rem;
+	border:none;
+	margin-top:0.6rem;
+}
+.wrap-shelf .search .search-btn{
+	width:6rem;
+	height:2.8rem;
+	text-align:center;
+	line-height:2.8rem;
+	color:#fff;
+	font-size:1.4rem;
+	background:#63B075;
+	position:absolute;
+	right:0.2rem;
+	top:0.2rem;
+	border-radius:2.8rem;
+}
+.wrap-shelf .empty{
+	position:fixed;
+	width:100%;
+	height:100%;
+	display:flex;
+	display:-webkit-flex;
+	flex-direction: column;
+	-webkit-flex-direction:column;
+	align-items:center;
+	-webkit-align-items:center;
+}
+.wrap-shelf .empty img{
+	width:5.3rem;
+	height:5rem;
+	margin-top:15.3rem;
+}
+.wrap-shelf .empty p{
+	font-size:1.5rem;
+	color:#333;
+	margin-top:2.3rem;
+}
+.wrap-shelf .empty i{
+	display:block;
+	margin-top:1.9rem;
+	text-align:center;
+	font-size:1.5rem;
+	color:#63B075;
+	font-style:normal;
+	width:13rem;
+	height:3.7rem;
+	border:0.1rem solid #63B075;
+	line-height:3.7rem;
+	border-radius:3.7rem;
+}
+.wrap-shelf .list{
+	width:39rem;
+	padding:6.7rem 0 4.9rem 1.5rem;
+}
+.wrap-shelf .list li{
+	margin:0 3rem 2rem 0;
+	float:left;
+}
+.wrap-shelf .list li .img-wrap{
+	width:9.5rem;
+	height:12.3rem;
+	position:relative;
+}
+.wrap-shelf .list li .img-wrap .img{
+	width:9.5rem;
+	height:12.3rem;
+	position:relative;
+	z-index:10;
+}
+.wrap-shelf .list li .img-wrap .border{
+	width:0.8rem;
+	height:12.5rem;
+	position:absolute;
+	right:-0.4rem;
+	top:0;
+}
+.wrap-shelf .list li .img-wrap .corner{
+	width:1.6rem;
+	height:1.25rem;
+	position:absolute;
+	top:-0.2rem;
+	right:-0.1rem;
+	z-index:10;
+}
+.wrap-shelf .list li p{
+	width:9.5rem;
+	height:2.8rem;
+	line-height:1.4rem;
+	font-size:1.2rem;
+	margin-top:0.7rem;
+	color:#333;
+}
+</style>
+<div class="main-scroll-wrap">
+<div class="main-scroller">
+<div class="search" style="display:none;">
+	<img src="/wx_h5/img/icons/search.png" alt="" class="search-img" />
+	<input type="text" placeholder="搜索" id="search-inp" />
+	<div class="search-btn">搜索</div>
+</div>
+<ul class="list clearFix" style="display:none;">
+	<li>
+		<div class="img-wrap">
+			<img src="https://cbs-resource.oss-cn-beijing.aliyuncs.com/img/20180905/154053bRV2HC.png" alt="" class="img" />
+			<img src="/wx_h5/img/icons/book_corner.png" alt="" class="corner" />
+			<img src="/wx_h5/img/icons/book_border.png" alt="" class="border" />
+		</div>
+		<p>创意的智慧创意的智慧创意的智慧</p>
+	</li>
+</ul>
+</div>
+</div>
+<div class="empty" style="display:none;">
+	<img src="/wx_h5/img/icons/shelf_empty.png" alt="" />
+	<p>您的书架空空如也～</p>
+	<i>去找你要的书</i>
+</div>
+{include file="common/bottom_nav" cur="study" /}
+<script src="/wx_h5/js/iscroll.js"></script>
+<script src="/wx_h5/js/iscroll-probe.js"></script>
+<script>
+	var curPage = 0,
+		dataLoading,
+		mainScroll;
+	$(function(){
+		mainScroll = new IScroll('.main-scroll-wrap', {
+		    probeType: 3,
+		    mouseWheel: false,
+		    scrollbars: false,
+		    preventDefault: true,
+		    fadeScrollbars: true,
+		    tap:true
+		});
+		mainScroll.on('scrollEnd', function() {
+		    var height = this.y,
+		        bottomHeight = this.maxScrollY - height;
+			if(!dataLoading && bottomHeight >= -100){
+				getNextData();
+			}
+		});
+		getNextData();
+	});
+	function getNextData(){
+		if(!dataLoading){
+			dataLoading = true;
+			if(curPage == 0){
+				$('.list').html('');
+			}
+			var param = {page:curPage+1};
+			var search = $('#search-inp').val().trim();
+			if(search){
+				param['name'] = search;
+			}
+			$.get('/wx_h5/user/mybooks', param, function(res){
+				if(res.errorcode == 0){
+					var page = curPage + 1;
+					var count = res.data.count;
+					var list = res.data.list;
+					if(list.length<=0){
+						dataLoading = false;
+						return;
+					}
+					if(count <= 0){
+						$('.empty').show();
+						$('.search').hide();
+					}else{
+						$('.empty').hide();
+						$('.search').show();
+						$('.list').show();
+						$('.list').append(generateLis(list, page));
+					}
+					loadedImg('.list .page-' + page, function(){
+						console.log('test');
+						mainScroll.refresh();
+					});
+					curPage++;
+				}else{
+					showToast(res.msg);
+				}
+			});
+			dataLoading = false;
+		}
+	}
+	function generateLis(data, page){
+		var lis = '';
+		for(var k in data){
+			lis += '<li data-id="'+data[k].bookid+'" class="page-'+page+'">' +
+					'<div class="img-wrap">' +
+						'<img src="'+data[k].img_list+'" alt="" class="img" />' +
+						'<img src="/wx_h5/img/icons/book_corner.png" alt="" class="corner" />' +
+						'<img src="/wx_h5/img/icons/book_border.png" alt="" class="border" />' +
+					'</div>' +
+					'<p>'+data[k].name+'</p>' +
+				'</li>';
+		}
+		return lis;
+	}
+</script>
+{include file="common/bottom" /}

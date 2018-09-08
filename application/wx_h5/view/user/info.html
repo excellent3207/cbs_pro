@@ -1,0 +1,220 @@
+{include file="common/top" title="信息编辑" keywords="" wrapclass="wrap-userinfo" /}
+<link href="/wx_h5/mobileSelect/css/mobileSelect.css" rel="stylesheet" />
+<style>
+body{background:#f6f6f6;}
+.wrap-userinfo .list{
+	background:#fff;
+	border-top:0.5px solid #e6e6e6;
+	margin-top:1.5rem;
+	line-height:2.4rem;
+}
+.wrap-userinfo .list li{
+	height:4.5rem;
+	border-bottom:0.5px solid #E6E6E6;
+	display:flex;
+	dipslay:-webkit-flex;
+	align-items:center;
+	-webkit-align-items:center;
+	justify-content:space-between;
+	-webkit-justify-content:space-between;
+	padding:0 1.5rem 0 1.6rem;
+}
+.wrap-userinfo .list li .left{
+	font-size:1.6rem;
+	color:#333;
+}
+.wrap-userinfo .list li .right{
+	display:flex;
+	dipslay:-webkit-flex;
+	align-items:center;
+	-webkit-align-items:center;
+}
+.wrap-userinfo .list li .right input,.wrap-userinfo .list li .right span{
+	text-align:right;
+	color:#666;
+	font-size:1.5rem;
+	border:none;
+	-webkit-appearance:none;outline:none;
+	width:20rem;
+	height:4rem;
+	padding:0;
+	margin:0;
+	line-height:4rem;
+}
+.wrap-userinfo .list li .right span{
+	
+}
+.radio-tag{
+	display:flex;
+	dipslay:-webkit-flex;
+	align-items:center;
+	-webkit-align-items:center;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.radio-tag i{
+	display:inline-block;
+	width:1.4rem;
+	height:1.4rem;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box; 
+	border-radius:50%;
+	position:relative;
+}
+.radio-tag label{
+	line-height:1.5rem;
+	font-size:1.5rem;
+	color:#666;
+	padding-left:1rem;
+}
+.radio-tag-selected i{
+	border:1px solid #63B075;
+}
+.radio-tag-selected i:after{
+	content:'';
+	position:absolute;
+	left:50%;
+	top:50%;
+	width:0.6rem;
+	height:0.6rem;
+	margin:-0.3rem 0 0 -0.3rem;
+	background:#63B075;
+	border-radius:50%;
+}
+.radio-tag-noselect{
+	margin-left:4rem;
+}
+.radio-tag-noselect i{
+	border:1px solid #aaa;
+}
+.wrap-userinfo .submit-btn{
+	width:17rem;
+	height:4.4rem;
+	background:#63B075;
+	border-radius:2.2rem;
+	font-size:1.5rem;
+	line-height:4.4rem;
+	color:#fff;
+	text-align:center;
+	position:fixed;
+	left:50%;
+	bottom:4.4rem;
+	margin-left:-8.5rem;
+}
+</style>
+<form action="" method="post" id="info-form">
+<ul class="list">
+	<li>
+		<div class="left">昵称</div>
+		<div class="right">
+			<input type="text" name="alias" value="{$user.alias}" placeholder="请输入"/>
+		</div>
+	</li>
+	<li>
+		<div class="left">性别</div>
+		<div class="right">
+			<div class="radio-tag {if condition='$user.sex=="男"'}radio-tag-selected{else/}radio-tag-noselect{/if}"><i></i><label>男</label></div>
+			<div class="radio-tag {if condition='$user.sex=="女"'}radio-tag-selected{else/}radio-tag-noselect{/if}"><i></i><label>女</label></div>
+			<input type="hidden" name="sex" value="{$user.sex}" />
+		</div>
+	</li>
+	<li class="birth">
+		<div class="left">生日</div>
+		<div class="right">
+			<span>{$user.birth}</span>
+			<input type="hidden" name="birth" value="{$user.birth}"/>
+		</div>
+	</li>
+	<li>
+		<div class="left">手机号</div>
+		<div class="right">
+			<input type="text" name="phone" value="{$user.phone}" placeholder="请输入"/>
+		</div>
+	</li>
+	<li>
+		<div class="left">所在院校</div>
+		<div class="right">
+			<input type="text" name="school" value="{$user.school}" placeholder="请输入"/>
+		</div>
+	</li>
+	<li>
+		<div class="left">所属专业</div>
+		<div class="right">
+			<input type="text" name="professional" value="{$user.professional}" placeholder="请输入"/>
+		</div>
+	</li>
+</ul>
+<div class="submit-btn">保存</div>
+</form>
+<script src="/wx_h5/mobileSelect/js/mobileSelect.min.js"></script>
+<script>
+	$('.radio-tag').on('click', function(){
+		var cur = $(this).find('label').html().trim();
+		$('.radio-tag').removeClass('radio-tag-selected');
+		$('.radio-tag').addClass('radio-tag-noselect');
+		$(this).addClass('radio-tag-selected');
+		$(this).removeClass('radio-tag-noselected');
+		$('input[name="sex"]').val(cur);
+	});
+	var birthData = [{data:[]}];
+	var monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+	for(var i = 1990; i <= 2030; i++){
+		var yearData = {id:i,value:i,childs:[]};
+		for(var j = 1; j<=12; j++){
+			var monthData = {id:j,value:j,childs:[]};
+			var days = monthDays[j - 1];
+			for(var k = 1; k <= days; k++){
+				monthData.childs.push({id:k,value:k});
+			}
+			yearData.childs.push(monthData);
+		}
+		birthData[0].data.push(yearData);
+	}
+	var bithSelect = new MobileSelect({
+        trigger: '.birth',
+        title: '',
+        wheels: birthData,
+        position: [10], //初始化定位 打开时默认选中的哪个 如果不填默认为0
+        transitionEnd: function (indexArr, data) {
+            
+        },
+        callback: function (indexArr, data) {
+        	var birth = data[0].id + '-' + toDou(data[1].id) + '-' + toDou(data[2].id);
+        	$('.birth .right span').html(birth);
+        	$('input[name="birth"]').val(birth);
+        },
+        triggerDisplayData:false
+    });
+	$('.submit-btn').on('click', function(){
+		var data = getFormData('#info-form');
+		/*if(!data.alias){
+			showToast('昵称不能为空')
+			return;
+		}
+		if(!data.sex){
+			showToast('性别不能为空')
+			return;
+		}
+		if(!data.birth){
+			showToast('生日不能为空')
+			return;
+		}
+		if(!data.phone){
+			showToast('手机号不能为空')
+			return;
+		}
+		if(!checkPhone(data.phone)){
+			showToast('手机号格式不正确')
+			return;
+		}
+		if(!data.school){
+			showToast('所在学校不能为空')
+			return;
+		}
+		if(!data.professional){
+			showToast('所属专业不能为空')
+			return;
+		}*/
+		$('#info-form').submit();
+	});
+</script>
+{include file="common/bottom" /}

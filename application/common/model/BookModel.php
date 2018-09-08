@@ -48,22 +48,6 @@ class BookModel extends Model{
         return $this->belongsTo('BookCateModel', 'cateid', 'id');
     }
     /**
-     * 前端展示查询条件
-     * @return \app\common\model\BookModel
-     */
-    public function showQuery(){
-        $this->where('show_time', '<>', 0);
-        return $this;
-    }
-    /**
-     * 推荐查询条件
-     * @return \app\common\model\BookModel
-     */
-    public function recommendQuery(){
-        $this->where('recommend_time', '<>', 0);
-        return $this;
-    }
-    /**
      * 教材类型文本
      * @param unknown $value
      * @param unknown $data

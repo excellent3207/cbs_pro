@@ -110,6 +110,10 @@ Route::group('wx_h5', function(){
     });
     Route::group('user', function(){
         Route::get('mybooks', 'wx_h5/User/myBooks');
+        Route::get('index', 'wx_h5/User/index');
+        Route::rule('info', 'wx_h5/User/info');
+        Route::get('shelf', 'wx_h5/User/shelf');
+        Route::get('draftletter', 'wx_h5/User/draftLetter');
     });
 })->middleware(Wxh5Auth::class);
 

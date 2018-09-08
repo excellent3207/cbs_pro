@@ -30,13 +30,16 @@
 .bottom-nav  li img{width:2.3rem;height:2.3rem;}
 </style>
 <ul class="bottom-nav">
-	<li class="home"><div><img src="/wx_h5/img/icons/home_no_selected.png" alt="" /><p>首页</p></div></li>
-	<li class="study"><div><img src="/wx_h5/img/icons/study_no_selected.png" alt=""/><p>书架</p></div></li>
-	<li class="my"><div><img src="/wx_h5/img/icons/my_no_selected.png" alt="" /><p>我的</p></div></li>
+	<li class="home" data-url="/wx_h5/index/index"><div><img src="/wx_h5/img/icons/home_no_selected.png" alt="" /><p>首页</p></div></li>
+	<li class="study" data-url="/wx_h5/user/shelf"><div><img src="/wx_h5/img/icons/study_no_selected.png" alt=""/><p>书架</p></div></li>
+	<li class="my" data-url="/wx_h5/user/index"><div><img src="/wx_h5/img/icons/my_no_selected.png" alt="" /><p>我的</p></div></li>
 </ul>
 <script>
 	var curNav = '[cur]';
 	var curLi = $('.' + curNav);
 	curLi.find('img').attr('src', '/wx_h5/img/icons/'+curNav+'_selected.png');
 	curLi.addClass('cur');
+	$('.bottom-nav li').on('click', function(){
+		location.href = $(this).data('url');
+	});
 </script>

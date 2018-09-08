@@ -150,10 +150,10 @@ var mainScroll = new IScroll('.main-scroll-wrap', {
     fadeScrollbars: true,
     tap:true
 });
-mainScroll.on('scroll', function() {
+mainScroll.on('scrollEnd', function() {
     var height = this.y,
         bottomHeight = this.maxScrollY - height;
-	if(!dataLoading && bottomHeight > 10){
+	if(!dataLoading && bottomHeight >= -100){
 		getNexPageData();
 	}
 });
@@ -176,17 +176,18 @@ function getNexPageData(){
 		$.get('/wx_h5/draft/recommend', {page:curPage + 1}, function(res){
 			var lis = '';
 			if(res.errorcode == 0){
+				page = curPage + 1;
 				var data = res.data;
 				if(data.length<=0){
 					dataLoading = false;
 					return;
 				}
-				var lis = generateLis(data);
+				var lis = generateLis(data, page);
 				$('.draft-recommend').append(lis);
-				$('.draft-recommend li.page-' + (curPage + 1)).on('tap', function () {
+				$('.draft-recommend li.page-' + page).on('tap', function () {
 	                console.log('test');
 	            });
-				setTimeout(function(){
+				loadedImg('.draft-recommend .page-' + page, function(){
 					mainScroll.refresh();
 				});
 				curPage++;
@@ -197,13 +198,13 @@ function getNexPageData(){
 		}, 'json');
 	}
 }
-function generateLis(data){
+function generateLis(data, page){
 	var lis = '';
 	if(data.length <= 0) return lis;
 	for(var i = 0; i < data.length; i++){
 		var item = data[i];
 		var digest = item.digest.length > 40 ? item.digest.substr(0, 40) + '...' : item.digest;
-		lis +=  '<li class="clearFix" class="page-'+(curPage + 1)+'">' +
+		lis +=  '<li class="clearFix page-'+page+'">' +
 			'<img src="'+item.img_list+'" class="img-list" alt="" />' +
 				'<div class="con">' +
 					'<h3>'+item.title+'</h3>' +

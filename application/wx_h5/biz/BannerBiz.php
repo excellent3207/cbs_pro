@@ -15,6 +15,6 @@ class BannerBiz{
      * @return unknown
      */
     public function all(){
-        return BannerModel::where([])->hidden(BannerModel::hiddenFields())->showQuery()->select();
+        return BannerModel::where([['show_time', '<>', 0]])->hidden(BannerModel::hiddenFields())->select();
     }
 }
