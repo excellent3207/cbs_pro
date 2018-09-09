@@ -15,3 +15,10 @@ use app\common\AppTool;
 function formatUrl($uri){
     return AppTool::formatUrl($uri);
 }
+function formatPrice($price){
+    if($price%100 !== 0){
+        return sprintf("%.2f",$price/100);
+    }else{
+        return intval($price/100).'';
+    }
+}

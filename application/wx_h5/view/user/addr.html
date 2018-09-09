@@ -46,6 +46,14 @@ body{background:#f6f6f6;}
 	align-items:center;
 	-webkit-align-items:center;
 }
+.wrap-addr .item li.other .right img{
+	width:2.4rem;
+	height:2.4rem;
+	float:right;
+}
+.wrap-addr .item li.other .right img.edit{
+	margin-right:3.2rem;
+}
 .wrap-addr .add-addr{
 	background:#63B075;
 	color:#fff;
@@ -61,88 +69,38 @@ body{background:#f6f6f6;}
 	border-radius:2.2rem;
 }
 </style>
-<ul class="item">
+{foreach name="list" item="item"}
+<ul class="item" data-id="{$item.id}">
 	<li class="name">
-		<div class="left">哈哈哈</div>
-		<div class="right">13426268989</div>
+		<div class="left">{$item.name}</div>
+		<div class="right">{$item.phone}</div>
 	</li>
 	<li class="addr">
-		北京市朝阳区潘家园东里12号楼405北京市朝阳区潘家园东里12号楼405
+		{$item.province}{$item.city}{$item.addr}
 	</li>
 	<li class="other">
-		<div class="left"><div class="radio-tag radio-tag-selected"><i></i><label>默认地址</label></div></div>
-		<div class="right"></div>
+		<div class="left"><div class="radio-tag radio-tag-{if condition='$item.isdefault'}selected{else/}noselect{/if}"><i></i><label>默认地址</label></div></div>
+		<div class="right clearFix">
+			<img src="/wx_h5/img/icons/del.png" alt="" class="del" />
+			<img src="/wx_h5/img/icons/edit.png" alt="" class="edit" />
+		</div>
 	</li>
 </ul>
-<ul class="item">
-	<li class="name">
-		<div class="left">哈哈哈</div>
-		<div class="right">13426268989</div>
-	</li>
-	<li class="addr">
-		北京市朝阳区潘家园东里12号楼405
-	</li>
-	<li class="other">
-		<div class="left"><div class="radio-tag radio-tag-selected"><i></i><label>默认地址</label></div></div>
-		<div class="right"></div>
-	</li>
-</ul>
-<ul class="item">
-	<li class="name">
-		<div class="left">哈哈哈</div>
-		<div class="right">13426268989</div>
-	</li>
-	<li class="addr">
-		北京市朝阳区潘家园东里12号楼405北京市朝阳区潘家园东里12号楼405
-	</li>
-	<li class="other">
-		<div class="left"><div class="radio-tag radio-tag-selected"><i></i><label>默认地址</label></div></div>
-		<div class="right"></div>
-	</li>
-</ul>
-<ul class="item">
-	<li class="name">
-		<div class="left">哈哈哈</div>
-		<div class="right">13426268989</div>
-	</li>
-	<li class="addr">
-		北京市朝阳区潘家园东里12号楼405北京市朝阳区潘家园东里12号楼405
-	</li>
-	<li class="other">
-		<div class="left"><div class="radio-tag radio-tag-selected"><i></i><label>默认地址</label></div></div>
-		<div class="right"></div>
-	</li>
-</ul>
-<ul class="item">
-	<li class="name">
-		<div class="left">哈哈哈</div>
-		<div class="right">13426268989</div>
-	</li>
-	<li class="addr">
-		北京市朝阳区潘家园东里12号楼405北京市朝阳区潘家园东里12号楼405
-	</li>
-	<li class="other">
-		<div class="left"><div class="radio-tag radio-tag-selected"><i></i><label>默认地址</label></div></div>
-		<div class="right"></div>
-	</li>
-</ul>
-<ul class="item">
-	<li class="name">
-		<div class="left">哈哈哈</div>
-		<div class="right">13426268989</div>
-	</li>
-	<li class="addr">
-		北京市朝阳区潘家园东里12号楼405北京市朝阳区潘家园东里12号楼405
-	</li>
-	<li class="other">
-		<div class="left"><div class="radio-tag radio-tag-selected"><i></i><label>默认地址</label></div></div>
-		<div class="right"></div>
-	</li>
-</ul>
+{/foreach}
 <div class="add-addr">新增地址</div>
 <script>
 	$('.add-addr').on('click', function(){
 		location.href = '/wx_h5/user/addrsave';
+	});
+	$('.item li.other .right img.edit').on('click', function(){
+		var id = $(this).parent().parent().parent().data('id');
+		location.href = '/wx_h5/user/addrsave?id=' + id;
+	});
+	$('.item li.other .right img.del').on('click', function(){
+		var id = $(this).parent().parent().parent().data('id');
+		$.post('/wx_h5/user/addrdel', {id:id}, function(){
+			location.href = '/wx_h5/user/addr?time=' + new Date().getTime();
+		});
 	});
 </script>
 {include file="common/bottom" /}

@@ -28,16 +28,15 @@ class BookBiz{
      * @param unknown $pageSize
      * @return unknown
      */
-    public function list($cond, $order, $page, $pageSize, $cateids){
-        $hiddenFields = ['book_no','author','price','plotter','paper_source','publishtime','description'];
+    public function list($cond, $order, $page, $pageSize){
+        $hiddenFields = ['img_info','plotter','ppt_img','ppt_source','demo_chapter','standard',
+            'paper_img','paper_source','show_time','recommend_time','description'];
         $hiddenFields = array_merge($hiddenFields, BookModel::hiddenFields());
-        if(!empty($cateids)){
-            if(!is_array($cateids)){
-                $cateids = explode($cateids);
-            }
-        }else{
-            return BookModel::where(['show_time', '<>', 0])->order('recommend_time desc')->hidden($hiddenFields)->select();
+        $books = BookModel::where([['show_time', '<>', 0]])->where($cond)->order('recommend_time desc')->hidden($hiddenFields)->page($page, $pageSize)->select();
+        foreach($books as &$book){
+            $book->img_list = formatUrl($book->img_list);
         }
+        return $books;
     }
 }
 

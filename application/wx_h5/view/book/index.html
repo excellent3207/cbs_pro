@@ -1,0 +1,284 @@
+{include file="common/top" title="首页" keywords="" wrapclass="wrap-book-index" /}
+<style>
+body{background:#f6f6f6;}
+.wrap-book-index .top{
+	margin-top:2.5rem;
+	display:flex;
+	display:-webkit-flex;
+	padding:0 1.5rem;
+	justify-content:space-between;
+	-webkit-justify-content:space-between;
+}
+.wrap-book-index .top img{width:2.4rem;height:2.4rem;}
+.wrap-book-index .top .left{
+	display:flex;
+	display:-webkit-flex;
+}
+.wrap-book-index .top .left span{
+	font-size:1.5rem;
+	color:#63B075;
+	padding-left:0.4rem;
+	line-height:2.4rem;
+}
+.wrap-book-index .list{
+	padding:1rem 1.5rem;
+}
+.wrap-book-index .list li{
+	padding:1.5rem 0;
+	border-bottom:0.5px solid #ddd;
+}
+.wrap-book-index .list li .img-wrap{
+	position:relative;
+	height:12.8rem;
+	width:9.5rem;
+	float:left;
+}
+.wrap-book-index .list li .img-list{
+	width:9.5rem;
+	height:12.8rem;
+}
+.wrap-book-index .list li .corner{
+	width:1.8rem;
+	height:1.8rem;
+	position:absolute;
+	top:-0.05rem;
+	right:-0.05rem;
+}
+.wrap-book-index .list li .border{
+	width:0.8rem;
+	height:12.5rem;
+	position:absolute;
+	right:-0.3rem;
+	top:0.2rem;
+	z-index:-1;
+}
+.wrap-book-index .list li .con{
+	float:left;
+	margin-left:1.5rem;
+}
+.wrap-book-index .list li .con h2{
+	font-size:1.5rem;
+	color:#333;
+	line-height:1.5rem;
+	padding:1rem 0 2.6rem 0;
+	font-weight:normal;
+}
+.wrap-book-index .list li .con .other p{
+	font-size:#333;
+	font-size:1.2rem;
+	line-height:1.2rem;
+	margin-bottom:0.7rem;
+}
+.wrap-book-index .list li .con .other p span{
+	display:inline-block;
+	width:5.4rem;
+	white-space:nowrap;
+}
+.wrap-book-index .cate-btn{
+	-webkit-appearance: none;
+	width:5rem;
+	height:5rem;
+	border-radius:50%;
+	box-shadow:1px 1px 3px 3px rgba(6,0,1,0.2);
+	-webkit-box-shadow:1px 1px 3px rgba(6,0,1,0.2);
+	background:#fff;
+	display:flex;
+	display:-webkit-flex;
+	justify-content:center;
+	-webkit-justify-content:center;
+	align-items:center;
+	-webkit-align-items:center;
+	position:fixed;
+	right:1.7rem;
+	bottom:10.2rem;
+}
+.wrap-book-index .cate-btn img{
+	width:2.4rem;
+	height:2.4rem;
+}
+.wrap-book-index .cate-list-wrap{
+	padding-bottom:4.7rem;
+	background:#fff;
+	opacity:0;
+	position:fixed;
+	left:0;
+	bottom:0;
+	width:100%;
+	border-top-left-radius:1rem;
+	border-top-right-radius:1rem;
+	z-index:2;
+	/*transition:all 0.5s;
+	-webkit-transition:all 0.5s;*/
+}
+.wrap-book-index .cate-list-wrap h5{
+	font-weight:normal;
+	color:#63B075;
+	font-size:1.5rem;
+	line-height:1.5rem;
+	padding:3.5rem 1.5rem 0;
+}
+.wrap-book-index .cate-list-wrap .close{
+	position:absolute;
+	width:2.4rem;
+	height:2.4rem;
+	right:1.3rem;
+	top:2rem;
+}
+.wrap-book-index .cate-list-wrap ul li{
+	float:left;
+	padding:0 1rem;
+	font-size:1.4rem;
+	color:#333;
+	line-height:3.3rem;
+	border:0.5px solid #ccc;
+	border-radius:3.3rem;
+	margin:1.5rem 0 0 1rem;
+}
+.wrap-book-index .cate-list-bg{
+	position:fixed;
+	z-index:1;
+	width:100%;
+	height:100%;
+	opacity:0.5;
+	background:#000;
+	display:none;
+}
+</style>
+<div class="main-scroll-wrap">
+<div class="main-scroller">
+	<div class="top">
+		<div class="left">
+			<img src="/wx_h5/img/icons/benke.png" alt="" />
+			<span>{switch $type}{case 1}本科精品{/case}{case 2}高职高专{/case}{default /}全部书目{/switch}</span>
+		</div>
+		<div class="right">
+			<img src="/wx_h5/img/icons/search_gray.png" alt="" />
+		</div>
+	</div>
+	<ul class="list"></ul>
+</div>
+</div>
+<div class="cate-btn">
+	<img src="/wx_h5/img/icons/cate.png" alt="" />
+</div>
+<div class="cate-list-wrap">
+	<h5>本科精品分类</h5>
+	<ul class="clearFix">
+		<li>公共基础课书目</li>
+		<li>公共基础课书目</li>
+		<li>旅游、市场营销类书目</li>
+		<li>公共基础课书目</li>
+		<li>公工科类书目</li>
+	</ul>
+	<h5>高职高专分类</h5>
+	<ul class="clearFix">
+		<li>公共基础课书目</li>
+		<li>公共基础课书目</li>
+		<li>旅游、市场营销类书目</li>
+		<li>公共基础课书目</li>
+		<li>公工科类书目</li>
+	</ul>
+	<img src="/wx_h5/img/icons/close.png" alt="" class="close" />
+</div>
+<i class="cate-list-bg"></i>
+<script src="/wx_h5/js/iscroll.js"></script>
+<script src="/wx_h5/js/iscroll-probe.js"></script>
+<script>
+var dataLoading = false,
+curPage = 0,
+type = {$type},
+cateListHeight;
+getNexPageData();
+var mainScroll = new IScroll('.main-scroll-wrap', {
+    probeType: 3,
+    mouseWheel: false,
+    scrollbars: false,
+    preventDefault: true,
+    fadeScrollbars: true,
+    tap:true
+});
+mainScroll.on('scrollEnd', function() {
+    var height = this.y,
+        bottomHeight = this.maxScrollY - height;
+	if(!dataLoading && bottomHeight >= -100){
+		getNexPageData();
+	}
+});
+$('.wrap-book-index .top .right').on('click', function(){
+	location.href = '/wx_h5/book/search';
+});
+$(function(){
+	cateListHeight = $('.cate-list-wrap').outerHeight();
+	$('.cate-btn').on('click', function(){
+		$('.cate-list-wrap').css({'-webkit-transition':'all 0.5s','transition':'all 0.5s'});
+		$('.cate-list-wrap').css({bottom:0});
+		$('.cate-list-bg').show();
+	});
+	$('.cate-list-bg').on('click', function(){
+		$('.cate-list-wrap').css({bottom:-cateListHeight});
+		$('.cate-list-bg').hide();
+	});
+	$('.cate-list-wrap').css({bottom:-cateListHeight,opacity:1});
+	$('.cate-list-wrap .close').on('click', function(){
+		$('.cate-list-wrap').css({bottom:-cateListHeight});
+		$('.cate-list-bg').hide();
+	});
+});
+function getNexPageData(){
+	if(!dataLoading){
+		dataLoading = true;
+		if(curPage == 0){
+			$('.wrap-book-index .list').html('');
+		};
+		$.get('/wx_h5/book/list', {page:curPage + 1, type:type}, function(res){
+			var lis = '';
+			if(res.errorcode == 0){
+				page = curPage + 1;
+				var data = res.data;
+				if(data.length<=0){
+					dataLoading = false;
+					return;
+				}
+				var lis = generateLis(data, page);
+				$('.wrap-book-index .list').append(lis);
+				$('.wrap-book-index .list li.page-' + page).on('tap', function () {
+	                console.log('test');
+	            });
+				loadedImg('.wrap-book-index .list .page-' + page, function(){
+					mainScroll.refresh();
+				});
+				curPage++;
+			}else{
+				
+			}
+			dataLoading = false;
+		}, 'json');
+	}
+}
+function generateLis(data, page){
+	console.log(data);
+	var lis = '';
+	if(data.length <= 0) return lis;
+	for(var i = 0; i < data.length; i++){
+		var item = data[i];
+		lis +=  '<li class="clearFix page-'+page+'">'+
+							'<div class="img-wrap">'+
+						'<img src="'+item.img_list+'" alt="" class="img-list" />'+
+						'<img src="/wx_h5/img/icons/book_corner.png" alt="" class="corner" />'+
+						'<img src="/wx_h5/img/icons/book_border.png" alt="" class="border" />'+
+					'</div>'+
+					'<div class="con">'+
+						'<h2>'+item.name+'</h2>'+
+						'<div class="other">'+
+							'<p><span>征订号：</span>'+item.book_no+'</p>'+
+							'<p><span>作者：</span>'+item.author+'</p>'+
+							'<p><span>定价：</span>'+item.price+'</p>'+
+							'<p><span>出版时间：</span>'+item.publishtime+'</p>'+
+						'</div>'+
+					'</div>'+
+				'</li>';
+	}
+	return lis;
+}
+</script>
+{include file="common/bottom" /}

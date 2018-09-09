@@ -16,7 +16,19 @@ class Book{
         $this->request = $request;
     }
     /**
-     * 图书推荐
+     * 图书列表/分类
+     * @return \think\response\View
+     */
+    public function index(){
+        try{
+            $type = $this->request->get('type', 0);
+        }catch(\Exception $e){
+            return view('common/error', ['msg' => $e->getMessage()]);
+        }
+        return view('', ['type' => $type]);
+    }
+    /**
+     * 图书列表
      * @return \think\response\View
      */
     public function list(){
@@ -31,13 +43,29 @@ class Book{
             if($name){
                 array_push($cond, ['name', 'like', $name.'%']);
             }
-            $cateids = $this->request->get('cateids');
+            $type = $this->request->get('type');
+            if($type){
+                array_push($cond, ['type', '=', $type]);
+            }
             $ret['data'] = $biz->list($cond, $order, $page, $pageSize);
         }catch(\Exception $e){
             $ret['errorcode'] = 1;
             $ret['msg'] = $e->getMessage();
         }
         return json($ret);
+    }
+    /**
+     * 图书搜索
+     * @return \think\response\View
+     */
+    public function search(){
+        try{
+            $type = $this->request->get('type', 0);
+            $biz = new BookBiz();
+        }catch(\Exception $e){
+            return view('common/error', ['msg' => $e->getMessage()]);
+        }
+        return view('', ['type' => $type]);
     }
 }
 

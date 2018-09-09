@@ -33,12 +33,33 @@ class BookModel extends Model{
         return floor($value*100);
     }
     /**
+     * 获取价格
+     * @param unknown $value
+     * @return string
+     */
+    public function getPriceAttr($value){
+        if($value%100 !== 0){
+            return sprintf("%.2f",$value/100);
+        }else{
+            return intval($value/100).'';
+        }
+    }
+    /**
      * 设置发布时间转换
      * @param unknown $value
      * @return number
      */
     public function setPublishtimeAttr($value){
         return strtotime($value);
+    }
+    /**
+     * 获取发布时间
+     * @param unknown $value
+     * @return number
+     */
+    public function getPublishtimeAttr($value){
+        if(!$value) return '';
+        return date('Y/m/d', $value);
     }
     /**
      * 图书所属分类关联

@@ -105,7 +105,13 @@ class User{
      * 地址管理
      */
     public function addr(){
-        return view('', []);
+        try{
+            $biz = new UserAddrBiz();
+            $list = $biz->all();
+        }catch(\Exception $e){
+            return view('common/error', ['msg' => $e->getMessage()]);
+        }
+        return view('', ['list' => $list]);
     }
     /**
      * 创建/编辑地址管理
@@ -129,7 +135,7 @@ class User{
             }
             if($error){
                 $data['error'] = $error;
-                return redirect('user/addradd')->with('useraddr_save_data', $data);
+                return redirect('user/addrsave')->with('useraddr_save_data', $data);
             }else{
                 return redirect('user/addr');
             }
@@ -141,6 +147,22 @@ class User{
             $addr = $biz->get($id);
         }
         return view('', ['addr' => $addr]);
+    }
+    /**
+     * 删除地址
+     * @return \think\response\View
+     */
+    public function addrDel(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        try{
+            $biz = new UserAddrBiz();
+            $id = $this->request->post('id');
+            $ret['data'] = $biz->del($id);
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
     }
 }
 

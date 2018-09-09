@@ -88,19 +88,19 @@ body{background:#f6f6f6;}
 <div class="main-scroller">
 {include file="common/banner" /}
 <ul class="book-nav">
-	<li>
+	<li data-url="/wx_h5/book/index?type=2">
 		<img src="/wx_h5/img/icons/gaozhi.png" alt="" />
 		<span>高职高专</span>
 	</li>
-	<li>
+	<li data-url="/wx_h5/book/index?type=1">
 		<img src="/wx_h5/img/icons/benke.png" alt="" />
 		<span>本科精品</span>
 	</li>
-	<li>
+	<li data-url="/wx_h5/book/index">
 		<img src="/wx_h5/img/icons/all_book.png" alt="" />
 		<span>全部书目</span>
 	</li>
-	<li>
+	<li data-url="/wx_h5/book/search">
 		<img src="/wx_h5/img/icons/search.png" alt="" />
 		<span>搜索</span>
 	</li>
@@ -166,6 +166,9 @@ var cateScroll = new IScroll('.book-recommend', {
     tap:false,
     scrollX:true,
     scrollY:false,
+});
+$('.book-nav li').on('tap', function(){
+	location.href = $(this).data('url');
 });
 function getNexPageData(){
 	if(!dataLoading){
