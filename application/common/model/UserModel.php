@@ -63,7 +63,7 @@ class UserModel extends Model{
      * @return string
      */
     public function getBirthAttr($value,$data){
-       return $value?date('Y-m-d'):'';
+       return $value?date('Y-m-d', $value):'';
     }
     /**
      * 设置生日转换
@@ -71,8 +71,7 @@ class UserModel extends Model{
      * @return mixed
      */
     public function setBirthAttr($value){
-        $str = $value?strtotime($value):0;
-        return $str;
+        return $value?strtotime($value):0;
     }
 }
 ?>

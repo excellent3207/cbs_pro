@@ -47,3 +47,17 @@ function loadedImg(ele, callback){
 	    $.when.apply(null,imgdefereds).done(callback); 
 	}
 }
+function initSwitch(onCallback, offCallback){
+	$('.xjp-switch .handle .on').on('click', function(){
+		$('.xjp-switch .handle').css({left:'-3rem'});
+		$(this).css({zIndex:5});
+		$('.xjp-switch .handle .off').css({zIndex:10});
+		offCallback();
+	});
+	$('.xjp-switch .handle .off').on('click', function(){
+		$(this).parent().css({left:0});
+		$(this).css({zIndex:5});
+		$('.xjp-switch .handle .on').css({zIndex:10});
+		onCallback();
+	});
+}

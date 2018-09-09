@@ -41,50 +41,8 @@ body{background:#f6f6f6;}
 	margin:0;
 	line-height:4rem;
 }
-.wrap-userinfo .list li .right span{
-	
-}
-.radio-tag{
-	display:flex;
-	dipslay:-webkit-flex;
-	align-items:center;
-	-webkit-align-items:center;
-	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-.radio-tag i{
-	display:inline-block;
-	width:1.4rem;
-	height:1.4rem;
-	box-sizing:border-box;
-	-webkit-box-sizing:border-box; 
-	border-radius:50%;
-	position:relative;
-}
-.radio-tag label{
-	line-height:1.5rem;
-	font-size:1.5rem;
-	color:#666;
-	padding-left:1rem;
-}
-.radio-tag-selected i{
-	border:1px solid #63B075;
-}
-.radio-tag-selected i:after{
-	content:'';
-	position:absolute;
-	left:50%;
-	top:50%;
-	width:0.6rem;
-	height:0.6rem;
-	margin:-0.3rem 0 0 -0.3rem;
-	background:#63B075;
-	border-radius:50%;
-}
-.radio-tag-noselect{
+.wrap-userinfo .radio-tag i{
 	margin-left:4rem;
-}
-.radio-tag-noselect i{
-	border:1px solid #aaa;
 }
 .wrap-userinfo .submit-btn{
 	width:17rem;
@@ -155,6 +113,14 @@ body{background:#f6f6f6;}
 		$(this).removeClass('radio-tag-noselected');
 		$('input[name="sex"]').val(cur);
 	});
+	var birthPosition = [];
+	var birth = $('.birth .right span').html().trim();
+	if(birth){
+		var birthArr = birth.split('-');
+		birthPosition.push(birthArr[0]-1990);
+		birthPosition.push(birthArr[1] - 1);
+		birthPosition.push(birthArr[2] - 1);
+	}
 	var birthData = [{data:[]}];
 	var monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 	for(var i = 1990; i <= 2030; i++){
@@ -173,9 +139,9 @@ body{background:#f6f6f6;}
         trigger: '.birth',
         title: '',
         wheels: birthData,
-        position: [10], //初始化定位 打开时默认选中的哪个 如果不填默认为0
+        position: birthPosition, //初始化定位 打开时默认选中的哪个 如果不填默认为0
         transitionEnd: function (indexArr, data) {
-            
+        	
         },
         callback: function (indexArr, data) {
         	var birth = data[0].id + '-' + toDou(data[1].id) + '-' + toDou(data[2].id);

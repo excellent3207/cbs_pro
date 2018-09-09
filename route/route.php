@@ -114,6 +114,14 @@ Route::group('wx_h5', function(){
         Route::rule('info', 'wx_h5/User/info');
         Route::get('shelf', 'wx_h5/User/shelf');
         Route::get('draftletter', 'wx_h5/User/draftLetter');
+        Route::get('contact', 'wx_h5/User/contact');
+        Route::get('addr', 'wx_h5/User/addr');
+        Route::get('addrsave', 'wx_h5/User/addrSave');
+    });
+    Route::group('location', function(){
+        Route::post('provinces', 'wx_h5/Location/provinces');
+        Route::post('citys', 'wx_h5/Location/citys');
+        Route::post('countys', 'wx_h5/Location/countys');
     });
 })->middleware(Wxh5Auth::class);
 

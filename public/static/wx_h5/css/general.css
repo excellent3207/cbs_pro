@@ -10,9 +10,112 @@ img{display:block;}
     top:0;
     overflow:hidden;
 }
-
 .main-scroller{
     position: absolute;
     width: 100%;
     min-height:110%;
 }
+
+/*------ 单选框 -----*/
+.radio-tag{
+	display:flex;
+	dipslay:-webkit-flex;
+	align-items:center;
+	-webkit-align-items:center;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.radio-tag i{
+	display:inline-block;
+	width:1.4rem;
+	height:1.4rem;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box; 
+	border-radius:50%;
+	position:relative;
+}
+.radio-tag label{
+	line-height:1.5rem;
+	font-size:1.5rem;
+	color:#666;
+	padding-left:1rem;
+}
+.radio-tag-selected i{
+	border:1px solid #63B075;
+}
+.radio-tag-selected i:after{
+	content:'';
+	position:absolute;
+	left:50%;
+	top:50%;
+	width:0.6rem;
+	height:0.6rem;
+	margin:-0.3rem 0 0 -0.3rem;
+	background:#63B075;
+	border-radius:50%;
+}
+.radio-tag-noselect i{
+	border:1px solid #aaa;
+}
+/* ----- 单选框 END ----*/
+
+/* ----- switch ----*/
+.xjp-switch{
+	width:6rem;
+	height:3rem;
+	border-radius:3rem;
+	overflow:hidden;
+	position:relative;
+	z-index:1;
+}
+.xjp-switch .handle{
+	width:9rem;
+	position:absolute;
+	transition: all 0.8s ease;
+	-webkit-transition: all 0.8s ease;
+	height:100%;
+}
+.xjp-switch .handle div{
+	width:6rem;
+	height:100%;
+	position:absolute;
+	top:0;
+	border-radius:3rem;
+}
+.xjp-switch .handle .on{
+	left:0;
+	background:#63B075;
+}
+.xjp-switch .handle .off{
+	right:0;
+	background:#999;
+}
+.xjp-switch i{
+	position:absolute;
+	width:2.6rem;
+	height:2.6rem;
+	border-radius:50%;
+	background:#fff;
+	z-index:11;
+	top:0.2rem;
+	left:50%;
+	margin-left:-1.3rem;
+}
+.xjp-switch-on .handle{
+	left:0;
+}
+.xjp-switch-on .handle .on{
+	z-index:10;
+}
+.xjp-switch-on .handle .off{
+	z-index:5;
+}
+.xjp-switch-off .handle{
+	left:-3rem;
+}
+.xjp-switch-off .handle .on{
+	z-index:5;
+}
+.xjp-switch-off .handle .off{
+	z-index:10;
+}
+/* ----- switch END ----*/
