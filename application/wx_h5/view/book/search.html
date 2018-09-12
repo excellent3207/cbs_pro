@@ -1,0 +1,260 @@
+{include file="common/top" title="首页" keywords="" wrapclass="wrap-book-search" /}
+<style>
+body{background:#f6f6f6;}
+.wrap-book-search .search-wrap{
+	width:34.5rem;
+	height:3.2rem;
+	background:#fff;
+	border-radius:3.2rem;
+	margin:1.5rem auto 0;
+	overflow:hidden;
+}
+.wrap-book-search .search-wrap .search-icon{
+	width:2.4rem;
+	height:2.4rem;
+	margin:0.4rem 1.2rem 0 1.1rem;
+	float:left;
+}
+.wrap-book-search .search-wrap input{
+	float:left;
+	width:20rem;
+	font-size:1.5rem;
+	height:1.6rem;
+	color:#333;
+	line-height:1.6rem;
+	margin-top:0.6rem;
+	border:none;
+}
+.wrap-book-search .search-wrap i{
+	float:right;
+}
+.wrap-book-search .search-wrap b{
+	float:right;
+	width:6rem;
+	height:2.8rem;
+	line-height:2.8rem;
+	font-size:1.4rem;
+	color:#fff;
+	border-radius:2.8rem;
+	background:#63B075;
+	text-align:center;
+	font-weight:normal;
+	margin:0.2rem 0.2rem 0 0;
+}
+.wrap-book-search .history{color:#333;}
+.wrap-book-search .history h3{
+	padding:2rem 0 1.5rem 1.5rem;
+	font-weight:normal;
+	font-size:1.5rem;
+	line-height:1.5rem;
+}
+.wrap-book-search .history ul{
+	padding:0 1.5rem 0 0.5rem;
+}
+.wrap-book-search .history ul li{
+	padding:0 1rem;
+	line-height:3.3rem;
+	font-size:1.4rem;
+	background:#E6E6E6;
+	float:left;
+	border-radius:3.3rem;
+	margin:0 0 1.5rem 1rem;
+}
+.wrap-book-search .list{
+	width:39rem;
+	padding:6.7rem 0 4.9rem 1.5rem;
+}
+.wrap-book-search .list li{
+	margin:0 3rem 2rem 0;
+	float:left;
+}
+.wrap-book-search .list li .img-wrap{
+	width:9.5rem;
+	height:12.3rem;
+	position:relative;
+}
+.wrap-book-search .list li .img-wrap .img{
+	width:9.5rem;
+	height:12.3rem;
+	position:relative;
+	z-index:10;
+}
+.wrap-book-search .list li .img-wrap .border{
+	width:0.8rem;
+	height:12.5rem;
+	position:absolute;
+	right:-0.4rem;
+	top:0;
+}
+.wrap-book-search .list li .img-wrap .corner{
+	width:1.6rem;
+	height:1.25rem;
+	position:absolute;
+	top:-0.2rem;
+	right:-0.1rem;
+	z-index:10;
+}
+.wrap-book-search .list li p{
+	width:9.5rem;
+	height:2.8rem;
+	line-height:1.4rem;
+	font-size:1.2rem;
+	margin-top:0.7rem;
+	color:#333;
+}
+</style>
+<div class="main-scroll-wrap">
+<div class="main-scroller">
+	<div class="search-wrap clearFix">
+		<img src="/wx_h5/img/icons/search_gray.png" alt="" class="search-icon" />
+		<input type="text" placeholder="搜索" id="search-inp" />
+		<b>搜索</b>
+		<i></i>
+	</div>
+	<div class="history">
+		<h3>历史搜索</h3>
+		<ul class="clearFix">
+			<li>test</li>
+			<li>公共基础课书目</li>
+			<li>公共基础课书目</li>
+			<li>公共基础课书目</li>
+			<li>公共基础课书目</li>
+			<li>旅游、市场营销类书目</li>
+		</ul>
+	</div>
+	<ul class="list">
+		<li></li>
+	</ul>
+</div>
+</div>
+<script src="/wx_h5/js/iscroll.js"></script>
+<script src="/wx_h5/js/iscroll-probe.js"></script>
+<script>
+var dataLoading = false,
+curPage = 0,
+name = '',
+searchKeys = {:json_encode($searchKeys)},
+curStatus = 0;//0输入状态，历史记录现实，列表隐藏 1搜索状态，历史记录隐藏，列表现实
+var mainScroll = new IScroll('.main-scroll-wrap', {
+    probeType: 3,
+    mouseWheel: false,
+    scrollbars: false,
+    preventDefault: true,
+    fadeScrollbars: true,
+    tap:true
+});
+mainScroll.on('scrollEnd', function() {
+    var height = this.y,
+        bottomHeight = this.maxScrollY - height;
+	if(!dataLoading && bottomHeight >= -100){
+		if(curStatus == 1) getNexPageData();
+	}
+});
+refreshKeys();
+//刷新历史搜索
+function refreshKeys(){
+	var lis = '';
+	for(var k in searchKeys){
+		lis += '<li>'+searchKeys[k]+'</li>';
+	}
+	$('.history ul').html(lis);
+	showHistory();
+	addHistoryClick();
+}
+addHistoryClick();
+function addHistoryClick(){
+	$('.history li').on('click', function(){
+		curPage = 0;
+		curStatus = 1;
+		name = $(this).html().trim();
+		$('#search-inp').val(name);
+		$('.history').hide();
+		$('.wrap-book-search .list').show();
+		$('.search-wrap b').hide();
+		getNexPageData();
+	});
+}
+function showHistory(){
+	if(searchKeys.length <= 0){
+		$('.history').hide();
+		return;
+	}
+	$('.history').show();
+}
+document.getElementById('search-inp').onfocus = function(){
+	showHistory();
+	$('.wrap-book-search .list').hide();
+	$('.search-wrap b').show();
+};
+document.getElementById('search-inp').onblur = function(){
+	if(curPage != 0){
+		$('.history').hide();
+		$('.search-wrap b').hide();
+	}
+};
+$('.search-wrap b').on('click', function(){
+	console.log('test');
+	var curName = $('#search-inp').val().trim();
+	if(curName) name = curName;
+	if(!name){
+		showToast('请输入要搜索的关键字');
+		return;
+	}
+	if(searchKeys.indexOf(name) === -1){
+		searchKeys.unshift(name);
+	}
+	refreshKeys();
+	$('.history').hide();
+	$('.wrap-book-search .list').show();
+	curPage = 0;
+	curStatus = 1;
+	$(this).hide();
+	getNexPageData();
+});
+function getNexPageData(){
+	if(!dataLoading){
+		dataLoading = true;
+		if(curPage == 0){
+			$('.wrap-book-search .list').html('');
+		};
+		$.get('/wx_h5/book/list', {page:curPage + 1,name:name}, function(res){
+			var lis = '';
+			if(res.errorcode == 0){
+				page = curPage + 1;
+				var data = res.data;
+				if(data.length<=0){
+					dataLoading = false;
+					return;
+				}
+				var lis = generateLis(data, page);
+				$('.wrap-book-search .list').append(lis);
+				$('.wrap-book-search .list li.page-' + page).on('tap', function () {
+	                console.log('test');
+	            });
+				loadedImg('.wrap-book-search .list .page-' + page, function(){
+					mainScroll.refresh();
+				});
+				curPage++;
+			}else{
+				
+			}
+			dataLoading = false;
+		}, 'json');
+	}
+}
+function generateLis(data, page){
+	var lis = '';
+	for(var k in data){
+		lis += '<li data-id="'+data[k].bookid+'" class="page-'+page+'">' +
+				'<div class="img-wrap">' +
+					'<img src="'+data[k].img_list+'" alt="" class="img" />' +
+					'<img src="/wx_h5/img/icons/book_corner.png" alt="" class="corner" />' +
+					'<img src="/wx_h5/img/icons/book_border.png" alt="" class="border" />' +
+				'</div>' +
+				'<p>'+data[k].name+'</p>' +
+			'</li>';
+	}
+	return lis;
+}
+</script>
+{include file="common/bottom" /}

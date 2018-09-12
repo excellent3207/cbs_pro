@@ -6,6 +6,8 @@
  */
 namespace app\common;
 
+use think\facade\Config;
+
 class AppRedis{
 	private $options = [];
 	private static $instance = null;
@@ -15,26 +17,43 @@ class AppRedis{
 	 * @param array $options 缓存参数
 	 * @access public
 	 */
-	public function __construct(array $options = [])
-	{
-		if (!extension_loaded('redis')) {
-			throw new \BadFunctionCallException('not support: redis');
-		}
-		if(!empty($options)){
-			$this->options = array_merge(config('cache'), $options);
-		}else{
-			$this->options = config('cache');
-		}
-		$func          = $this->options['persistent'] ? 'pconnect' : 'connect';
-		$this->handler = new \Redis;
-		$this->handler->$func($this->options['host'], $this->options['port'], $this->options['timeout']);
+	public function __construct(array $options = []){
 		
-		if ('' != $this->options['password']) {
-			$this->handler->auth($this->options['password']);
+		if (extension_loaded('redis')) {
+		    $this->handler = new \Redis;
+		    if(!empty($options)){
+		        $this->options = array_merge(config()['cache'], $options);
+		    }else{
+		        $this->options = config()['cache'];
+		    }
+		    if ($this->options['persistent']) {
+		        $this->handler->pconnect($this->options['host'], $this->options['port'], $this->options['timeout'], 'persistent_id_' . $this->options['select']);
+		    } else {
+		        $this->handler->connect($this->options['host'], $this->options['port'], $this->options['timeout']);
+		    }
+		    
+		    if ('' != $this->options['password']) {
+		        $this->handler->auth($this->options['password']);
+		    }
+		    
+		    /*if (0 != $this->options['select']) {
+		        $this->handler->select($this->options['select']);
+		    }*/
+		} elseif (class_exists('\Predis\Client')) {
+		    $params = [];
+		    foreach ($this->options as $key => $val) {
+		        if (in_array($key, ['aggregate', 'cluster', 'connections', 'exceptions', 'prefix', 'profile', 'replication'])) {
+		            $params[$key] = $val;
+		            unset($this->options[$key]);
+		        }
+		    }
+		    $this->handler = new \Predis\Client($this->options, $params);
+		} else {
+		    throw new \BadFunctionCallException('not support: redis');
 		}
 	}
 	
-	public static function instance():SyhRedis{
+	public static function instance():AppRedis{
 		if(is_null(self::$instance)){
 			self::$instance = new AppRedis();
 		}

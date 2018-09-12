@@ -126,6 +126,8 @@ Route::group('wx_h5', function(){
     });
     Route::group('book', function(){
         Route::get('index', 'wx_h5/Book/index');
+        Route::get('search', 'wx_h5/Book/search');
+        Route::get('list', 'wx_h5/Book/list');
     });
 })->middleware(Wxh5Auth::class);
 

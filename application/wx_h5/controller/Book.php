@@ -43,6 +43,7 @@ class Book{
             if($name){
                 array_push($cond, ['name', 'like', $name.'%']);
             }
+            $biz->recordSearch($name);
             $type = $this->request->get('type');
             if($type){
                 array_push($cond, ['type', '=', $type]);
@@ -62,10 +63,11 @@ class Book{
         try{
             $type = $this->request->get('type', 0);
             $biz = new BookBiz();
+            $searchKeys = $biz->getSearchRecord();
         }catch(\Exception $e){
             return view('common/error', ['msg' => $e->getMessage()]);
         }
-        return view('', ['type' => $type]);
+        return view('', ['type' => $type, 'searchKeys' => $searchKeys]);
     }
 }
 

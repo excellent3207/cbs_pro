@@ -5,8 +5,10 @@
 namespace app\wx_h5\biz;
 
 use app\common\model\BookModel;
+use app\common\AppRedis;
 
 class BookBiz{
+    const SEARCH_RECORD_KEY = 'search_record_';
     /**
      * 推荐列表
      * @param unknown $cond
@@ -37,6 +39,42 @@ class BookBiz{
             $book->img_list = formatUrl($book->img_list);
         }
         return $books;
+    }
+    /**
+     * 搜索记录
+     * @param unknown $searchKey
+     */
+    public function recordSearch($searchKey){
+        $user = config('user');
+        $redis = AppRedis::instance();
+        $keys = $redis->hget(self::SEARCH_RECORD_KEY, $user->id);
+        $refresh = false;
+        if(!empty($keys)){
+            if(!in_array($searchKey, $keys)){
+                if(count($keys) >= 6){
+                    array_pop($keys);
+                }
+                array_unshift($keys, $searchKey);
+                $refresh = true;
+            }
+        }else{
+            $keys = [$searchKey];
+            $refresh = true;
+        }
+        if($refresh){
+            $redis->hset(self::SEARCH_RECORD_KEY, $user->id, json_encode($keys));
+        }
+    }
+    /**
+     * 搜索记录列表
+     * @return array|\app\common\不存在返回空列表
+     */
+    public function getSearchRecord(){
+        $user = config('user');
+        $redis = AppRedis::instance();
+        $keys = $redis->hget(self::SEARCH_RECORD_KEY, $user->id);
+        if(empty($keys)) $keys = [];
+        return $keys;
     }
 }
 
