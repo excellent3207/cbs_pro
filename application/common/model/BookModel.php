@@ -59,7 +59,7 @@ class BookModel extends Model{
      */
     public function getPublishtimeAttr($value){
         if(!$value) return '';
-        return date('Y/m/d', $value);
+        return date('Y年m月d日', $value);
     }
     /**
      * 图书所属分类关联

@@ -21,9 +21,6 @@ class BookBiz{
      */
     public function get($id){
         $res = BookModel::get($id)->hideField()->toArray();
-        if(!empty($res)){
-            $res['publishtime'] = date('Y-m-d H:i', $res['publishtime']);
-        }
         return $res;
     }
     /**
