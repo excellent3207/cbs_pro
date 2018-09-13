@@ -212,7 +212,7 @@ var pptEditor, //ppt
 	standardEditor,//课程标准
 	paperEditor;//试卷
 $(function(){
-	$(".datetime").datetimepicker({autoclose: true});
+	$(".datetime").datetimepicker({autoclose: true,dateFormat: "yy-mm-dd"});
 	$('#btn-submit').on('click', function(){
 		if(!validate.validate()) return;
 		KindEditor.sync('#ppt');
