@@ -136,7 +136,7 @@
 					<td><img style="width:50px;" src="{:app\\common\\AppTool::formatUrl($item.img_list)}" alt="" /></td>
 					<td class="is_show cursor-pointer">{$item.show_time?'是':'否'}</td>
 					<td class="is_recommend cursor-pointer">{$item.recommend_time?'是':'否'}</td>
-					<td>{notempty name="item.publishtime"}{$item.publishtime|date="Y-m-d H:i:s"}{/notempty}</td>
+					<td>{$item.publishtime}</td>
 					<td>{$item.description}</td>
 					<td class="center">
 						{if condition="checkAuth('book-save')"}
