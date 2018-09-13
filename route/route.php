@@ -57,7 +57,7 @@ Route::group('admin', function(){
         Route::post('filests', 'admin/Media/fileSts');
         Route::post('editorupload', 'admin/Media/editorUpload');
     });
-    Route::group('book', function(){
+        Route::group('book', function(){
         Route::get('list', 'admin/Book/list')->middleware(AdminNav::class, 'book-list');
         Route::get('save', 'admin/Book/save')->middleware(AdminNav::class, 'book-save');
         Route::post('save', 'admin/Book/save')->middleware(AdminNav::class, 'book-save');
@@ -107,6 +107,7 @@ Route::group('wx_h5', function(){
     });
     Route::group('draft', function(){
         Route::get('recommend', 'wx_h5/Draft/recommend');
+        Route::get('get', 'wx_h5/Draft/get');
     });
     Route::group('user', function(){
         Route::get('mybooks', 'wx_h5/User/myBooks');
@@ -128,6 +129,7 @@ Route::group('wx_h5', function(){
         Route::get('index', 'wx_h5/Book/index');
         Route::get('search', 'wx_h5/Book/search');
         Route::get('list', 'wx_h5/Book/list');
+        Route::get('get', 'wx_h5/Book/get');
     });
 })->middleware(Wxh5Auth::class);
 

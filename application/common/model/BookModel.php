@@ -78,5 +78,12 @@ class BookModel extends Model{
         $status = [1=>'本科精品',2=>'高职高专',0=>''];
         return $status[$data['type']];
     }
+    /**
+     * 音频列表
+     * @return \think\model\relation\BelongsToMany
+     */
+    public function videos(){
+        return $this->hasMany('BookVideoModel', 'bookid', 'id');
+    }
 }
 ?>

@@ -6,6 +6,7 @@ namespace app\wx_h5\biz;
 
 use app\common\model\BookModel;
 use app\common\AppRedis;
+use app\common\model\BookVideoModel;
 
 class BookBiz{
     const SEARCH_RECORD_KEY = 'search_record_';
@@ -39,6 +40,22 @@ class BookBiz{
             $book->img_list = formatUrl($book->img_list);
         }
         return $books;
+    }
+    /**
+     * 根据id获取图书信息
+     * @param unknown $id
+     * @return \app\common\model\BookModel
+     */
+    public function get($id){
+        $res = BookModel::get($id)->hideField();
+        if(!empty($res)){
+            $res->videos = $res->videos()->where([['show_time', '<>', 0]])->select()->hidden(BookVideoModel::hiddenFields());
+            $res->img_list = formatUrl($res->img_list);
+            $res->img_info = formatUrl($res->img_info);
+            $res->ppt_source = formatUrl($res->ppt_source);
+            $res->paper_source = formatUrl($res->paper_source);
+        }
+        return $res;
     }
     /**
      * 搜索记录

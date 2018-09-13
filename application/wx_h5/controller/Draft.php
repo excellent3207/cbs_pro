@@ -32,5 +32,19 @@ class Draft{
         }
         return json($ret);
     }
+    /**
+     * 文稿详情
+     * @return \think\response\View
+     */
+    public function get(){
+        try{
+            $id = $this->request->get('id');
+            $biz = new DraftBiz();
+            $draft = $biz->get($id);
+        }catch(\Exception $e){
+            return view('common/error', ['msg' => $e->getMessage()]);
+        }
+        return view('', ['draft' => $draft]);
+    }
 }
 

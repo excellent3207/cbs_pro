@@ -28,6 +28,20 @@ class Book{
         return view('', ['type' => $type]);
     }
     /**
+     * 图书详情
+     * @return \think\response\View
+     */
+    public function get(){
+        try{
+            $id = $this->request->get('id');
+            $biz = new BookBiz();
+            $book = $biz->get($id);
+        }catch(\Exception $e){
+            return view('common/error', ['msg' => $e->getMessage()]);
+        }
+        return view('', ['book' => $book]);
+    }
+    /**
      * 图书列表
      * @return \think\response\View
      */

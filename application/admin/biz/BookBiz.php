@@ -20,7 +20,7 @@ class BookBiz{
      * @return \app\common\model\BookModel
      */
     public function get($id){
-        $res = BookModel::get($id)->hideField()->toArray();
+        $res = BookModel::get($id)->hideField();
         return $res;
     }
     /**
