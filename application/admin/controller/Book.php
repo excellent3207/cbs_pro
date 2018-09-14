@@ -222,7 +222,8 @@ class Book{
             echo $e->getMessage();exit;
         }
         $pagination = new Pagination($page, $pageSize, $biz->videoCount($bookid, $cond));
-        return view('', ['list' => $list, 'params' => $params, 'pagination' => $pagination, 'prePage' => getPageHistory('bookList')]);
+        return view('', ['list' => $list, 'params' => $params, 'pagination' => $pagination, 
+            'prePage' => getPageHistory('bookList'), 'bookid' => $bookid]);
     }
     /**
      * 编辑视频
@@ -238,7 +239,7 @@ class Book{
             }else{
                 $biz = new BookBiz();
                 try{
-                    $biz->save($data);
+                    $biz->saveVideo($data);
                 }catch(\Exception $e){
                     $error = $e->getMessage();
                 }
@@ -247,16 +248,19 @@ class Book{
                 $data['error'] = $error;
                 return redirect('book/savevideo')->with('book_video_save_data', $data);
             }else{
-                return redirect(getPageHistory('bookList'));
+                return redirect(getPageHistory('bookVideoList'));
             }
         }
+        $bookid = $this->request->get('bookid');
         $biz = new BookBiz();
         $id = $this->request->get('id');
         $video = session('book_video_save_data');
         if(empty($video) && $id){
             $video = $biz->getVideo($id);
+        }else{
+            $video['bookid'] = $bookid;
         }
-        return view('', ['data' => $video, 'prePage' => getPageHistory('bookList')]);
+        return view('', ['data' => $video, 'prePage' => getPageHistory('bookVideoList'), 'bookList' => getPageHistory('bookList')]);
     }
     /**
      * 删除视频

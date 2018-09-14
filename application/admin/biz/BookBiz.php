@@ -150,6 +150,24 @@ class BookBiz{
         return $model->videos()->where($cond)->count('id');
     }
     /**
+     * 编辑
+     * @param unknown $data
+     * @throws AppException
+     * @return boolean
+     */
+    public function saveVideo($data){
+        $model = new BookVideoModel();
+        if(isset($data['id']) && $data['id']){
+            $res = $model->allowField(TRUE)->save($data, ['id' => $data['id']]);
+            if(!$res) throw new AppException('编辑视频失败');
+            return $res;
+        }else{
+            $res = $model->allowField(TRUE)->save($data);
+            if(!$res) throw new AppException('创建视频失败');
+            return $model->id;
+        }
+    }
+    /**
      * 删除视频
      * @param unknown $navid
      * @return unknown

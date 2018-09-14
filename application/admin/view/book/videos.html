@@ -41,7 +41,7 @@
 	</div>
 	<div class="con-wrap">
 		<div class="search-wrap">
-			{if condition="checkAuth('book-video-save')"}<a href="/admin/book/savevideo" class="btn btn-info pull-left" id="btn-add">添加</a>{/if}
+			{if condition="checkAuth('book-video-save')"}<a href="/admin/book/savevideo?bookid={$bookid}" class="btn btn-info pull-left" id="btn-add">添加</a>{/if}
 			{if condition="checkAuth('book-video-del')"}<a class="btn btn-default pull-right" id="btn-del">删除</a>{/if}
 		</div>
 		<table class="table table-bordered table-hover" id="main-table" >
@@ -50,6 +50,7 @@
 					<th><input type="checkbox" data-id="0" class="check-all" /></th>
 					<th>编号</th>
 					<th>标题</th>
+					<th>前端展示</th>
 					<th>创建时间</th>
 					<th width="120">操作</th>
 				</tr>
@@ -60,6 +61,7 @@
 					<td><input type="checkbox" data-id="{$item.id}" class="check" /></td>
 					<td>{$item.id}</td>
 					<td>{$item.title}</td>
+					<td class="is_show cursor-pointer">{$item.show_time?'是':'否'}</td>
 					<td>{$item.create_time}</td>
 					<td class="center">
 						{if condition="checkAuth('book-save')"}
