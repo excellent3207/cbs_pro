@@ -21,7 +21,10 @@ class BookVideoModel extends Model{
         return $this->hidden(self::hiddenFields());
     }
     public static function hiddenFields(){
-        return ['delete_time','create_time','update_time'];
+        return ['delete_time','update_time'];
+    }
+    public function getCreateTimeAttr($value, $data){
+        return $value?date('Y-m-d H:i:s'): '';
     }
 }
 ?>

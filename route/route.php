@@ -57,21 +57,27 @@ Route::group('admin', function(){
         Route::post('filests', 'admin/Media/fileSts');
         Route::post('editorupload', 'admin/Media/editorUpload');
     });
-        Route::group('book', function(){
+    Route::group('book', function(){
         Route::get('list', 'admin/Book/list')->middleware(AdminNav::class, 'book-list');
         Route::get('save', 'admin/Book/save')->middleware(AdminNav::class, 'book-save');
-        Route::post('save', 'admin/Book/save')->middleware(AdminNav::class, 'book-save');
+        Route::post('save', 'admin/Book/save');
         Route::post('del', 'admin/Book/del');
         Route::post('doshow', 'admin/Book/doShow');
         Route::post('cancelshow', 'admin/Book/cancelShow');
         Route::post('dorecomm', 'admin/Book/doRecomm');
         Route::post('cancelrecomm', 'admin/Book/cancelRecomm');
         Route::post('addcate', 'admin/Book/addCate');
+        Route::get('videos', 'admin/Book/videos')->middleware(AdminNav::class, 'book-video-list');
+        Route::get('savevideo', 'admin/Book/saveVideo')->middleware(AdminNav::class, 'book-video-save');
+        Route::post('savevideo', 'admin/Book/saveVideo');
+        Route::post('delvideo', 'admin/Book/delVideo');
+        Route::post('dovideoshow', 'admin/Book/doVideoShow');
+        Route::post('cancelvideoshow', 'admin/Book/cancelVideoShow');
     });
     Route::group('bookcate', function(){
         Route::get('list', 'admin/BookCate/list')->middleware(AdminNav::class, 'bookcate-list');
         Route::get('save', 'admin/BookCate/save')->middleware(AdminNav::class, 'bookcate-save');
-        Route::post('save', 'admin/BookCate/save')->middleware(AdminNav::class, 'bookcate-save');
+        Route::post('save', 'admin/BookCate/save');
         Route::post('del', 'admin/BookCate/del');
         Route::post('editorder', 'admin/BookCate/editOrder');
         Route::get('listselect', 'admin/BookCate/listSelect');

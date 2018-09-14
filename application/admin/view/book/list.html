@@ -143,6 +143,10 @@
 						<a class="btn btn-primary btn-xs" href="/admin/book/save?id={$item.id}" title="编辑">
 							<i class="fa fa-pencil"></i>
 						</a>{/if}
+						{if condition="checkAuth('book-video-list')"}
+						<a class="btn btn-primary btn-xs" href="/admin/book/videos?bookid={$item.id}" title="编辑">
+							<i class="fa fa-align-justify"></i>
+						</a>{/if}
 					</td>
 				</tr>
 				{/foreach}

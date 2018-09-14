@@ -11,6 +11,7 @@ use app\admin\biz\BookBiz;
 use app\common\validate\BookValidate;
 use app\common\Pagination;
 use app\admin\biz\BookCateBiz;
+use app\common\validate\BookVideoValidate;
 
 class Book{
     protected $request;
@@ -65,7 +66,7 @@ class Book{
         return view('', ['list' => $list, 'params' => $params, 'pagination' => $pagination, 'cates' => $cates]);
     }
     /**
-     * 编辑用户
+     * 编辑
      * @return \think\response\Redirect|unknown
      */
     public function save(){
@@ -99,7 +100,7 @@ class Book{
         return view('', ['data' => $book, 'prePage' => getPageHistory('bookList')]);
     }
     /**
-     * 删除导航
+     * 删除
      * @return \think\response\Json
      */
     public function del(){
@@ -189,6 +190,116 @@ class Book{
         $biz = new BookBiz();
         try{
             $ret['data'] = $biz->addCate($bookid, $cateid);
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
+    }
+    /**
+     * 书籍视频列表
+     * @return \think\response\View
+     */
+    public function videos(){
+        setPageHistory(['bookVideoList' => \think\facade\Request::url()], false);
+        $params = $this->request->get();
+        $biz = new BookBiz();
+        $cond = [];
+        $cateid = 0;
+        $bookid = $this->request->get('bookid');
+        if(isset($params['id']) && $params['id']){
+            array_push($cond, ['id', '=', $params['id']]);
+        }
+        if(isset($params['is_show']) && $params['is_show'] != -1){
+            $c = $params['is_show'] ? '<>' : '=';
+            array_push($cond, ['show_time', $c, 0]);
+        }
+        $page = $this->request->get('page', 1);
+        $pageSize = 10;
+        try{
+            $list = $biz->videos($bookid, $cond, $page, $pageSize);
+        }catch(\Exception $e){
+            echo $e->getMessage();exit;
+        }
+        $pagination = new Pagination($page, $pageSize, $biz->videoCount($bookid, $cond));
+        return view('', ['list' => $list, 'params' => $params, 'pagination' => $pagination, 'prePage' => getPageHistory('bookList')]);
+    }
+    /**
+     * 编辑视频
+     * @return \think\response\Redirect|unknown
+     */
+    public function saveVideo(){
+        $data = $this->request->post();
+        if(!empty($data)){
+            $validate = new BookVideoValidate();
+            $error = '';
+            if(!$validate->check($data, [], 'save')){
+                $error = $validate->getError();
+            }else{
+                $biz = new BookBiz();
+                try{
+                    $biz->save($data);
+                }catch(\Exception $e){
+                    $error = $e->getMessage();
+                }
+            }
+            if($error){
+                $data['error'] = $error;
+                return redirect('book/savevideo')->with('book_video_save_data', $data);
+            }else{
+                return redirect(getPageHistory('bookList'));
+            }
+        }
+        $biz = new BookBiz();
+        $id = $this->request->get('id');
+        $video = session('book_video_save_data');
+        if(empty($video) && $id){
+            $video = $biz->getVideo($id);
+        }
+        return view('', ['data' => $video, 'prePage' => getPageHistory('bookList')]);
+    }
+    /**
+     * 删除视频
+     * @return \think\response\Json
+     */
+    public function delVideo(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        $ids = $this->request->post('ids');
+        $biz = new BookBiz();
+        try{
+            $ret['data'] = $biz->delVideo($ids);
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
+    }
+    /**
+     * 前端展示视频
+     * @return \think\response\Json
+     */
+    public function doVideoShow(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        $id = $this->request->post('id');
+        $biz = new BookBiz();
+        try{
+            $ret['data'] = $biz->doVideoShow($id);
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
+    }
+    /**
+     * 取消前端展示视频
+     * @return \think\response\Json
+     */
+    public function cancelVideoShow(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        $id = $this->request->post('id');
+        $biz = new BookBiz();
+        try{
+            $ret['data'] = $biz->cancelVideoShow($id);
         }catch(\Exception $e){
             $ret['errorcode'] = 1;
             $ret['msg'] = $e->getMessage();
