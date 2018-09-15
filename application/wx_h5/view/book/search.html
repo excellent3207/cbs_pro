@@ -229,7 +229,7 @@ function getNexPageData(){
 				var lis = generateLis(data, page);
 				$('.wrap-book-search .list').append(lis);
 				$('.wrap-book-search .list li.page-' + page).on('tap', function () {
-	                console.log('test');
+					location.href = '/wx_h5/book/get?id=' + $(this).data('id');
 	            });
 				loadedImg('.wrap-book-search .list .page-' + page, function(){
 					mainScroll.refresh();

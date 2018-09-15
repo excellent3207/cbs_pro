@@ -242,7 +242,7 @@ function getNexPageData(){
 				var lis = generateLis(data, page);
 				$('.wrap-book-index .list').append(lis);
 				$('.wrap-book-index .list li.page-' + page).on('tap', function () {
-	                console.log('test');
+					location.href = '/wx_h5/book/get?id=' + $(this).data('id');
 	            });
 				loadedImg('.wrap-book-index .list .page-' + page, function(){
 					mainScroll.refresh();
@@ -256,12 +256,11 @@ function getNexPageData(){
 	}
 }
 function generateLis(data, page){
-	console.log(data);
 	var lis = '';
 	if(data.length <= 0) return lis;
 	for(var i = 0; i < data.length; i++){
 		var item = data[i];
-		lis +=  '<li class="clearFix page-'+page+'">'+
+		lis +=  '<li class="clearFix page-'+page+'" data-id="'+data.id+'">'+
 							'<div class="img-wrap">'+
 						'<img src="'+item.img_list+'" alt="" class="img-list" />'+
 						'<img src="/wx_h5/img/icons/book_corner.png" alt="" class="corner" />'+
