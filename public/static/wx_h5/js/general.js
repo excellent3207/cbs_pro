@@ -22,11 +22,68 @@ function getFormData(ele){
 function checkPhone(phone){
 	return /^[1][3,4,5,6,7,8][0-9]{9}$/i.test(phone);
 }
-function showAlert(){
-	
+function showAlert(msg, callback){
+	if(msg instanceof Array){
+		if(msg.length == 2){
+			msg = msg[0] + '<br/>' + msg[1];
+		}else{
+			msg = msg[0];
+		}
+	}
+	if($('#alert-wrap').length > 0){
+		$('#alert-wrap').remove();
+	}
+	var html = '<div id="toast-wrap"><div class="toast"><i></i><span>'+msg+'</span></div></div>';
+	$('body').append(html);
 }
-function showToast(msg){
-	alert(msg);
+function showToast(msg, time, delay){
+	if(msg instanceof Array){
+		if(msg.length == 2){
+			msg = msg[0] + '<br/>' + msg[1];
+		}else{
+			msg = msg[0];
+		}
+	}
+	if(!time) time=1000;
+	if(!delay) delay = 500;
+	if($('#toast-wrap').length > 0){
+		$('#toast-wrap').remove();
+	}
+	var html = '<div id="alert-wrap"><div class="toast"><i></i><span>'+msg+'</span></div></div>';
+	$('body').append(html);
+	var tranS = time + 'ms all ease '+delay+'ms';
+	$('#toast-wrap .toast').css({'opacity': 1, 'transition':tranS, '-webkit-transition':tranS});
+	setTimeout(function(){
+		$('#toast-wrap .toast').css('opacity', 0);
+	}, 50);
+	$('#toast-wrap .toast')[0].addEventListener("webkitTransitionEnd", function(){
+		$('#toast-wrap').remove();
+	});
+	$('#toast-wrap .toast')[0].addEventListener("transitionEnd", function(){
+		$('#toast-wrap').remove();
+	});
+}
+function showConfirm(msg, yesCallback, cancelCallback){
+	if(msg instanceof Array){
+		if(msg.length == 2){
+			msg = msg[0] + '<br/>' + msg[1];
+		}else{
+			msg = msg[0];
+		}
+	}
+	if($('#confirm-wrap').length > 0){
+		$('#confirm-wrap').remove();
+	}
+	var html = '<div id="confirm-wrap"><i></i><div class="confirm"><span>'+msg+'</span><div class="btns clearFix"><div class="yes">确认</div><div class="cancel">取消</div></div></div></div>';
+	$('body').append(html);
+	$('#confirm-wrap .confirm .btns .yes').on('click', function(){
+		yesCallback();
+		$('#confirm-wrap').remove();
+	});
+	$('#confirm-wrap .confirm .btns .cancel').on('click', function(){
+		cancelCallback();
+		$('#confirm-wrap').remove();
+	});
 }
 var imgdefereds;
 function loadedImg(ele, callback){
