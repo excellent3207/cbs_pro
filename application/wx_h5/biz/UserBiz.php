@@ -13,10 +13,12 @@ class UserBiz{
     /**
      * 我的书架
      */
-    public function myBooks($cond, $order, $page, $pageSize){
+    public function myBooks($cond, $page, $pageSize){
         $user = config('user');
+        $hiddenFields = BookModel::hiddenFields();
+        array_push($hiddenFields, 'ppt_source', 'paper_source');
         $books = $user->books()->where($cond)->where([['show_time', '<>', 0]])
-            ->page($page, $pageSize)->order($order)->hidden(BookModel::hiddenFields())->select();
+            ->page($page, $pageSize)->order(['pivot.add_time'=> 'desc'])->hidden($hiddenFields)->select();
         foreach($books as &$book){
             $book->img_list = formatUrl($book->img_list);
         }
@@ -28,7 +30,7 @@ class UserBiz{
      */
     public function putInShelf($bookid){
         $user = config('user');
-        return $user->books()->attach($bookid);
+        return $user->books()->attach($bookid, ['add_time' => $_SERVER['REQUEST_TIME']]);
     }
     /**
      * 判断图书是否加入书架
@@ -60,14 +62,15 @@ class UserBiz{
     /**
      * 我收藏的文稿
      * @param unknown $cond
-     * @param unknown $order
      * @param unknown $page
      * @param unknown $pageSize
      */
-    public function myDrafts($cond, $order, $page, $pageSize){
+    public function myDrafts($cond, $page, $pageSize){
         $user = config('user');
-        $drafts = $user->drafts()->where([['show_time', '<>', 0]])
-            ->page($page, $pageSize)->order($order)->hidden(DraftModel::hiddenFields())->select();
+        $hiddenFields = DraftModel::hiddenFields();
+        array_push($hiddenFields, 'content');
+        $drafts = $user->drafts()->where([['show_time', '<>', 0]])->order(['pivot.add_time'=> 'desc'])
+            ->page($page, $pageSize)->hidden($hiddenFields)->select();
         foreach($drafts as &$draft){
             $draft->img_list = formatUrl($draft->img_list);
         }
@@ -90,7 +93,7 @@ class UserBiz{
      */
     public function doCollectDraft($draftid){
         $user = config('user');
-        return $user->drafts()->attach($draftid);
+        return $user->drafts()->attach($draftid, ['add_time' => $_SERVER['REQUEST_TIME']]);
     }
     /**
      * 取消收藏文稿

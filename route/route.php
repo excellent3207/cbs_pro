@@ -130,6 +130,8 @@ Route::group('wx_h5', function(){
         Route::rule('addrselectsave', 'wx_h5/User/addrSelectSave');
         Route::post('docollectdraft', 'wx_h5/User/doCollectDraft');
         Route::post('cancelcollectdraft', 'wx_h5/User/cancelCollectDraft');
+        Route::get('mydraft', 'wx_h5/User/myDraftView');
+        Route::post('mydraft', 'wx_h5/User/myDraft');
     });
     Route::group('location', function(){
         Route::post('provinces', 'wx_h5/Location/provinces');

@@ -16,8 +16,9 @@ class DraftBiz{
      * @return \app\common\model\DraftModel
      */
     public function get($id){
-        $res = DraftModel::get($id)->hideField();
+        $res = DraftModel::get($id);
         if(!empty($res)){
+            $res->hideField();
             $res->show_time = date('Y-m-d', $res->show_time);
             $userBiz = new UserBiz();
             $res->is_collect = $userBiz->checkDraftCollect($res->id);

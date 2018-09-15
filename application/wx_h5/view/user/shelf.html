@@ -129,16 +129,7 @@ body{background:#f6f6f6;}
 	<input type="text" placeholder="搜索" id="search-inp" />
 	<div class="search-btn">搜索</div>
 </div>
-<ul class="list clearFix" style="display:none;">
-	<li>
-		<div class="img-wrap">
-			<img src="https://cbs-resource.oss-cn-beijing.aliyuncs.com/img/20180905/154053bRV2HC.png" alt="" class="img" />
-			<img src="/wx_h5/img/icons/book_corner.png" alt="" class="corner" />
-			<img src="/wx_h5/img/icons/book_border.png" alt="" class="border" />
-		</div>
-		<p>创意的智慧创意的智慧创意的智慧</p>
-	</li>
-</ul>
+<ul class="list clearFix" style="display:none;"></ul>
 </div>
 </div>
 <div class="empty" style="display:none;">
@@ -199,12 +190,14 @@ body{background:#f6f6f6;}
 						$('.search').show();
 						$('.list').show();
 						$('.list').append(generateLis(list, page));
+						$('.list .page-' + page).on('tap', function () {
+			                location.href = '/wx_h5/book/get?id=' + $(this).data('id');
+			            });
+						loadedImg('.list .page-' + page, function(){
+							mainScroll.refresh();
+						});
+						curPage++;
 					}
-					loadedImg('.list .page-' + page, function(){
-						console.log('test');
-						mainScroll.refresh();
-					});
-					curPage++;
 				}else{
 					showToast(res.msg);
 				}

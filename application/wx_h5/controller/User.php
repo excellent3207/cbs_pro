@@ -104,14 +104,13 @@ class User{
         try{
             $biz = new UserBiz();
             $cond = [];
-            $order = [];
             $page = $this->request->get('page', 1);
             $pageSize = 12;
             $name = $this->request->get('name');
             if($name){
                 array_push($cond, ['name', 'like', $name.'%']);
             }
-            $ret['data'] = $biz->myBooks($cond, $order, $page, $pageSize);
+            $ret['data'] = $biz->myBooks($cond, $page, $pageSize);
         }catch(\Exception $e){
             $ret['errorcode'] = 1;
             $ret['msg'] = $e->getMessage();
@@ -255,6 +254,30 @@ class User{
             $biz = new UserBiz();
             $draftid = $this->request->post('draftid');
             $ret['data'] = $biz->cancelCollectDraft($draftid);
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
+    }
+    /**
+     * 我的收藏文稿
+     * @return \think\response\View
+     */
+    public function myDraftView(){
+        return view('', []);
+    }
+    /**
+     * 我的收藏文稿（json）
+     * @return \think\response\View
+     */
+    public function myDraft(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        try{
+            $biz = new UserBiz();
+            $page = $this->request->post('page');
+            $pageSize = 10;
+            $ret['data'] = $biz->myDrafts([], $page, $pageSize);
         }catch(\Exception $e){
             $ret['errorcode'] = 1;
             $ret['msg'] = $e->getMessage();
