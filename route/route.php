@@ -125,6 +125,11 @@ Route::group('wx_h5', function(){
         Route::get('addr', 'wx_h5/User/addr');
         Route::rule('addrsave', 'wx_h5/User/addrSave');
         Route::post('addrdel', 'wx_h5/User/addrDel');
+        Route::post('putinshelf', 'wx_h5/User/putInShelf');
+        Route::get('addrselect', 'wx_h5/User/addrSelect');
+        Route::rule('addrselectsave', 'wx_h5/User/addrSelectSave');
+        Route::post('docollectdraft', 'wx_h5/User/doCollectDraft');
+        Route::post('cancelcollectdraft', 'wx_h5/User/cancelCollectDraft');
     });
     Route::group('location', function(){
         Route::post('provinces', 'wx_h5/Location/provinces');

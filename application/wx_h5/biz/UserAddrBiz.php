@@ -6,6 +6,7 @@ namespace app\wx_h5\biz;
 
 use app\common\model\UserAddrModel;
 use think\Db;
+use app\common\model\UserDemoChapterModel;
 
 class UserAddrBiz{
     /**
@@ -56,6 +57,14 @@ class UserAddrBiz{
             }
             if(isset($data['isdefault']) && $data['isdefault']){
                 UserAddrModel::update(['isdefault' => 0], [['id', '<>', $model->id]]);
+            }
+            if(isset($data['bookid']) && $data['bookid']){
+                $demoChapter = new UserDemoChapterModel();
+                $data = ['userid' => $data['userid'], 'bookid' => $data['bookid'], 'addrid' => $model->id];
+                $chapter = $demoChapter->get($data);
+                if(!empty($chapter)) throw new \Exception('已提交过申请');
+                $demoChapter->status = 1;
+                $demoChapter->save();
             }
             Db::commit();
             return $res;

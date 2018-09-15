@@ -1,9 +1,100 @@
-{include file="common/top" title="文稿详情" keywords="" wrapclass="wrap-book-get" /}
+{include file="common/top" title="文稿详情" keywords="" wrapclass="wrap-draft-get" /}
 <style>
 body{background:#f6f6f6;}
+.wrap-draft-get .con{
+	width:34.5rem;
+	margin:1.5rem;
+	position:relative;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	padding:0 2.2rem 2.2rem;
+	background:#fff;
+}
+.wrap-draft-get .con .corner{
+	position:absolute;
+	width:3.5rem;
+	height:3.5rem;
+	right:0;
+	top:0;
+	
+}
+.wrap-draft-get .con h1{
+	font-weight:normal;
+	font-size:1.7rem;
+	color:#63B075;
+	text-align:center;
+	line-height:1.7rem;
+	padding:2.5rem 0 1rem;
+}
+.wrap-draft-get .con .other{
+	font-size:1.3rem;
+	color:#999;
+	line-height:2.4rem;
+	padding-bottom:0.1rem;
+	border-bottom:0.5px solid #eee;
+}
+.wrap-draft-get .con .other span{
+	float:left;
+}
+.wrap-draft-get .con .other i{
+	float:left;
+	font-style:normal;
+	margin-left:2.1rem;
+}
+.wrap-draft-get .con .other img{
+	float:right;
+	width:2.4rem;
+}
+.wrap-draft-get .con .content{
+	padding:1.5rem 0;
+	font-size:16px;
+}
+.wrap-draft-get .con .content img{
+	display:inline-block;
+}
 </style>
-
+<div class="con">
+	<img src="/wx_h5/img/icons/corder_draft.png" alt="" class="corner" />
+	<h1>{$draft.title}</h1>
+	<div class="other clearFix">
+		<span class="author">作者：{$draft.author}</span>
+		<i>{$draft.show_time}</i>
+		<img src="/wx_h5/img/icons/draft_info_{if condition='!$draft.is_collect'}no{/if}collect.png" 
+			alt="" data-check="{$draft.is_collect ? '1' : '0'}" />
+	</div>
+	<div class="content">
+		{$draft.content|raw}
+	</div>
+</div>
 <script>
-
+var draftid = {$draft.id};
+var inOpt = false;
+$('.other img').on('click', function(){
+	if(inOpt) return;
+	inOpt = true;
+	var url = '/wx_h5/user/docollectdraft';
+	var status = 0;
+	var img = '/wx_h5/img/icons/draft_info_collect.png';
+	switch(parseInt($(this).data('check'))){
+	case 0:
+		status = 1;
+		break;
+	case 1:
+		img = '/wx_h5/img/icons/draft_info_nocollect.png';
+		url = '/wx_h5/user/cancelcollectdraft';
+		status = 0;
+		break;
+	}
+	$.post(url, {draftid:draftid}, function(res){
+		if(res.errorcode == 0){
+			var ele = $('.other img');
+			ele.data('check', status);
+			ele.attr('src', img);
+		}else{
+			showToast(res.msg);
+		}
+		inOpt = false;
+	});
+});
 </script>
 {include file="common/bottom" /}

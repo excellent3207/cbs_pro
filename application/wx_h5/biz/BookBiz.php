@@ -54,6 +54,8 @@ class BookBiz{
             $res->img_info = formatUrl($res->img_info);
             $res->ppt_source = formatUrl($res->ppt_source);
             $res->paper_source = formatUrl($res->paper_source);
+            $userBiz = new UserBiz();
+            $res->in_shelf = $userBiz->checkInShelf($res->id);
         }
         return $res;
     }

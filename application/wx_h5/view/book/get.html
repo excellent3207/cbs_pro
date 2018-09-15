@@ -153,6 +153,31 @@ html, body {
 	position:relative;
 	z-index:1000;
 }
+.wrap-book-get .shelf-btn{
+	position:fixed;
+	bottom:1rem;
+	left:0;
+	width:100%;
+	height:4.4rem;
+	display:flex;
+	display:-webkit-flex;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	padding:0 3rem;
+	justify-content:space-between;
+	z-index:1000;
+}
+.wrap-book-get .shelf-btn li{
+	width:14.5rem;
+	height:4.4rem;
+	border-radius:4.4rem;
+	border:0.5px solid #63B075;
+	color:#63B075;
+	font-size:1.5rem;
+	line-height:4.4rem;
+	text-align:center;
+	background:#fff;
+}
 </style>
 <div class="player">
 	
@@ -169,6 +194,10 @@ html, body {
 	<i></i>
 	<img src="/wx_h5/img/icons/download.png" alt="" />
 </div>
+<ul class="shelf-btn clearFix">
+	<li>放入书架</li>
+	<li>申请样书</li>
+</ul>
 <div class="swiper-container">
 	<div class="swiper-wrapper">
 		<div class="swiper-slide">
@@ -238,6 +267,7 @@ html, body {
 var pptSourceUrl = '{$book.ppt_source}';
 var paperSourceUrl = '{$book.paper_source}';
 var curUrl = '';
+var bookid = {$book.id};
 var swiper = new Swiper('.swiper-container',{
 	on:{
 		slideChange:function(){
@@ -270,6 +300,23 @@ $('.top-nav li').on('click', function(){
 	$(this).addClass('cur');
 	swiper.slideTo(index, 100*index, false);
 	showNavCon(index);
+});
+$('.shelf-btn li').on('click', function(){
+	var index = $(this).index();
+	switch(index){
+	case 0://加入书架
+		$.post('/wx_h5/user/putinshelf', {bookid:bookid}, function(res){
+			if(res.errorcode == 0){
+				showToast('已加入到书架');
+			}else{
+				showToast(res.msg);
+			}
+		});
+		break;
+	case 1://申请样书
+		location.href = '/wx_h5/user/addrselect?bookid=' + bookid;
+		break;
+	}
 });
 function showNavCon(index){
 	if(index == 1){

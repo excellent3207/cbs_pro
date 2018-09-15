@@ -1,0 +1,75 @@
+{include file="common/top" title="选择地址" keywords="" wrapclass="wrap-getdemochapter" /}
+<style>
+body{background:#f6f6f6;}
+.wrap-getdemochapter{
+	padding-bottom:12.5rem;
+}
+.wrap-getdemochapter .item{
+	border-top:0.5px solid #E6E6E6;
+	margin-top:1.5rem;
+	background:#fff;
+}
+.wrap-getdemochapter .item li{
+	border-bottom:0.5px solid #E6E6E6;
+	padding:0 1.5rem;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+}
+.wrap-getdemochapter .item li.name{
+	line-height:4.5rem;
+	font-size:1.6rem;
+	display:flex;
+	display:-webkit-flex;
+	justify-content:space-between;
+}
+.wrap-getdemochapter .item li.name .left{
+	color:#333;
+	font-size:1.6rem;
+}
+.wrap-getdemochapter .item li.name .right{
+	color:#666;
+	font-size:1.5rem;
+	text-align:right;
+}
+.wrap-getdemochapter .item li.addr{
+	font-size:1.6rem;
+	line-height:1.8rem;
+	color:#333;
+	padding:1.4rem 1.5rem;
+}
+.wrap-getdemochapter .add-addr{
+	background:#63B075;
+	color:#fff;
+	font-size:1.5rem;
+	width:17rem;
+	height:4.4rem;
+	line-height:4.4rem;
+	position:fixed;
+	bottom:4.4rem;
+	left:50%;
+	margin-left:-8.5rem;
+	text-align:center;
+	border-radius:2.2rem;
+}
+</style>
+{foreach name="list" item="item"}
+<ul class="item" data-id="{$item.id}">
+	<li class="name">
+		<div class="left">{$item.name}</div>
+		<div class="right">{$item.phone}</div>
+	</li>
+	<li class="addr">
+		{$item.province}{$item.city}{$item.addr}
+	</li>
+</ul>
+{/foreach}
+<div class="add-addr">新增地址</div>
+<script>
+	$('.item').on('click', function(){
+		location.href = '/wx_h5/user/addrselectsave?bookid={$bookid}&addrid=' + $(this).data('id');
+	});
+	$('.add-addr').on('click', function(){
+		location.href = '/wx_h5/user/addrselectsave?bookid={$bookid}';
+	});
+</script>
+{include file="common/bottom" /}

@@ -24,11 +24,18 @@ class UserModel extends Model{
         return ['delete_time','create_time','update_time'];
     }
     /**
-     * 图书所属分类关联
+     * 放入书架的图书
      * @return \think\model\relation\BelongsToMany
      */
     public function books(){
         return $this->belongsToMany('BookModel', '\\app\\common\\model\\BookShelf', 'bookid', 'userid');
+    }
+    /**
+     * 收藏的文稿
+     * @return \think\model\relation\BelongsToMany
+     */
+    public function drafts(){
+        return $this->belongsToMany('DraftModel', '\\app\\common\\model\\UserDraft', 'draftid', 'userid');
     }
     /**
      * 性别

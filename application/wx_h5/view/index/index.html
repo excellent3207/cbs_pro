@@ -191,7 +191,7 @@ function getNexPageData(){
 				var lis = generateLis(data, page);
 				$('.draft-recommend').append(lis);
 				$('.draft-recommend li.page-' + page).on('tap', function () {
-	                console.log('test');
+	                location.href = '/wx_h5/draft/get?id=' + $(this).data('id');
 	            });
 				loadedImg('.draft-recommend .page-' + page, function(){
 					mainScroll.refresh();
@@ -210,7 +210,7 @@ function generateLis(data, page){
 	for(var i = 0; i < data.length; i++){
 		var item = data[i];
 		var digest = item.digest.length > 40 ? item.digest.substr(0, 40) + '...' : item.digest;
-		lis +=  '<li class="clearFix page-'+page+'">' +
+		lis +=  '<li class="clearFix page-'+page+'" data-id="'+item.id+'">' +
 			'<img src="'+item.img_list+'" class="img-list" alt="" />' +
 				'<div class="con">' +
 					'<h3>'+item.title+'</h3>' +

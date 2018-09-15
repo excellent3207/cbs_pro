@@ -6,11 +6,11 @@
  */
 namespace app\common\model;
 use think\model\Pivot;
-class BookShelf extends Pivot{
+class UserDraft extends Pivot{
     protected $pk = 'id';
-    protected $table = 'cbs_user_book_shelf';
+    protected $table = 'cbs_user_draft_collect';
     protected $fields = array(
-        'id','userid','bookid'
+        'id','userid','draftid'
     );
     
     public function hideField(){

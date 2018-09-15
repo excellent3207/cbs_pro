@@ -17,6 +17,11 @@ class DraftBiz{
      */
     public function get($id){
         $res = DraftModel::get($id)->hideField();
+        if(!empty($res)){
+            $res->show_time = date('Y-m-d', $res->show_time);
+            $userBiz = new UserBiz();
+            $res->is_collect = $userBiz->checkDraftCollect($res->id);
+        }
         return $res;
     }
     /**

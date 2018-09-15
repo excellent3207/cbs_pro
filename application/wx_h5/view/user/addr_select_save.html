@@ -1,0 +1,205 @@
+{include file="common/top" title="提交申请" keywords="" wrapclass="wrap-addr-select-save" /}
+<link href="/wx_h5/mobileSelect/css/mobileSelect.css" rel="stylesheet" />
+<style>
+body{background:#f6f6f6;}
+.wrap-addr-select-save .item{
+	background:#fff;
+	margin-top:1.5rem;
+	border-top:0.5px solid #e6e6e6;
+}
+.wrap-addr-select-save .item li{
+	line-height:4.5rem;
+	font-size:1.6rem;
+	color:#333;
+	display:flex;
+	display:-webkit-flex;
+	justify-content:space-between;
+	-webkit-justify-content:space-between;
+	padding:0 1.5rem;
+	border-bottom:0.5px solid #e6e6e6;
+	align-items:center;
+	-webkit-align-items:center;
+}
+.wrap-addr-select-save .item li .right input{
+	text-align:right;
+	font-size:1.5rem;
+	color:#666;
+	border:none;
+}
+.wrap-addr-select-save .item li.addrinfo{
+	padding:0.9rem 1.5rem;
+}
+.wrap-addr-select-save .item li textarea{
+	width:100%;
+	height:4.6rem;
+	font-size:1.6rem;
+	line-height:2.4rem;
+	border:none;
+}
+.wrap-addr-select-save .save-btn{
+	width:17rem;
+	height:4.4rem;
+	background:#63B075;
+	text-align:center;
+	line-height:4.4rem;
+	font-size:1.5rem;
+	color:#fff;
+	position:fixed;
+	bottom:4.4rem;
+	left:50%;
+	margin-left:-8.5rem;
+	border-radius:4.4rem;
+}
+.wrap-addr-select-save .addr .right .no-select{color:#999;padding-right:1rem;font-size:1.5rem;}
+</style>
+<form action="" method="post" id="main-form">
+<input type="hidden" value="{$bookid}" name="bookid" />
+<input type="hidden" value="{$addr.id??''}" name="id" />
+<ul class="item">
+	<li>
+		<div class="left">收货人</div>
+		<div class="right"><input type="text" name="name" value="{$addr.name??''}" placeholder=" 请输入" /></div>
+	</li>
+	<li>
+		<div class="left">手机号</div>
+		<div class="right"><input type="number" name="phone" value="{$addr.phone??''}" placeholder=" 请输入" /></div>
+	</li>
+	<li class="addr">
+		<div class="left">所在地</div>
+		<div class="right">{if condition="isset($addr.provinceid)&&$addr.provinceid"}{$addr.province}-{$addr.city}-{$addr.county}{else/}<span class="no-select">请选择</span>{/if}</div>
+		<input type="hidden" name="provinceid" value="{$addr.provinceid??''}">
+		<input type="hidden" name="province" value="{$addr.province??''}">
+		<input type="hidden" name="cityid" value="{$addr.cityid??''}">
+		<input type="hidden" name="city" value="{$addr.cityid??''}">
+		<input type="hidden" name="countyid" value="{$addr.countyid??''}">
+		<input type="hidden" name="county" value="{$addr.county??''}">
+	</li>
+	<li class="addrinfo">
+		<textarea name="addr">{$addr.addr??''}</textarea>
+	</li>
+</ul>
+</form>
+<div class="save-btn">提交申请</div>
+<script src="/wx_h5/mobileSelect/js/mobileSelect.min.js"></script>
+<script>
+	var provinces;
+	var citys = {};
+	var countys = {};
+	var curProvince = $('input[name="provinceid"]').val();
+	var curCity = $('input[name="cityid"]').val();
+	var curCounty = $('input[name="countyid"]').val();
+	var addrData = [{data:[{id:234,value:33}]}, {data:[{id:234,value:33}]},{data:[{id:234,value:33}]}];
+	var addrPosition = [0,0,0];
+	initProvince(false);
+	$('.save-btn').on('click', function(){
+		var data = getFormData('#main-form');
+		if(!data.name){
+			showToast('姓名不能为空')
+			return;
+		}
+		if(!data.phone){
+			showToast('手机号不能为空')
+			return;
+		}
+		if(!checkPhone(data.phone)){
+			showToast('手机号格式不正确')
+			return;
+		}
+		$.post('', data, function(res){
+			if(res.errorcode == 0){
+				showToast('申请成功');
+			}else{
+				showToast(res.msg);
+			}
+		});
+	});
+	var areaSelect;
+	function initProvince(curProvinceid, isUpdate){
+		if(provinces){
+			updateWheel(provinces, curProvinceid, 0, isUpdate);
+			initCitys(provinces[0].id, 0);
+		}else{
+			$.post('/wx_h5/location/provinces', {}, function(res){
+				if(res.errorcode == 0){
+					citys[curProvinceid] = res.data;
+					updateWheel(res.data, curProvinceid, 0, isUpdate);
+					initCitys(res.data[0].id, 0, isUpdate);
+				}else{
+					showToast(res.msg);
+				}
+			});
+		}
+	}
+	function initCitys(provinceid, curCityid, isUpdate){
+		if(citys[provinceid]){
+			updateWheel(citys[provinceid], curCityid, 1, isUpdate);
+			initCountys(citys[provinceid][0].id, 0);
+		}else{
+			$.post('/wx_h5/location/citys', {provinceid:provinceid}, function(res){
+				if(res.errorcode == 0){
+					citys[provinceid] = res.data;
+					updateWheel(res.data, curCityid, 1, isUpdate);
+					initCountys(res.data[0].id, 0, isUpdate);
+				}else{
+					showToast(res.msg);
+				}
+			});
+		}
+	}
+	function initCountys(cityid, curCountyid, isUpdate){
+		if(countys[cityid]){
+			updateWheel(countys[cityid], curCountyid, 2, isUpdate);
+		}else{
+			$.post('/wx_h5/location/countys', {cityid:cityid}, function(res){
+				if(res.errorcode == 0){
+					countys[cityid] = res.data;
+					updateWheel(res.data, curCountyid, 2, isUpdate);
+					if(!areaSelect){
+						areaSelect = new MobileSelect({
+					        trigger: '.addr',
+					        title: '',
+					        wheels: addrData,
+					        position: addrPosition, //初始化定位 打开时默认选中的哪个 如果不填默认为0
+					        transitionEnd: function (indexArr, data) {
+					        	if(indexArr[0] != addrPosition[0]){
+					        		initCitys(data[0].id, 0, true);
+					        	}else if(indexArr[1] != addrPosition[1]){
+					        		initCountys(data[1].id, 0, true);
+					        	}
+					        	addrPosition = indexArr;
+					        },
+					        callback: function (indexArr, data) {
+					        	$('.addr .right').html(data[0].value + '-' + data[1].value + '-' + data[2].value);
+					        	$('input[name="provinceid"]').val(data[0].id);
+					        	$('input[name="province"]').val(data[0].value);
+					        	$('input[name="cityid"]').val(data[1].id);
+					        	$('input[name="city"]').val(data[1].value);
+					        	$('input[name="countyid"]').val(data[2].id);
+					        	$('input[name="county"]').val(data[2].value);
+					        },
+					        triggerDisplayData:false
+					    });
+					}
+				}else{
+					showToast(res.msg);
+				}
+			});
+		}
+	}
+	function updateWheel(data, curid, wheelIndex, isUpdate){
+		var curData = [];
+		var curPos = 0;
+		var len = data.length;
+		for(var i = 0; i < len; i++){
+			curData.push({id:data[i].id, value:data[i].name});
+			if(data[i].id == curid) curPos = i;
+		}
+		addrData[wheelIndex].data = curData;
+		addrPosition[wheelIndex] = curPos;
+		if(isUpdate){
+			areaSelect.updateWheel(wheelIndex, curData);
+			areaSelect.locatePosition(wheelIndex, curPos);
+		}
+	}
+</script>
+{include file="common/bottom" /}

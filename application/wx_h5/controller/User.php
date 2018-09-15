@@ -31,6 +31,71 @@ class User{
         return view('', []);
     }
     /**
+     * 加入书架
+     * @return \think\response\View
+     */
+    public function putInShelf(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        try{
+            $biz = new UserBiz();
+            $bookid = $this->request->post('bookid');
+            $ret['data'] = $biz->putInShelf($bookid);
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
+    }
+    /**
+     * 申请样章
+     */
+    public function addrSelect(){
+        $bookid = $this->request->get('bookid');
+        try{
+            $biz = new UserAddrBiz();
+            $list = $biz->all();
+        }catch(\Exception $e){
+            return view('common/error', ['msg' => $e->getMessage()]);
+        }
+        return view('', ['list' => $list, 'bookid' => $bookid]);
+    }
+    /**
+     * 申请样章
+     */
+    public function addrSelectSave(){
+        $data = $this->request->post();
+        if(!empty($data)){
+            $ret = ['errorcode' => 0, 'msg' => '成功'];
+            $user = config('user');
+            $data['userid'] = $user['id'];
+            $validate = new UserAddrValidate();
+            $error = '';
+            if(!$validate->check($data, [], 'save')){
+                $error = $validate->getError();
+            }else{
+                $biz = new UserAddrBiz();
+                try{
+                    $biz->save($data);
+                }catch(\Exception $e){
+                    $error = $e->getMessage();
+                }
+            }
+            if($error){
+                $ret['errorcode'] = 1;
+                $ret['msg'] = $error;
+            }
+            return json($ret);
+        }
+        $bookid = $this->request->get('bookid');
+        $biz = new UserAddrBiz();
+        $addrid = $this->request->get('addrid');
+        $addr = session('useraddr_select_save_data');
+        if(empty($addr) && $addrid){
+            $addr = $biz->get($addrid);
+        }
+        return view('', ['addr' => $addr, 'bookid' => $bookid]);
+    }
+    /**
      * 我的图书
      * @return \think\response\View
      */
@@ -158,6 +223,38 @@ class User{
             $biz = new UserAddrBiz();
             $id = $this->request->post('id');
             $ret['data'] = $biz->del($id);
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
+    }
+    /**
+     * 收藏文稿
+     * @return \think\response\View
+     */
+    public function doCollectDraft(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        try{
+            $biz = new UserBiz();
+            $draftid = $this->request->post('draftid');
+            $ret['data'] = $biz->doCollectDraft($draftid);
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
+    }
+    /**
+     * 取消收藏文稿
+     * @return \think\response\View
+     */
+    public function cancelCollectDraft(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        try{
+            $biz = new UserBiz();
+            $draftid = $this->request->post('draftid');
+            $ret['data'] = $biz->cancelCollectDraft($draftid);
         }catch(\Exception $e){
             $ret['errorcode'] = 1;
             $ret['msg'] = $e->getMessage();
