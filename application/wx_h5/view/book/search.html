@@ -243,6 +243,7 @@ function getNexPageData(){
 	}
 }
 function generateLis(data, page){
+	console.log(data);
 	var lis = '';
 	for(var k in data){
 		lis += '<li data-id="'+data[k].bookid+'" class="page-'+page+'">' +
