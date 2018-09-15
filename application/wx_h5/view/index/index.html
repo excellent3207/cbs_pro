@@ -112,7 +112,7 @@ body{background:#f6f6f6;}
 <div class="book-recommend">
   <ul class="scroller">
   	{foreach name="books" item="book"}
-    <li>
+    <li data-id="{$book.id}">
     	<div class="img-wrap">
     		<img src="{:formatUrl($book.img_list)}" alt="" />
     	</div>
@@ -141,6 +141,9 @@ var recommendSwiper = new Swiper('.swiper-recommend', {
 	slidesPerView: 3,
 	spaceBetween: 0,
 	freeMode: true,
+});
+$('.book-recommend li').on('click', function(){
+	location.href = '/wx_h5/book/get?id=' + $(this).data('id');
 });
 var mainScroll = new IScroll('.main-scroll-wrap', {
     probeType: 3,

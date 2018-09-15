@@ -1,9 +1,349 @@
 {include file="common/top" title="图书详情" keywords="" wrapclass="wrap-book-get" /}
+<link rel="stylesheet" href="/wx_h5/swiper/css/swiper.min.css">
 <style>
 body{background:#f6f6f6;}
+html, body {
+  position: relative;
+  height: 100%;
+}
+.wrap-book-get .player{
+	position:fixed;
+	left:0;
+	top:0;
+	width:100%;
+	height:20rem;
+	background:gray;
+	display:none;
+}
+.wrap-book-get .top-nav{
+	z-index:100;
+	position:fixed;
+	left:0;
+	top:0;
+	width:100%;
+	height:4.5rem;
+	background:#fff;
+	display:flex;
+	display:-webkit-flex;
+	flex-wrap:nowrap;
+	-webkit-flex-wrap:nowrap;
+	align-items:center;
+	-webkit-align-items:center;
+	font-size:1.4rem;
+	padding:0 1.5rem;
+}
+.wrap-book-get .top-nav.normal{
+	top:0;
+}
+.wrap-book-get .top-nav.video{
+	top:21rem;
+}
+.wrap-book-get .top-nav li{
+	width:5.5rem;
+	height:2.8rem;
+	line-height:2.8rem;
+	text-align:center;
+	color:#63B075;
+	border-radius:2.8rem;
+}
+.wrap-book-get .top-nav li.bigger{
+	width:7rem;
+}
+.wrap-book-get .top-nav li.cur{
+	background:#63B075;
+	color:#fff;
+}
+.wrap-book-get .swiper-container {
+  position:fixed;
+  width: 100%;
+  height: 100%;
+  left:0;
+  top:0;
+}
+.wrap-book-get .swiper-slide {
+  position:relative;
+}
+.wrap-book-get .description,.wrap-book-get .ppt,.wrap-book-get .demo-chapter,.wrap-book-get .standard,.wrap-book-get .papper{
+	position:absolute;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+    overflow:hidden;
+}
+.wrap-book-get .description .scroller,.wrap-book-get .ppt .scroller,.wrap-book-get .demo-chapter .scroller,.wrap-book-get .standard .scroller,.wrap-book-get .papper .scroller{
+	position:absolute;
+	width:100%;
+	min-height:100%;
+}
+.wrap-book-get  .con{
+	margin-top:5.5rem;
+	background:#fff;
+	overflow:hidden;
+}
+.wrap-book-get .description .book-img-wrap{
+	position:relative;
+	margin:5.5rem 0 0 7.5rem;
+	width:22.1rem;
+	height:30rem;
+}
+.wrap-book-get .description .book-img-wrap .book-img{
+	width:22.1rem;
+	height:30rem;
+	position:relative;
+	z-index:10;
+}
+.wrap-book-get .description .book-img-wrap .corner{
+	width:3.2rem;
+	height:2.5rem;
+	position:absolute;
+	right:0.05rem;
+	top:0;
+	z-index:11;
+}
+.wrap-book-get .description .book-img-wrap .border{
+	width:1.6rem;
+	height:30.1rem;
+	position:absolute;
+	right:-0.15rem;
+	top:0;
+}
+.wrap-book-get .description .info{
+	color:#333;
+	font-size:1.4rem;
+	line-height:1.4rem;
+	padding:5.3rem 0 6rem 8rem;
+}
+.wrap-book-get .description .info li{
+	margin-top:0.8rem;
+}
+.wrap-book-get .con img{
+	max-width:100%;
+	display:inline-block;
+}
+.wrap-book-get .download{
+	position:fixed;
+	right:1.7rem;
+	bottom:10.2rem;
+	width:5rem;
+	height:5rem;
+	z-index:1000;
+	display:flex;
+	display:-webkit-flex;
+	justify-content:center;
+	-webkit-justify-content:center;
+	align-items:center;
+	-webkit-align-items:center;
+}
+.wrap-book-get .download i{
+	border-radius:50%;
+	position:absolute;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	background:#fff;
+	opacity:0.9;
+	box-shadow:1px 1px 3px 0px rgba(6,0,1,0.2);
+	-webkit-box-shadow:1px 1px 3px 0px rgba(6,0,1,0.2);
+}
+.wrap-book-get .download img{
+	width:2.4rem;
+	height:2.4rem;
+	position:relative;
+	z-index:1000;
+}
 </style>
-
+<div class="player">
+	
+</div>
+<ul class="top-nav">
+	<li class="cur">简介</li>
+	<li>视频</li>
+	<li>课件</li>
+	<li>样章</li>
+	<li class="bigger">课程标准</li>
+	<li>试卷</li>
+</ul>
+<div class="download" data-url="" style="display:none;">
+	<i></i>
+	<img src="/wx_h5/img/icons/download.png" alt="" />
+</div>
+<div class="swiper-container">
+	<div class="swiper-wrapper">
+		<div class="swiper-slide">
+			<div class="description">
+				<div class="scroller">
+					<div class="con">
+						<div class="book-img-wrap">
+							<img src="{$book.img_list}" alt="" class="book-img" />
+							<img src="/wx_h5/img/icons/corner_info.png" alt="" class="corner" />
+							<img src="/wx_h5/img/icons/border_info.png" alt="" class="border" />
+						</div>
+						<ul class="info">
+							<li>征订号：{$book.book_no}</li>
+							<li>作者：{$book.author}</li>
+							<li>定价：{$book.price}元</li>
+							<li>出版时间：{$book.publishtime}</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="swiper-slide">
+			视频
+		</div>
+		<div class="swiper-slide">
+			<div class="ppt">
+				<div class="scroller">
+					<div class="con">
+						{$book.ppt_img|raw}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="swiper-slide">
+			<div class="demo-chapter">
+				<div class="scroller">
+					<div class="con">
+						{$book.demo_chapter|raw}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="swiper-slide">
+			<div class="standard">
+				<div class="scroller">
+					<div class="con">
+						{$book.standard|raw}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="swiper-slide">
+			<div class="paper">
+				<div class="scroller">
+					<div class="con">
+						{$book.paper_img|raw}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="/wx_h5/swiper/js/swiper.min.js"></script>
+<script src="/wx_h5/js/iscroll.js"></script>
+<script src="/wx_h5/js/clipboard.min.js"></script>
 <script>
+var pptSourceUrl = '{$book.ppt_source}';
+var paperSourceUrl = '{$book.paper_source}';
+var curUrl = '';
+var swiper = new Swiper('.swiper-container',{
+	on:{
+		slideChange:function(){
+			$('.top-nav li').removeClass('cur');
+			$('.top-nav li').eq(this.activeIndex).addClass('cur');
+			showNavCon(this.activeIndex);
+			switch(this.activeIndex){
+			case 0://简介
+				descScroll.refresh();
+				break;
+			case 1://视频
+				break;
+			case 2://课件
+				pptScroll.refresh();
+				break;
+			case 3://样章
+				break;
+			case 4://课程标准
+				break;
+			case 5://试卷
+				break;
+			}
+		}
+	},
+	passiveListeners : false
+});
+$('.top-nav li').on('click', function(){
+	var index = $(this).index();
+	$('.top-nav li').removeClass('cur');
+	$(this).addClass('cur');
+	swiper.slideTo(index, 100*index, false);
+	showNavCon(index);
+});
+function showNavCon(index){
+	if(index == 1){
+		$('.top-nav').addClass('video');
+		$('.player').show();
+	}else{
+		$('.top-nav').removeClass('video');
+		$('.player').hide();
+	}
+	if(index == 2){
+		$('.download').show();
+		//$('.download').data('url', pptSourceUrl);
+		curUrl = pptSourceUrl;
+	}else if(index == 5){
+		$('.download').show();
+		//$('.download').data('url', paperSourceUrl);
+		curUrl = paperSourceUrl;
+	}else{
+		$('.download').hide();
+	}
+}
+$('.download').on('click', function(){
+	console.log($(this).data('url'));
+});
+var descScroll = new IScroll('.description', {
+    mouseWheel: false,
+    scrollbars: false,
+    preventDefault: true,
+    fadeScrollbars: true,
+    tap:true
+});
+var pptScroll = new IScroll('.ppt', {
+    mouseWheel: false,
+    scrollbars: false,
+    preventDefault: true,
+    fadeScrollbars: true,
+    tap:true
+});
+var demoChapterScroll = new IScroll('.demo-chapter', {
+    mouseWheel: false,
+    scrollbars: false,
+    preventDefault: true,
+    fadeScrollbars: true,
+    tap:true
+});
+var standardScroll = new IScroll('.standard', {
+    mouseWheel: false,
+    scrollbars: false,
+    preventDefault: true,
+    fadeScrollbars: true,
+    tap:true
+});
+var paperScroll = new IScroll('.paper', {
+    mouseWheel: false,
+    scrollbars: false,
+    preventDefault: true,
+    fadeScrollbars: true,
+    tap:true
+});
+$(function(){
+	var clipboard = new ClipboardJS('.download', {
+        text: function() {
+            return curUrl;
+        }
+    });
+	clipboard.on('success', function(e) {
+	    
+	});
 
+	clipboard.on('error', function(e) {
+	    console.error('Action:', e.action);
+	    console.error('Trigger:', e.trigger);
+	});
+	descScroll.refresh();
+})
 </script>
 {include file="common/bottom" /}
