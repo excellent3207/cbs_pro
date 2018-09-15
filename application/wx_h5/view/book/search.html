@@ -243,10 +243,9 @@ function getNexPageData(){
 	}
 }
 function generateLis(data, page){
-	console.log(data);
 	var lis = '';
 	for(var k in data){
-		lis += '<li data-id="'+data[k].bookid+'" class="page-'+page+'">' +
+		lis += '<li data-id="'+data[k].id+'" class="page-'+page+'">' +
 				'<div class="img-wrap">' +
 					'<img src="'+data[k].img_list+'" alt="" class="img" />' +
 					'<img src="/wx_h5/img/icons/book_corner.png" alt="" class="corner" />' +
