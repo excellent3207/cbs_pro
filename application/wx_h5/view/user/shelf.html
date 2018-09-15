@@ -178,14 +178,14 @@ body{background:#f6f6f6;}
 					var page = curPage + 1;
 					var count = res.data.count;
 					var list = res.data.list;
-					if(list.length<=0){
-						dataLoading = false;
-						return;
-					}
 					if(count <= 0){
 						$('.empty').show();
 						$('.search').hide();
 					}else{
+						if(list.length<=0){
+							dataLoading = false;
+							return;
+						}
 						$('.empty').hide();
 						$('.search').show();
 						$('.list').show();

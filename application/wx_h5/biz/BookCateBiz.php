@@ -4,40 +4,45 @@
  */
 namespace app\wx_h5\biz;
 
-use app\common\model\BookModel;
+use app\common\model\BookCateModel;
 
 class BookCateBiz{
     /**
-     * 推荐列表
-     * @param unknown $cond
-     * @param int $page
-     * @param int $pageSize
-     * @return unknown
-     */
-    public function recommend($pageSize){
-        $hiddenFields = ['book_no','author','img_info','price','plotter','ppt_img','ppt_source','demo_chapter','standard',
-            'paper_img','paper_source','publishtime','show_time','recommend_time','description'];
-        $hiddenFields = array_merge($hiddenFields, BookModel::hiddenFields());
-        return BookModel::where([])->order('recommend_time desc')->hidden($hiddenFields)->showQuery()->recommendQuery()->select();
-    }
-    /**
      * 图书列表
-     * @param unknown $cond
-     * @param unknown $order
-     * @param unknown $page
-     * @param unknown $pageSize
+     * @param unknown $type
      * @return unknown
      */
-    public function list($cond, $order, $page, $pageSize, $cateids){
-        $hiddenFields = ['book_no','author','price','plotter','paper_source','publishtime','description'];
-        $hiddenFields = array_merge($hiddenFields, BookModel::hiddenFields());
-        if(!empty($cateids)){
-            if(!is_array($cateids)){
-                $cateids = explode($cateids);
-            }
-        }else{
-            return BookModel::where([])->order('recommend_time desc')->hidden($hiddenFields)->showQuery()->select();
+    public function listByType($type){
+        $cond = [];
+        if($type){
+            array_push($cond, ['type', 'in', [$type, 3]]);
         }
+        $res = BookCateModel::where($cond)->order('orderid desc')->hidden(BookCateModel::hiddenFields())->select();
+        $data = ['gaozhi' => [], 'benke' => []];
+        foreach($res as $v){
+            if($v['type'] == 1){
+                array_push($data['benke'], $v);
+            }else{
+                
+            }
+            switch($v['type']){
+                case 1:
+                    array_push($data['benke'], $v);
+                    break;
+                case 2:
+                    array_push($data['gaozhi'], $v);
+                    break;
+                case 3:
+                    if($type == 1 || $type == 0){
+                        array_push($data['benke'], $v);
+                    }
+                    if($type == 2 || $type == 0){
+                        array_push($data['gaozhi'], $v);
+                    }
+                    break;
+            }
+        }
+        return $data;
     }
 }
 

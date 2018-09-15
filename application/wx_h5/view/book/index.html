@@ -91,6 +91,7 @@ body{background:#f6f6f6;}
 	position:fixed;
 	right:1.7rem;
 	bottom:10.2rem;
+	z-index:10;
 }
 .wrap-book-index .cate-btn img{
 	width:2.4rem;
@@ -143,6 +144,40 @@ body{background:#f6f6f6;}
 	background:#000;
 	display:none;
 }
+.wrap-book-index .empty{
+	position:fixed;
+	width:100%;
+	height:100%;
+	display:flex;
+	display:-webkit-flex;
+	flex-direction: column;
+	-webkit-flex-direction:column;
+	align-items:center;
+	-webkit-align-items:center;
+}
+.wrap-book-index .empty img{
+	width:5.3rem;
+	height:5rem;
+	margin-top:15.3rem;
+}
+.wrap-book-index .empty p{
+	font-size:1.5rem;
+	color:#333;
+	margin-top:2.3rem;
+}
+.wrap-book-index .empty i{
+	display:block;
+	margin-top:1.9rem;
+	text-align:center;
+	font-size:1.5rem;
+	color:#63B075;
+	font-style:normal;
+	width:13rem;
+	height:3.7rem;
+	border:0.1rem solid #63B075;
+	line-height:3.7rem;
+	border-radius:3.7rem;
+}
 </style>
 <div class="main-scroll-wrap">
 <div class="main-scroller">
@@ -162,23 +197,30 @@ body{background:#f6f6f6;}
 	<img src="/wx_h5/img/icons/cate.png" alt="" />
 </div>
 <div class="cate-list-wrap">
+	{notempty name="cates.benke"}
 	<h5>本科精品分类</h5>
 	<ul class="clearFix">
-		<li>公共基础课书目</li>
-		<li>公共基础课书目</li>
-		<li>旅游、市场营销类书目</li>
-		<li>公共基础课书目</li>
-		<li>公工科类书目</li>
+		<li data-id="0" data-type="2">全部</li>
+		{foreach name="cates.benke" item="item"}
+			<li data-id="{$item.id}" data-type="1">{$item.catename}</li>
+		{/foreach}
 	</ul>
+	{/notempty}
+	{notempty name="cates.gaozhi"}
 	<h5>高职高专分类</h5>
 	<ul class="clearFix">
-		<li>公共基础课书目</li>
-		<li>公共基础课书目</li>
-		<li>旅游、市场营销类书目</li>
-		<li>公共基础课书目</li>
-		<li>公工科类书目</li>
+		<li data-id="0" data-type="2">全部</li>
+		{foreach name="cates.gaozhi" item="item"}
+			<li data-id="{$item.id}" data-type="2">{$item.catename}</li>
+		{/foreach}
 	</ul>
+	{/notempty}
 	<img src="/wx_h5/img/icons/close.png" alt="" class="close" />
+</div>
+<div class="empty" style="display:none;">
+	<img src="/wx_h5/img/icons/shelf_empty.png" alt="" />
+	<p>您的书架空空如也～</p>
+	<i>去找你要的书</i>
 </div>
 <i class="cate-list-bg"></i>
 <script src="/wx_h5/js/iscroll.js"></script>
@@ -187,7 +229,8 @@ body{background:#f6f6f6;}
 var dataLoading = false,
 curPage = 0,
 type = {$type},
-cateListHeight;
+cateListHeight,
+cateid=0;
 getNexPageData();
 var mainScroll = new IScroll('.main-scroll-wrap', {
     probeType: 3,
@@ -223,6 +266,14 @@ $(function(){
 		$('.cate-list-wrap').css({bottom:-cateListHeight});
 		$('.cate-list-bg').hide();
 	});
+	$('.cate-list-wrap li').on('click', function(){
+		curPage = 0;
+		cateid = $(this).data('id');
+		type = $(this).data('type');
+		getNexPageData();
+		$('.cate-list-wrap').css({bottom:-cateListHeight});
+		$('.cate-list-bg').hide();
+	});
 });
 function getNexPageData(){
 	if(!dataLoading){
@@ -230,24 +281,31 @@ function getNexPageData(){
 		if(curPage == 0){
 			$('.wrap-book-index .list').html('');
 		};
-		$.get('/wx_h5/book/list', {page:curPage + 1, type:type}, function(res){
+		$.get('/wx_h5/book/list', {page:curPage + 1, type:type, cateid:cateid}, function(res){
 			var lis = '';
 			if(res.errorcode == 0){
 				page = curPage + 1;
-				var data = res.data;
-				if(data.length<=0){
-					dataLoading = false;
-					return;
+				var list = res.data.list;
+				var count = res.data.count;
+				if(count <= 0){
+					$('.empty').show();
+					$('.search').hide();
+				}else{
+					if(list.length<=0){
+						dataLoading = false;
+						return;
+					}
+					$('.empty').hide();
+					$('.list').show();
+					$('.list').append(generateLis(list, page));
+					$('.list .page-' + page).on('tap', function () {
+						location.href = '/wx_h5/book/get?id=' + $(this).data('id');
+		            });
+					loadedImg('.list .page-' + page, function(){
+						mainScroll.refresh();
+					});
+					curPage++;
 				}
-				var lis = generateLis(data, page);
-				$('.wrap-book-index .list').append(lis);
-				$('.wrap-book-index .list li.page-' + page).on('tap', function () {
-					location.href = '/wx_h5/book/get?id=' + $(this).data('id');
-	            });
-				loadedImg('.wrap-book-index .list .page-' + page, function(){
-					mainScroll.refresh();
-				});
-				curPage++;
 			}else{
 				
 			}

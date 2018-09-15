@@ -9,6 +9,7 @@ namespace app\wx_h5\controller;
 
 use think\Request;
 use app\wx_h5\biz\BookBiz;
+use app\wx_h5\biz\BookCateBiz;
 
 class Book{
     protected $request;
@@ -22,10 +23,12 @@ class Book{
     public function index(){
         try{
             $type = $this->request->get('type', 0);
+            $cateBiz = new BookCateBiz();
+            $cates = $cateBiz->listByType($type);
         }catch(\Exception $e){
             return view('common/error', ['msg' => $e->getMessage()]);
         }
-        return view('', ['type' => $type]);
+        return view('', ['type' => $type, 'cates' => $cates]);
     }
     /**
      * 图书详情
@@ -61,6 +64,10 @@ class Book{
             $type = $this->request->get('type');
             if($type){
                 array_push($cond, ['type', '=', $type]);
+            }
+            $cateid = $this->request->get('cateid');
+            if($cateid){
+                array_push($cond, ['cateid', '=', $cateid]);
             }
             $ret['data'] = $biz->list($cond, $order, $page, $pageSize);
         }catch(\Exception $e){

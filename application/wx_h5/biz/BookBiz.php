@@ -39,7 +39,8 @@ class BookBiz{
         foreach($books as &$book){
             $book->img_list = formatUrl($book->img_list);
         }
-        return $books;
+        $count = BookModel::where([['show_time', '<>', 0]])->where($cond)->count('id');
+        return ['list' => $books, 'count' => $count];
     }
     /**
      * 根据id获取图书信息
