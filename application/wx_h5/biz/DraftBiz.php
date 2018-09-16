@@ -49,7 +49,8 @@ class DraftBiz{
      * @return unknown
      */
     public function recommend(int $page, int $pageSize){
-        $drafts = DraftModel::where([['show_time', '<>', 0], ['recommend_time', '<>', 0]])->hidden(DraftModel::hiddenFields())->page($page, $pageSize)->select();
+        $drafts = DraftModel::where([['show_time', '<>', 0], ['recommend_time', '<>', 0]])->order('recommend_time desc')
+            ->hidden(DraftModel::hiddenFields())->page($page, $pageSize)->select();
         foreach($drafts as &$draft){
             $draft['img_list'] = formatUrl($draft['img_list']);
         }
