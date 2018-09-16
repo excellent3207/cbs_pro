@@ -7,6 +7,7 @@
 namespace app\common\model;
 use think\Model;
 use think\model\concern\SoftDelete;
+use app\common\AppTool;
 class DraftModel extends Model{
     use SoftDelete;
     protected $deleteTime = 'delete_time';
@@ -30,6 +31,9 @@ class DraftModel extends Model{
     public function recommendQuery(){
         $this->where('recommend_time', '<>', 0);
         return $this;
+    }
+    public function getDigestTextAttr($value, $data){
+        return 'test';
     }
 }
 ?>

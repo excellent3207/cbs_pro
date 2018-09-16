@@ -107,7 +107,7 @@ body{background:#f6f6f6;}
 </ul>
 <div class="con-title">
 	<h2>书籍推荐</h2>
-	<img src="/wx_h5/img/icons/more.png" alt="" />
+	<img id="book-more" src="/wx_h5/img/icons/more.png" alt="" />
 </div>
 <div class="book-recommend">
   <ul class="scroller">
@@ -123,7 +123,7 @@ body{background:#f6f6f6;}
 </div>
 <div class="con-title">
 	<h2>文章精选</h2>
-	<img src="/wx_h5/img/icons/more.png" alt="" />
+	<img id="draft-more" src="/wx_h5/img/icons/more.png" alt="" />
 </div>
 <ul class="draft-recommend">
 	
@@ -144,6 +144,12 @@ var recommendSwiper = new Swiper('.swiper-recommend', {
 });
 $('.book-recommend li').on('click', function(){
 	location.href = '/wx_h5/book/get?id=' + $(this).data('id');
+});
+$('#book-more').on('click', function(){
+	location.href = '/wx_h5/book/recommend'
+});
+$('#draft-more').on('click', function(){
+	location.href = '/wx_h5/draft/listview'
 });
 var mainScroll = new IScroll('.main-scroll-wrap', {
     probeType: 3,

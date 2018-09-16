@@ -114,6 +114,8 @@ Route::group('wx_h5', function(){
     Route::group('draft', function(){
         Route::get('recommend', 'wx_h5/Draft/recommend');
         Route::get('get', 'wx_h5/Draft/get');
+        Route::get('listview', 'wx_h5/Draft/listView');
+        Route::post('list', 'wx_h5/Draft/list');
     });
     Route::group('user', function(){
         Route::get('mybooks', 'wx_h5/User/myBooks');
@@ -144,6 +146,7 @@ Route::group('wx_h5', function(){
         Route::get('search', 'wx_h5/Book/search');
         Route::get('list', 'wx_h5/Book/list');
         Route::get('get', 'wx_h5/Book/get');
+        Route::get('recommend', 'wx_h5/Book/recommend');
     });
     Route::group('media', function(){
         Route::post('videoplayauth', 'wx_h5/Media/videoPlayAuth');

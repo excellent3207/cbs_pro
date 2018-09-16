@@ -35,7 +35,7 @@ class BookBiz{
         $hiddenFields = ['img_info','plotter','ppt_img','ppt_source','demo_chapter','standard',
             'paper_img','paper_source','show_time','recommend_time','description'];
         $hiddenFields = array_merge($hiddenFields, BookModel::hiddenFields());
-        $books = BookModel::where([['show_time', '<>', 0]])->where($cond)->order('recommend_time desc')->hidden($hiddenFields)->page($page, $pageSize)->select();
+        $books = BookModel::where([['show_time', '<>', 0]])->order($order)->where($cond)->order('recommend_time desc')->hidden($hiddenFields)->page($page, $pageSize)->select();
         foreach($books as &$book){
             $book->img_list = formatUrl($book->img_list);
         }

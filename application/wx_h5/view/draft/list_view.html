@@ -1,0 +1,163 @@
+{include file="common/top" title="文稿列表" keywords="" wrapclass="wrap-draft_collect" /}
+<style>
+body{background:#f6f6f6;}
+.wrap-draft_collect .empty{
+	position:fixed;
+	width:100%;
+	height:100%;
+	display:flex;
+	display:-webkit-flex;
+	flex-direction: column;
+	-webkit-flex-direction:column;
+	align-items:center;
+	-webkit-align-items:center;
+}
+.wrap-draft_collect .empty img{
+	width:5.3rem;
+	height:5rem;
+	margin-top:15.3rem;
+}
+.wrap-draft_collect .empty p{
+	font-size:1.5rem;
+	color:#333;
+	margin-top:2.3rem;
+}
+.wrap-draft_collect .empty i{
+	display:block;
+	margin-top:1.9rem;
+	text-align:center;
+	font-size:1.5rem;
+	color:#63B075;
+	font-style:normal;
+	width:13rem;
+	height:3.7rem;
+	border:0.1rem solid #63B075;
+	line-height:3.7rem;
+	border-radius:3.7rem;
+}
+.wrap-draft_collect .list{
+	background:#fff;
+}
+.wrap-draft_collect .list li{
+	padding:1.5rem;
+	border-bottom:0.5px solid #e6e6e6;
+}
+.wrap-draft_collect .list li .img-list{
+	width:7rem;
+	height:7rem;
+	float:left;
+}
+.wrap-draft_collect .list li .con{
+	float:right;
+	width:25.3rem;
+}
+.wrap-draft_collect .list li .con h3{
+	font-size:1.5rem;
+	color:#333;
+	line-height:1.5rem;
+	padding-top:0.5rem;
+	font-weight:normal;
+}
+.wrap-draft_collect .list li .con p{
+	font-size:1.3rem;
+	color:#666;
+	line-height:1.8rem;
+	padding-top:1.1rem;
+}
+</style>
+<div class="main-scroll-wrap">
+<div class="main-scroller">
+<ul class="list clearFix">
+	<li>
+		
+	</li>
+</ul>
+</div>
+</div>
+<div class="empty" style="display:none;">
+	<img src="/wx_h5/img/icons/shelf_empty.png" alt="" />
+	<p>您的书架空空如也～</p>
+	<i>去找你要的书</i>
+</div>
+<script src="/wx_h5/js/iscroll.js"></script>
+<script src="/wx_h5/js/iscroll-probe.js"></script>
+<script>
+	var curPage = 0,
+		dataLoading,
+		mainScroll;
+	$(function(){
+		mainScroll = new IScroll('.main-scroll-wrap', {
+		    probeType: 3,
+		    mouseWheel: false,
+		    scrollbars: false,
+		    preventDefault: true,
+		    fadeScrollbars: true,
+		    tap:true
+		});
+		mainScroll.on('scrollEnd', function() {
+		    var height = this.y,
+		        bottomHeight = this.maxScrollY - height;
+			if(!dataLoading && bottomHeight >= -100){
+				getNextData();
+			}
+		});
+		getNextData();
+	});
+	function getNextData(){
+		if(!dataLoading){
+			dataLoading = true;
+			if(curPage == 0){
+				$('.list').html('');
+			};
+			$.post('/wx_h5/draft/list', {page:curPage + 1}, function(res){
+				var lis = '';
+				if(res.errorcode == 0){
+					page = curPage + 1;
+					var list = res.data.list;
+					var count = res.data.count;
+					if(list.length<=0){
+						dataLoading = false;
+						return;
+					}
+					if(count <= 0){
+						$('.empty').show();
+						$('.search').hide();
+					}else{
+						$('.empty').hide();
+						$('.search').show();
+						$('.list').show();
+						$('.list').append(generateLis(list, page));
+						$('.list li.page-' + page).on('tap', function () {
+			                location.href = '/wx_h5/draft/get?id=' + $(this).data('id');
+			            });
+						loadedImg('.list .page-' + page, function(){
+							mainScroll.refresh();
+						});
+						curPage++;
+					}
+				}else{
+					
+				}
+				dataLoading = false;
+			}, 'json');
+		}
+	}
+	function generateLis(data, page){
+		console.log(data);
+		var lis = '';
+		if(data.length <= 0) return lis;
+		for(var i = 0; i < data.length; i++){
+			var item = data[i];
+			var digest = item.digest.length > 40 ? item.digest.substr(0, 40) + '...' : item.digest;
+			lis +=  '<li class="clearFix page-'+page+'" data-id="'+item.draftid+'">' +
+				'<img src="'+item.img_list+'" class="img-list" alt="" />' +
+					'<div class="con">' +
+						'<h3>'+item.title+'</h3>' +
+						'<p>'+digest+'</p>' +
+					'</div>' +
+				'</li>';
+		}
+		return lis;
+	}
+</script>
+{include file="common/bottom" /}

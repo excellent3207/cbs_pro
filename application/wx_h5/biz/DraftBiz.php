@@ -5,6 +5,7 @@
 namespace app\wx_h5\biz;
 
 use app\common\model\DraftModel;
+use app\common\AppTool;
 
 class DraftBiz{
     public function getRole(){
@@ -33,8 +34,12 @@ class DraftBiz{
      * @return unknown
      */
     public function list($cond, int $page, int $pageSize){
-        $drafts = DraftModel::where([['show_time', '<>', 0]])->hidden(DraftModel::hiddenFields())->page($page, $pageSize)->select();
-        return $drafts;
+        $drafts = DraftModel::where([['show_time', '<>', 0]])->order('create_time desc')->hidden(DraftModel::hiddenFields())->page($page, $pageSize)->select();
+        $count = DraftModel::where([['show_time', '<>', 0]])->count('id');
+        foreach($drafts as &$draft){
+            $draft['img_list'] = AppTool::formatUrl($draft['img_list']);
+        }
+        return ['list' => $drafts, 'count' => $count];
     }
     /**
      * 文稿推荐列表

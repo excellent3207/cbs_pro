@@ -33,6 +33,13 @@ class Book{
         return view('', ['type' => $type, 'cates' => $cates]);
     }
     /**
+     * 图书列表/分类
+     * @return \think\response\View
+     */
+    public function recommend(){
+        return view('', []);
+    }
+    /**
      * 图书详情
      * @return \think\response\View
      */
@@ -76,6 +83,11 @@ class Book{
             $cateid = $this->request->get('cateid');
             if($cateid){
                 array_push($cond, ['cateid', '=', $cateid]);
+            }
+            $is_recommend = $this->request->get('is_recommend', -1);
+            if($is_recommend != -1){
+                array_push($cond, ['recommend_time', '<>', 0]);
+                $order['recommend_time'] = 'desc';
             }
             $ret['data'] = $biz->list($cond, $order, $page, $pageSize);
         }catch(\Exception $e){

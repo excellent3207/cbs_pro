@@ -46,5 +46,34 @@ class Draft{
         }
         return view('', ['draft' => $draft]);
     }
+    /**
+     * 文稿列表
+     * @return \think\response\View
+     */
+    public function listView(){
+        return view('', []);
+    }
+    /**
+     * 文稿列表
+     * @return \think\response\View
+     */
+    public function list(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        try{
+            $biz = new DraftBiz();
+            $page = $this->request->post('page', 1);
+            $pageSize = 10;
+            $cond = [];
+            $key = $this->request->post('key');
+            if($key){
+                array_push($cond, ['title', 'like', '%'.$key.'%']);
+            }
+            $ret['data'] = $biz->list($cond, $page, $pageSize);
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
+    }
 }
 
