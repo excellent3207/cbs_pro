@@ -74,10 +74,11 @@ class UserAddrBiz{
             $user = config('user');
             if(isset($data['bookid']) && $data['bookid']){
                 $demoChapter = new UserDemoChapterModel();
-                $data = ['userid' => $user['id'], 'bookid' => $data['bookid'], 'addrid' => $model->id];
+                $data = ['userid' => $user['id'], 'bookid' => $data['bookid']];
                 $chapter = $demoChapter->get($data);
                 if(!empty($chapter)) throw new \Exception('已提交过申请');
-                $demoChapter->status = 1;
+                $data['status'] = 1;
+                $data['addrid'] = $model->id;
                 $demoChapter->save($data);
             }
             Db::commit();
