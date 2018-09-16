@@ -402,9 +402,11 @@ function showNavCon(ele){
 		$('.download').hide();
 		break;
 	case 3://课件
-		$('.download').show();
+		if(pptSourceUrl){
+			$('.download').show();
+			curUrl = pptSourceUrl;
+		}
 		pptScroll.refresh();
-		curUrl = pptSourceUrl;
 		break;
 	case 4://样章
 		$('.download').hide();
@@ -413,14 +415,13 @@ function showNavCon(ele){
 		$('.download').hide();
 		break;
 	case 6://试卷
-		$('.download').show();
-		curUrl = paperSourceUrl;
+		if(paperSourceUrl){
+			$('.download').show();
+			curUrl = paperSourceUrl;
+		}
 		break;
 	}
 }
-$('.download').on('click', function(){
-	console.log($(this).data('url'));
-});
 var descScroll = new IScroll('.description', {
     mouseWheel: false,
     scrollbars: false,
