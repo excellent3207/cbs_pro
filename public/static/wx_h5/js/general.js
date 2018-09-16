@@ -77,11 +77,11 @@ function showConfirm(msg, yesCallback, cancelCallback){
 	var html = '<div id="confirm-wrap"><i></i><div class="confirm"><span>'+msg+'</span><div class="btns clearFix"><div class="yes">确认</div><div class="cancel">取消</div></div></div></div>';
 	$('body').append(html);
 	$('#confirm-wrap .confirm .btns .yes').on('click', function(){
-		yesCallback();
+		if(yesCallback)yesCallback();
 		$('#confirm-wrap').remove();
 	});
 	$('#confirm-wrap .confirm .btns .cancel').on('click', function(){
-		cancelCallback();
+		if(cancelCallback)cancelCallback();
 		$('#confirm-wrap').remove();
 	});
 }
