@@ -149,7 +149,7 @@ body{background:#f6f6f6;}
 		if(data.length <= 0) return lis;
 		for(var i = 0; i < data.length; i++){
 			var item = data[i];
-			var digest = item.digest.length > 40 ? item.digest.substr(0, 40) + '...' : item.digest;
+			var digest = item.digest.length > 35 ? item.digest.substr(0, 35) + '...' : item.digest;
 			lis +=  '<li class="clearFix page-'+page+'" data-id="'+item.id+'">' +
 				'<img src="'+item.img_list+'" class="img-list" alt="" />' +
 					'<div class="con">' +
