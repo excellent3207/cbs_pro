@@ -410,6 +410,7 @@ function showNavCon(ele){
 		break;
 	case 4://样章
 		$('.download').hide();
+		demoChapterScroll.refresh();
 		break;
 	case 5://课程标准
 		$('.download').hide();
@@ -419,6 +420,7 @@ function showNavCon(ele){
 			$('.download').show();
 			curUrl = paperSourceUrl;
 		}
+		paperScroll.refresh();
 		break;
 	}
 }
