@@ -63,8 +63,10 @@ var swiperBanner = new Swiper('.swiper-banner', {
 	loop: true,
 	autoplay: 2000,
 	autoplayDisableOnInteraction:false,
-	pagination: '.swiper-pagination',
-	paginationClickable: true,
+  	pagination: {
+	    el: '.swiper-pagination',
+	    clickable :false,
+	  },
 });
 $('.banner-img').on('click', function(){
 	location.href = $(this).data('url');
