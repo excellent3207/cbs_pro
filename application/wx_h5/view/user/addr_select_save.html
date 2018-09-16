@@ -82,6 +82,7 @@ body{background:#f6f6f6;}
 <div class="save-btn">提交申请</div>
 <script src="/wx_h5/mobileSelect/js/mobileSelect.min.js"></script>
 <script>
+	var bookid = {$bookid};
 	var provinces;
 	var citys = {};
 	var countys = {};
@@ -107,7 +108,11 @@ body{background:#f6f6f6;}
 		}
 		$.post('', data, function(res){
 			if(res.errorcode == 0){
-				showToast('申请成功');
+				showConfirm('申请成功', function(){
+					location.href = '/wx_h5/book/get?id=' + bookid;
+				}, function(){
+					
+				});
 			}else{
 				showToast(res.msg);
 			}

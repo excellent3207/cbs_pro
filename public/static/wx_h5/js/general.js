@@ -49,7 +49,7 @@ function showToast(msg, time, delay){
 	if($('#toast-wrap').length > 0){
 		$('#toast-wrap').remove();
 	}
-	var html = '<div id="alert-wrap"><div class="toast"><i></i><span>'+msg+'</span></div></div>';
+	var html = '<div id="toast-wrap"><div class="toast"><i></i><span>'+msg+'</span></div></div>';
 	$('body').append(html);
 	var tranS = time + 'ms all ease '+delay+'ms';
 	$('#toast-wrap .toast').css({'opacity': 1, 'transition':tranS, '-webkit-transition':tranS});

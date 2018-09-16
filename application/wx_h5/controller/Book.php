@@ -10,6 +10,8 @@ namespace app\wx_h5\controller;
 use think\Request;
 use app\wx_h5\biz\BookBiz;
 use app\wx_h5\biz\BookCateBiz;
+use app\common\biz\MediaBiz;
+use app\common\model\AliOOS;
 
 class Book{
     protected $request;
@@ -39,10 +41,16 @@ class Book{
             $id = $this->request->get('id');
             $biz = new BookBiz();
             $book = $biz->get($id);
+            $mediaBiz = new MediaBiz();
+            if(!$book['videos']->isEmpty()){
+                $curVid = $book['videos'][0]['ali_vid'];
+            }else{
+                $curVid = '';
+            }
         }catch(\Exception $e){
             return view('common/error', ['msg' => $e->getMessage()]);
         }
-        return view('', ['book' => $book]);
+        return view('', ['book' => $book, 'curVid' => $curVid]);
     }
     /**
      * 图书列表

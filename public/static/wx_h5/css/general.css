@@ -131,6 +131,7 @@ img{display:block;}
 	-webkit-justify-content:center;
 	align-items:center;
 	-webkit-align-items:center;
+	z-index:10000;
 }
 #toast-wrap .toast{
 	padding:1.2rem 2.3rem;

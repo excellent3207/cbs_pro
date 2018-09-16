@@ -89,6 +89,7 @@ body{background:#f6f6f6;}
 {/foreach}
 <div class="add-addr">新增地址</div>
 <script>
+	var isSettingDefault = false;
 	$('.add-addr').on('click', function(){
 		location.href = '/wx_h5/user/addrsave';
 	});
@@ -98,9 +99,33 @@ body{background:#f6f6f6;}
 	});
 	$('.item li.other .right img.del').on('click', function(){
 		var id = $(this).parent().parent().parent().data('id');
-		$.post('/wx_h5/user/addrdel', {id:id}, function(){
-			location.href = '/wx_h5/user/addr?time=' + new Date().getTime();
+		showConfirm('确定要删除此地址吗？', function(){
+			$.post('/wx_h5/user/addrdel', {id:id}, function(){
+				location.href = '/wx_h5/user/addr?time=' + new Date().getTime();
+			});
+		}, function(){
+			
 		});
+	});
+	$('.item .other .left i,.item .other .left label').on('click', function(){
+		if(isSettingDefault) return;
+		isSettingDefault = true;
+		var ele = $('.item .other .left .radio-tag');
+		var id = $(this).parent().parent().parent().parent().data('id');
+		var radioTag = $(this).parent();
+		if(!$(this).parent().hasClass('radio-tag-selected')){
+			$.post('/wx_h5/User/addrsetdefault', {id:id}, function(res){
+				if(res.errorcode == 0){
+					ele.removeClass('radio-tag-selected');
+					ele.addClass('radio-tag-noselect');
+					radioTag.removeClass('radio-tag-selected');
+					radioTag.addClass('radio-tag-selected');
+				}else{
+					showToast(res.msg);
+				}
+				isSettingDefault = false;
+			});
+		}
 	});
 </script>
 {include file="common/bottom" /}

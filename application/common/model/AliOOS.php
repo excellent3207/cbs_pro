@@ -14,10 +14,14 @@ use vod\Request\V20170321\GetVideoInfoRequest;
 use vod\Request\V20170321\GetPlayInfoRequest;
 use vod\Request\V20170321\RefreshUploadVideoRequest;
 use Mts\Request\V20140618\SubmitJobsRequest;
+use vod\Request\V20170321\GetVideoPlayAuthRequest;
 class AliOOS{
-	private $id = 'LTAIM2TXK5Qw6H5z';
-	private $key = 'XV0BvswTklVXzT65aoxqyjQ5nziLsA';
-	private $roleArn = 'acs:ram::1940834383900665:role/upload';
+	private $uploadId = 'LTAIM2TXK5Qw6H5z';
+	private $uploadKey = 'XV0BvswTklVXzT65aoxqyjQ5nziLsA';
+	private $playId = 'LTAIq8c9KeKBy0SH';
+	private $playKey = '5kr6fK2ujg4JbYiFTeTHntPbJrQ13T';
+	private $uploadArn = 'acs:ram::1940834383900665:role/upload';
+	private $playArn = 'acs:ram::1940834383900665:role/user-player';
 	
 	const POLICY_ACTION_GET_OBJECT = 'oss:GetObject';
 	const POLICY_ACTION_PUT_OBJECT = 'oss:PutObject';
@@ -33,8 +37,21 @@ class AliOOS{
 	private $endpoints = [
 	    self::BUCKET_RESOURCE => 'http://cbs-resource.oss-cn-beijing.aliyuncs.com',
 	];
-	
-	public function sts($policy_actions, $paths){
+	/**
+	 * 获取上传sts
+	 * @param unknown $policy_actions
+	 * @param unknown $paths
+	 */
+	public function uploadSts($policy_actions, $paths){
+	    return $this->sts($policy_actions, $paths, $this->uploadArn);
+	}
+	/**
+	 * 基础获取sts
+	 * @param unknown $policy_actions
+	 * @param unknown $paths
+	 * @return NULL[]
+	 */
+	private function sts($policy_actions, $paths, $roleArn){
 	    include_once env('app_path').'common/aliyun-sdk/aliyun-php-sdk-core/Config.php';
 		
 		$tokenExpire = '900';
@@ -52,13 +69,14 @@ class AliOOS{
 						'Resource' => $paths
 				]
 		]]);
-		
-		$iClientProfile = \DefaultProfile::getProfile("cn-beijing", $this->id, $this->key);
+		$regin_id = "cn-beijing";
+		\DefaultProfile::addEndpoint($regin_id, $regin_id, "Sts", 'sts.cn-beijing.aliyuncs.com');
+		$iClientProfile = \DefaultProfile::getProfile($regin_id, $this->uploadId, $this->uploadKey);
 		$client = new \DefaultAcsClient($iClientProfile);
 		
 		$request = new AssumeRoleRequest();
 		$request->setRoleSessionName("client_name");
-		$request->setRoleArn($this->roleArn);
+		$request->setRoleArn($roleArn);
 		$request->setPolicy($policy);
 		$request->setDurationSeconds($tokenExpire);
 		$response = $client->getAcsResponse($request);
@@ -68,6 +86,22 @@ class AliOOS{
 		$rows['Expiration'] = $response->Credentials->Expiration;
 		$rows['SecurityToken'] = $response->Credentials->SecurityToken;
 		return $rows;
+	}
+	/**
+	 * 获取视频播放凭证
+	 */
+	public function getPlayAuth($vid){
+	    include_once env('app_path').'common/aliyun-sdk/aliyun-php-sdk-core/Config.php';
+	    $regin_id = "cn-shanghai";
+	    $profile = \DefaultProfile::getProfile($regin_id, $this->playId, $this->playKey);
+	    $client = new \DefaultAcsClient($profile);
+	    $request = new GetVideoPlayAuthRequest();
+	    $request->setAcceptFormat('JSON');
+	    $request->setRegionId($regin_id);
+	    $request->setVideoId($vid);            //视频ID
+	    $response = $client->getAcsResponse($request);
+	    if(empty($response->PlayAuth)) throw new \Exception('获取视频播放凭证失败');
+	    return $response;
 	}
 	/**
 	 * 分片上传本地文件
@@ -80,7 +114,7 @@ class AliOOS{
 	public function multiUploadFile(string $bucket, string $target,  string $source){
 	    require_once env('app_path').'common/oss/autoload.php';
 		try {
-			$ossClient = new OssClient($this->id, $this->key, $this->endpoints[$bucket], true);
+			$ossClient = new OssClient($this->uploadId, $this->uploadKey, $this->endpoints[$bucket], true);
 			$ossClient->multiuploadFile($bucket, $target, $source);
 			return $target;
 		} catch (OssException $e) {
@@ -98,7 +132,7 @@ class AliOOS{
 	private function init_vod_client() {
 		include_once env('app_path').'common/aliyun-sdk/aliyun-php-sdk-core/Config.php';
 		$regionId = 'cn-shanghai';  // 点播服务所在的Region，国内请填cn-shanghai，不要填写别的区域
-		$iClientProfile = \DefaultProfile::getProfile($regionId, $this->id, $this->key);
+		$iClientProfile = \DefaultProfile::getProfile($regionId, $this->uploadId, $this->uploadKey);
 		return new \DefaultAcsClient($iClientProfile);
 	}
 	/**
@@ -169,8 +203,8 @@ class AliOOS{
 		$inputObj = trim($inputObj, '/');
 		$outputObj = trim($outputObj, '/');
 		include_once env('app_path').'common/aliyun-sdk/aliyun-php-sdk-core/Config.php';
-		$access_key_id = $this->id;
-		$access_key_secret = $this->key;
+		$access_key_id = $this->uploadId;
+		$access_key_secret = $this->uploadKey;
 		$mps_region_id = 'cn-beijing';
 		$pipeline_id = '15dd63c0bff14a6ba19b366f0d66ce54';
 		$template_id = 'd684743d50ba42aeb4fd2adeb57afbed';

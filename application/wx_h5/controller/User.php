@@ -213,6 +213,22 @@ class User{
         return view('', ['addr' => $addr]);
     }
     /**
+     * 设置默认地址
+     * @return \think\response\View
+     */
+    public function addrSetDefault(){
+        $ret = ['errorcode' => 0, 'msg' => '成功'];
+        try{
+            $biz = new UserAddrBiz();
+            $id = $this->request->post('id');
+            $ret['data'] = $biz->setDefault($id);
+        }catch(\Exception $e){
+            $ret['errorcode'] = 1;
+            $ret['msg'] = $e->getMessage();
+        }
+        return json($ret);
+    }
+    /**
      * 删除地址
      * @return \think\response\View
      */

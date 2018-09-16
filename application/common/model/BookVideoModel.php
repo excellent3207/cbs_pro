@@ -7,6 +7,7 @@
 namespace app\common\model;
 use think\Model;
 use think\model\concern\SoftDelete;
+use app\common\AppTool;
 class BookVideoModel extends Model{
     use SoftDelete;
     protected $deleteTime = 'delete_time';
@@ -25,6 +26,9 @@ class BookVideoModel extends Model{
     }
     public function getCreateTimeAttr($value, $data){
         return $value?date('Y-m-d H:i:s'): '';
+    }
+    public function getDurationTextAttr($value, $data){
+        return AppTool::formatDuration($data['duration']);
     }
 }
 ?>

@@ -1,5 +1,6 @@
 {include file="common/top" title="图书详情" keywords="" wrapclass="wrap-book-get" /}
 <link rel="stylesheet" href="/wx_h5/swiper/css/swiper.min.css">
+<link rel="stylesheet" href="//g.alicdn.com/de/prismplayer/2.7.2/skins/default/aliplayer-min.css" />
 <style>
 body{background:#f6f6f6;}
 html, body {
@@ -14,6 +15,7 @@ html, body {
 	height:20rem;
 	background:gray;
 	display:none;
+	z-index:1000;
 }
 .wrap-book-get .top-nav{
 	z-index:100;
@@ -35,7 +37,7 @@ html, body {
 .wrap-book-get .top-nav.normal{
 	top:0;
 }
-.wrap-book-get .top-nav.video{
+.wrap-book-get .top-nav.video-nav{
 	top:21rem;
 }
 .wrap-book-get .top-nav li{
@@ -63,7 +65,12 @@ html, body {
 .wrap-book-get .swiper-slide {
   position:relative;
 }
-.wrap-book-get .description,.wrap-book-get .ppt,.wrap-book-get .demo-chapter,.wrap-book-get .standard,.wrap-book-get .papper{
+.wrap-book-get .description,
+.wrap-book-get .ppt,
+.wrap-book-get .demo-chapter,
+.wrap-book-get .standard,
+.wrap-book-get .papper,
+.wrap-book-get .video{
 	position:absolute;
 	left:0;
 	top:0;
@@ -71,15 +78,28 @@ html, body {
 	height:100%;
     overflow:hidden;
 }
-.wrap-book-get .description .scroller,.wrap-book-get .ppt .scroller,.wrap-book-get .demo-chapter .scroller,.wrap-book-get .standard .scroller,.wrap-book-get .papper .scroller{
+.wrap-book-get .description .scroller,
+.wrap-book-get .ppt .scroller,
+.wrap-book-get .demo-chapter .scroller,
+.wrap-book-get .standard .scroller,
+.wrap-book-get .papper .scroller,
+.wrap-book-get .video .scroller{
 	position:absolute;
 	width:100%;
 	min-height:100%;
+}
+.wrap-book-get .video .scroller{
+	background:#fff;
 }
 .wrap-book-get  .con{
 	margin-top:5.5rem;
 	background:#fff;
 	overflow:hidden;
+	padding:0 1.6rem 6rem;
+}
+.wrap-book-get .video  .con{
+	border-top:26.5rem solid #f6f6f6;
+	margin-top:0;
 }
 .wrap-book-get .description .book-img-wrap{
 	position:relative;
@@ -112,7 +132,7 @@ html, body {
 	color:#333;
 	font-size:1.4rem;
 	line-height:1.4rem;
-	padding:5.3rem 0 6rem 8rem;
+	padding:5.3rem 0 0 8rem;
 }
 .wrap-book-get .description .info li{
 	margin-top:0.8rem;
@@ -178,8 +198,33 @@ html, body {
 	text-align:center;
 	background:#fff;
 }
+.wrap-book-get .video ul{
+	padding:2.1rem 0 5.9rem;
+}
+.wrap-book-get .video ul li{
+	margin-bottom:0.9rem;
+	line-height:2.4rem;
+	background:url('/wx_h5/img/icons/video_noplay.png') center left no-repeat content-box;
+	background-size:2.4rem;
+}
+.wrap-book-get .video ul li.cur{
+	background:url('/wx_h5/img/icons/video_play.png') center left no-repeat content-box;
+	background-size:2.4rem;
+}
+.wrap-book-get .video ul li.cur p,.wrap-book-get .video ul li.cur span{color:#63B075;}
+.wrap-book-get .video ul li p{
+	font-size:1.5rem;
+	color:#333;
+	float:left;
+	margin-left:3.3rem;
+}
+.wrap-book-get .video ul li span{
+	font-size:1.3rem;
+	color:#999;
+	float:right;
+}
 </style>
-<div class="player">
+<div class="player" id="player">
 	
 </div>
 <ul class="top-nav">
@@ -220,7 +265,19 @@ html, body {
 			</div>
 		</div>
 		<div class="swiper-slide">
-			视频
+			<div class="video">
+				<div class="scroller">
+					<div class="con">
+						<ul>
+							{foreach name="book.videos" item="item"}
+							<li class="clearFix" data-vid="{$item.ali_vid}" data-id="{$item.id}">
+								<p>{$item.title}</p><span>{$item.duration_text}</span>
+							</li>
+							{/foreach}
+						</ul>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="swiper-slide">
 			<div class="ppt">
@@ -263,11 +320,14 @@ html, body {
 <script src="/wx_h5/swiper/js/swiper.min.js"></script>
 <script src="/wx_h5/js/iscroll.js"></script>
 <script src="/wx_h5/js/clipboard.min.js"></script>
+<script charset="utf-8" type="text/javascript" src="//g.alicdn.com/de/prismplayer/2.7.2/aliplayer-min.js"></script>
 <script>
 var pptSourceUrl = '{$book.ppt_source}';
 var paperSourceUrl = '{$book.paper_source}';
 var curUrl = '';
 var bookid = {$book.id};
+var curVid = '{$curVid}';
+var aliPlayer = false;
 var swiper = new Swiper('.swiper-container',{
 	on:{
 		slideChange:function(){
@@ -292,7 +352,11 @@ var swiper = new Swiper('.swiper-container',{
 			}
 		}
 	},
-	passiveListeners : false
+	passiveListeners : false,
+	touchAngle:30,
+    longSwipesRatio:0.1,
+    threshold:20,
+    followFinger:true,
 });
 $('.top-nav li').on('click', function(){
 	var index = $(this).index();
@@ -320,10 +384,10 @@ $('.shelf-btn li').on('click', function(){
 });
 function showNavCon(index){
 	if(index == 1){
-		$('.top-nav').addClass('video');
+		$('.top-nav').addClass('video-nav');
 		$('.player').show();
 	}else{
-		$('.top-nav').removeClass('video');
+		$('.top-nav').removeClass('video-nav');
 		$('.player').hide();
 	}
 	if(index == 2){
@@ -376,6 +440,13 @@ var paperScroll = new IScroll('.paper', {
     fadeScrollbars: true,
     tap:true
 });
+var paperScroll = new IScroll('.video', {
+    mouseWheel: false,
+    scrollbars: false,
+    preventDefault: true,
+    fadeScrollbars: true,
+    tap:true
+});
 $(function(){
 	var clipboard = new ClipboardJS('.download', {
         text: function() {
@@ -391,6 +462,39 @@ $(function(){
 	    console.error('Trigger:', e.trigger);
 	});
 	descScroll.refresh();
-})
+	playVideo(curVid);
+});
+wx.ready(function(){
+});
+function playVideo(vid){
+	$.post('/wx_h5/media/videoplayauth', {vid:vid}, function(res){
+		if(res.errorcode == 0){
+			var cover = res.data.VideoMeta.CoverURL;
+			var auth = res.data.PlayAuth;
+			$('.player img').remove();
+			$('.player').append('<img src="'+cover+'" style="width:100%;height:100%" alt="" />');
+			if(!aliPlayer){
+				aliPlayer = new Aliplayer({
+			        id: 'player',
+			        width: '100%',
+			        height:remToPx(20),
+			        autoplay: true,
+			        vid : vid,
+		            playauth : auth,
+		            cover: cover,  
+		            useH5Prism:true,
+			        },function(player){
+			            console.log('播放器创建好了。')
+			    	}
+				);
+				aliPlayer.on('play', function(){
+					$('.player img').hide();
+				});
+			}
+		}else{
+			showToast(res.msg);
+		}
+	});
+}
 </script>
 {include file="common/bottom" /}

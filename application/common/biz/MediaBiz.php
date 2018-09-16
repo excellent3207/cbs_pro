@@ -19,7 +19,7 @@ class MediaBiz{
     public function testSts(){
         $ali = new AliOOS();
         $dir = 'test/'.date('Ymd').'/'.date('His').AppTool::randString(6);
-        $res = $ali->sts([AliOOS::POLICY_ACTION_PUT_OBJECT], [AliOOS::BUCKET_RESOURCE."/{$dir}*"]);
+        $res = $ali->uploadSts([AliOOS::POLICY_ACTION_PUT_OBJECT], [AliOOS::BUCKET_RESOURCE."/{$dir}*"]);
         $res['dir'] = $dir;
         $res['domain'] = $ali->getBucketDomain(AliOOS::BUCKET_RESOURCE);
         $res['bucket'] = AliOOS::BUCKET_RESOURCE;
@@ -34,7 +34,7 @@ class MediaBiz{
     public function imgSts(){
         $ali = new AliOOS();
         $dir = 'img/'.date('Ymd').'/'.date('His').AppTool::randString(6);
-        $res = $ali->sts([AliOOS::POLICY_ACTION_PUT_OBJECT], [AliOOS::BUCKET_RESOURCE."/{$dir}*"]);
+        $res = $ali->uploadSts([AliOOS::POLICY_ACTION_PUT_OBJECT], [AliOOS::BUCKET_RESOURCE."/{$dir}*"]);
         $res['dir'] = $dir;
         $res['domain'] = $ali->getBucketDomain(AliOOS::BUCKET_RESOURCE);
         $res['bucket'] = AliOOS::BUCKET_RESOURCE;
@@ -49,12 +49,21 @@ class MediaBiz{
     public function fileSts(){
         $ali = new AliOOS();
         $dir = 'file/'.date('Ymd').'/'.date('His').AppTool::randString(6);
-        $res = $ali->sts([AliOOS::POLICY_ACTION_PUT_OBJECT], [AliOOS::BUCKET_RESOURCE."/{$dir}*"]);
+        $res = $ali->uploadSts([AliOOS::POLICY_ACTION_PUT_OBJECT], [AliOOS::BUCKET_RESOURCE."/{$dir}*"]);
         $res['dir'] = $dir;
         $res['domain'] = $ali->getBucketDomain(AliOOS::BUCKET_RESOURCE);
         $res['bucket'] = AliOOS::BUCKET_RESOURCE;
         $res['region'] = 'oss-cn-beijing';
         return $res;
+    }
+    /**
+     * 获取视频播放凭证
+     * @param unknown $vid
+     * @return unknown|mixed
+     */
+    public function videoPlayAuth($vid){
+        $ali = new AliOOS();
+        return $ali->getPlayAuth($vid);
     }
     /**
      * 获取视频上传凭证

@@ -170,5 +170,46 @@ class AppTool{
 	        break;
 	    }
 	}
+	/**
+	 * 格式化容量
+	 * @param unknown $size
+	 * @return string
+	 */
+	public static function format_size($size){
+	    if ($size >= 1073741824){
+	        $size = round($size / 1073741824 * 100) / 100 . ' GB';
+	    }elseif ($size >= 1048576){
+	        $size = round($size / 1048576 * 100) / 100 . ' MB';
+	    }elseif ($size >= 1024){
+	        $size = round($size / 1024 * 100) / 100 . ' KB';
+	    }else{
+	        $size = $size . ' Bytes';
+	    }
+	    return $size;
+	}
+	public static function formatDuration($duration){
+	    $str = '';
+	    if($duration >= 3600){
+	        $h = self::toDou(floor($duration/3600));
+	        $duration %= 3600;
+	        $m = self::toDou(floor($duration/60));
+	        $s = self::toDou($duration%60);
+	        $str = $h.':'.$m.':'.$s;
+	    }else if($duration >= 60){
+	        $m = self::toDou(floor($duration/60));
+	        $s = self::toDou($duration%60);
+	        $str = $m.':'.$s;
+	    }else{
+	        $str = '00:'.self::toDou($duration);
+	    }
+	    return $str;
+	}
+	private static function toDou($num){
+	    if($num < 10){
+	        return '0'.$num;
+	    }else{
+	        return $num;
+	    }
+	}
 }
 ?>

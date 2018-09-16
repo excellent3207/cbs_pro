@@ -38,6 +38,17 @@ class UserAddrBiz{
         });
     }
     /**
+     * 删除地址
+     * @param unknown $id
+     * @return boolean
+     */
+    public function setDefault($id){
+        $user = config('user');
+        UserAddrModel::update(['isdefault' => 1], [['id', '=', $id]]);
+        UserAddrModel::update(['isdefault' => 0], [['id', '<>', $id]]);
+        return true;
+    }
+    /**
      * 创建或编辑用户地址
      * @param unknown $data
      * @throws AppException
@@ -50,21 +61,24 @@ class UserAddrBiz{
             if(isset($data['id']) && $data['id']){
                 $res = $model->allowField(TRUE)->save($data, ['id' => $data['id']]);
                 if(!$res) throw new AppException('编辑地址失败');
+                $id = $data['id'];
             }else{
                 $res = $model->allowField(TRUE)->save($data);
                 if(!$res) throw new AppException('创建地址失败');
                 $res = $model->id;
+                $id = $model->id;
             }
             if(isset($data['isdefault']) && $data['isdefault']){
                 UserAddrModel::update(['isdefault' => 0], [['id', '<>', $model->id]]);
             }
+            $user = config('user');
             if(isset($data['bookid']) && $data['bookid']){
                 $demoChapter = new UserDemoChapterModel();
-                $data = ['userid' => $data['userid'], 'bookid' => $data['bookid'], 'addrid' => $model->id];
+                $data = ['userid' => $user['id'], 'bookid' => $data['bookid'], 'addrid' => $model->id];
                 $chapter = $demoChapter->get($data);
                 if(!empty($chapter)) throw new \Exception('已提交过申请');
                 $demoChapter->status = 1;
-                $demoChapter->save();
+                $demoChapter->save($data);
             }
             Db::commit();
             return $res;
