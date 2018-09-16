@@ -28,7 +28,7 @@ class DraftBiz{
      * @return unknown
      */
     public function list($cond, int $page, int $pageSize){
-        $drafts = DraftModel::where($cond)->hidden(DraftModel::hiddenFields())->page($page, $pageSize)->select();
+        $drafts = DraftModel::where($cond)->order('create_time desc')->hidden(DraftModel::hiddenFields())->page($page, $pageSize)->select();
         return $drafts;
     }
     /**
