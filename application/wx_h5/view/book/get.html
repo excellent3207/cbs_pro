@@ -371,7 +371,7 @@ $('.shelf-btn li').on('click', function(){
 	case 0://加入书架
 		$.post('/wx_h5/user/putinshelf', {bookid:bookid}, function(res){
 			if(res.errorcode == 0){
-				showToast('已加入到书架');
+				showConfirm('加入书架成功');
 			}else{
 				showToast(res.msg);
 			}

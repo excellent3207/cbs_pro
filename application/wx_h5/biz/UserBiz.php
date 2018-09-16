@@ -30,6 +30,7 @@ class UserBiz{
      */
     public function putInShelf($bookid){
         $user = config('user');
+        if($this->checkInShelf($bookid)) throw new \Exception('图书已经在你的书架了');
         return $user->books()->attach($bookid, ['add_time' => $_SERVER['REQUEST_TIME']]);
     }
     /**
