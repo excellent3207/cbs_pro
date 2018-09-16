@@ -15,6 +15,6 @@ class BannerBiz{
      * @return unknown
      */
     public function all(){
-        return BannerModel::where([['show_time', '<>', 0]])->hidden(BannerModel::hiddenFields())->select();
+        return BannerModel::where([['show_time', '<>', 0]])->order('orderid desc')->hidden(BannerModel::hiddenFields())->select();
     }
 }
