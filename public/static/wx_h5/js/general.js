@@ -22,7 +22,7 @@ function getFormData(ele){
 function checkPhone(phone){
 	return /^[1][3,4,5,6,7,8][0-9]{9}$/i.test(phone);
 }
-function showAlert(msg, callback){
+function showAlert(title, msg, callback){
 	if(msg instanceof Array){
 		if(msg.length == 2){
 			msg = msg[0] + '<br/>' + msg[1];
@@ -33,7 +33,7 @@ function showAlert(msg, callback){
 	if($('#alert-wrap').length > 0){
 		$('#alert-wrap').remove();
 	}
-	var html = '<div id="toast-wrap"><div class="toast"><i></i><span>'+msg+'</span></div></div>';
+	var html = '<div id="alert-wrap"><i></i><div class="alert"><h3>'+title+'</h3><span>'+msg+'</span><div class="btn">好的</div></div></div>';
 	$('body').append(html);
 }
 function showToast(msg, time, delay){

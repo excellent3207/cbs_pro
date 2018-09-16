@@ -182,34 +182,104 @@ img{display:block;}
 }
 #confirm-wrap .confirm{
 	width:25rem;
-	padding:3.8rem 0 1.7rem;
+	padding:3rem 1rem 5rem;
 	background:#fff;
 	position:relative;
 	z-index:10000;
-	border-radius:2.2rem;
+	border-radius:1rem;
 	text-align:center;
 	color:#333;
 	font-size:1.5rem;
 	line-height:2rem;
+	min-width:25rem;
+	min-height:13rem;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
 }
 #confirm-wrap .confirm .btns{
-	padding-top:3rem;
+	position:absolute;
+	left:0;
+	bottom:0;
+	height:4rem;
+	line-height:4rem;
+	width:100%;
+	border-top:0.5px solid #ccc;
 }
 #confirm-wrap .confirm .btns div{
-	width:8.5rem;
-	height:3.4rem;
-	border-radius:3.4rem;
+	width:50%;
 	text-align:center;
-	line-height:3.4rem;
 	color:#fff;
 	font-size:1.5rem;
 	float:left;
+	height:4rem;
+	text-align:center;
 }
 #confirm-wrap .confirm .btns .yes{
-	margin-left:3rem;
-	background:#63B075;
+	border-bottom-left-radius:1rem;
+	color:#63B075;
 }
 #confirm-wrap .confirm .btns .cancel{
-	margin-left:2rem;
-	background:#aaa;
+	border-bottom-right-radius:1rem;
+	color:#aaa;
+}
+#alert-wrap{
+	position:fixed;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	display:flex;
+	display:-webkit-flex;
+	justify-content:center;
+	-webkit-justify-content:center;
+	align-items:center;
+	-webkit-align-items:center;
+	z-index:10000;
+}
+#alert-wrap i{
+	position:absolute;
+	width:100%;
+	height:100%;
+	background:#000;
+	opacity:0.5;
+	left:0;
+	top:0;
+}
+#alert-wrap .alert{
+	width:25rem;
+	padding:3.5rem 1rem 5rem;
+	background:#fff;
+	position:relative;
+	z-index:10000;
+	border-radius:1rem;
+	text-align:center;
+	color:#333;
+	font-size:1.5rem;
+	line-height:2rem;
+	min-width:25rem;
+	min-height:13rem;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+}
+#alert-wrap .alert h3{
+	font-weight:normal;
+	line-height:1.5rem;
+	padding-bottom:0.8rem;
+}
+#alert-wrap .alert span{
+	font-size:1.4rem;
+	color:#666;
+	line-heigth:1.9rem;
+}
+#alert-wrap .alert .btn{
+	height:4rem;
+	width:100%;
+	position:absolute;
+	left:0;
+	bottom:0;
+	border-bottom-left-radius:1rem;
+	border-bottom-right-radius:1rem;
+	line-height:4rem;
+	color:#63B075;
+	border-top:0.5px solid #ccc;
 }
