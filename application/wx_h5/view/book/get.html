@@ -368,7 +368,7 @@ $('.shelf-btn li').on('click', function(){
 	case 1://加入书架
 		$.post('/wx_h5/user/putinshelf', {bookid:bookid}, function(res){
 			if(res.errorcode == 0){
-				showConfirm('加入书架成功');
+				showAlert('加入书架成功');
 				_this.hide();
 			}else{
 				showToast(res.msg);
@@ -475,7 +475,7 @@ $(function(){
         }
     });
 	clipboard.on('success', function(e) {
-	    showConfirm(['下载地址已复制至剪贴板','请到电脑端下载']);
+	    showAlert('复制成功', ['下载地址已复制至剪贴板','请到电脑端下载']);
 	});
 
 	clipboard.on('error', function(e) {

@@ -30,11 +30,17 @@ function showAlert(title, msg, callback){
 			msg = msg[0];
 		}
 	}
+	if(!title) title = '';
+	if(!msg) msg = '';
 	if($('#alert-wrap').length > 0){
 		$('#alert-wrap').remove();
 	}
 	var html = '<div id="alert-wrap"><i></i><div class="alert"><h3>'+title+'</h3><span>'+msg+'</span><div class="btn">好的</div></div></div>';
 	$('body').append(html);
+	$('#alert-wrap .alert .btn').on('click', function(){
+		$('#alert-wrap').remove();
+		if(callback) callback();
+	});
 }
 function showToast(msg, time, delay){
 	if(msg instanceof Array){
