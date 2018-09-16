@@ -73,7 +73,7 @@ class Book{
             $pageSize = 10;
             $name = $this->request->get('name');
             if($name){
-                array_push($cond, ['name', 'like', $name.'%']);
+                array_push($cond, ['name', 'like', '%'.$name.'%']);
             }
             $biz->recordSearch($name);
             $type = $this->request->get('type');
