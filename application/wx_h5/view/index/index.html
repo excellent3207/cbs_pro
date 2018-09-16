@@ -216,7 +216,7 @@ function generateLis(data, page){
 	if(data.length <= 0) return lis;
 	for(var i = 0; i < data.length; i++){
 		var item = data[i];
-		var digest = item.digest.length > 40 ? item.digest.substr(0, 40) + '...' : item.digest;
+		var digest = item.digest.length > 34 ? item.digest.substr(0, 34) + '...' : item.digest;
 		lis +=  '<li class="clearFix page-'+page+'" data-id="'+item.id+'">' +
 			'<img src="'+item.img_list+'" class="img-list" alt="" />' +
 				'<div class="con">' +
