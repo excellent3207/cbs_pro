@@ -3,7 +3,7 @@
  * 判断权限
  * @param unknown $tag
  */
-function checkAuth($tag){return true;
+function checkAuth($tag){
     $user = config('user');
     $navTag = $user['nav']['dataTag'];
     return !empty($navTag[$tag]);
