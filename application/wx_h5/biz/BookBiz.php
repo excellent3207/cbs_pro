@@ -58,6 +58,7 @@ class BookBiz{
             $userBiz = new UserBiz();
             $res->in_shelf = $userBiz->checkInShelf($res->id);
             $res->get_chapter_demo = $userBiz->checkHasDemoChapter($res->id);
+            $res->hasVideo = $res->videos->isEmpty();
         }
         return $res;
     }
