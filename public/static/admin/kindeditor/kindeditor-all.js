@@ -4999,7 +4999,7 @@ KEditor.prototype = {
 			}
 			window.scrollTo(0, 0);
 			K(document.body).css({
-				'height' : '1px',
+				//'height' : '1px',
 				'overflow' : 'hidden'
 			});
 			K(document.body.parentNode).css('overflow', 'hidden');
