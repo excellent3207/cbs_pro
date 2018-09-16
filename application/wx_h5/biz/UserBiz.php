@@ -97,7 +97,7 @@ class UserBiz{
      */
     public function checkDraftCollect($draftid){
         $user = config('user');
-        $count = $user->drafts()->where([['show_time', '<>', 0]])->count('cbs_draft.id');
+        $count = $user->drafts()->where([['show_time', '<>', 0],['cbs_draft.id', '=', $draftid]])->count('cbs_draft.id');
         return $count>0;
     }
     /**
