@@ -32,7 +32,7 @@ class BookBiz{
      * @return unknown
      */
     public function list($cond, $cateid, int $page, int $pageSize){
-        $books = BookModel::where($cond)->hidden(BookModel::hiddenFields())->page($page, $pageSize)->select();
+        $books = BookModel::where($cond)->order('create_time desc')->hidden(BookModel::hiddenFields())->page($page, $pageSize)->select();
         if(!$books->isEmpty())
             $books->load('cate');
         return $books;
