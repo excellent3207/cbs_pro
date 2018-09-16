@@ -108,7 +108,7 @@ class User{
             $pageSize = 12;
             $name = $this->request->get('name');
             if($name){
-                array_push($cond, ['name', 'like', $name.'%']);
+                array_push($cond, ['name', 'like', '%'.$name.'%']);
             }
             $ret['data'] = $biz->myBooks($cond, $page, $pageSize);
         }catch(\Exception $e){
