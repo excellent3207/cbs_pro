@@ -57,6 +57,7 @@ class BookBiz{
             $res->paper_source = formatUrl($res->paper_source);
             $userBiz = new UserBiz();
             $res->in_shelf = $userBiz->checkInShelf($res->id);
+            $res->get_chapter_demo = $userBiz->checkHasDemoChapter($res->id);
         }
         return $res;
     }

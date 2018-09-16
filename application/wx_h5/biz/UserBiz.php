@@ -8,6 +8,7 @@ use app\common\model\BookModel;
 use app\common\exception\AppException;
 use app\common\model\UserModel;
 use app\common\model\DraftModel;
+use app\common\model\UserDemoChapterModel;
 
 class UserBiz{
     /**
@@ -41,6 +42,18 @@ class UserBiz{
         $user = config('user');
         $count = $user->books()->where('cbs_book.id',$bookid)->count('cbs_book.id');
         return $count>0;
+    }
+    /**
+     * 判断是否有样章
+     * @param unknown $bookid
+     * @return boolean
+     */
+    public function checkHasDemoChapter($bookid){
+        $demoChapter = new UserDemoChapterModel();
+        $user = config('user');
+        $cond = ['userid' => $user['id'], 'bookid' => $bookid];
+        $count = UserDemoChapterModel::where($cond)->count('id');
+        return $count > 0;
     }
     /**
      * 创建或编辑用户

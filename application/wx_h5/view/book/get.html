@@ -241,8 +241,8 @@ html, body {
 	<img src="/wx_h5/img/icons/download.png" alt="" />
 </div>
 <ul class="shelf-btn clearFix">
-	<li>放入书架</li>
-	<li style="margin-left:2.5rem;">申请样书</li>
+	{if condition="!$book.in_shelf"}<li data-type="1">放入书架</li>{/if}
+	{if condition="!$book.get_chapter_demo"}<li data-type="2" {if condition="$book.in_shelf"}style="margin-left:2.5rem;"{/if}>申请样书</li>{/if}
 </ul>
 <div class="swiper-container">
 	<div class="swiper-wrapper">
@@ -367,18 +367,20 @@ $('.top-nav li').on('click', function(){
 	showNavCon(index);
 });
 $('.shelf-btn li').on('click', function(){
-	var index = $(this).index();
+	var index = $(this).data('type');
+	var _this = $(this);
 	switch(index){
-	case 0://加入书架
+	case 1://加入书架
 		$.post('/wx_h5/user/putinshelf', {bookid:bookid}, function(res){
 			if(res.errorcode == 0){
 				showConfirm('加入书架成功');
+				_this.hide();
 			}else{
 				showToast(res.msg);
 			}
 		});
 		break;
-	case 1://申请样书
+	case 2://申请样书
 		location.href = '/wx_h5/user/addrselect?bookid=' + bookid;
 		break;
 	}
