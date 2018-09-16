@@ -1,7 +1,7 @@
-{include file="common/top" title="文稿列表" keywords="" wrapclass="wrap-draft_collect" /}
+{include file="common/top" title="文稿列表" keywords="" wrapclass="wrap-draft-list" /}
 <style>
 body{background:#f6f6f6;}
-.wrap-draft_collect .empty{
+.wrap-draft-list .empty{
 	position:fixed;
 	width:100%;
 	height:100%;
@@ -12,17 +12,17 @@ body{background:#f6f6f6;}
 	align-items:center;
 	-webkit-align-items:center;
 }
-.wrap-draft_collect .empty img{
+.wrap-draft-list .empty img{
 	width:5.3rem;
 	height:5rem;
 	margin-top:15.3rem;
 }
-.wrap-draft_collect .empty p{
+.wrap-draft-list .empty p{
 	font-size:1.5rem;
 	color:#333;
 	margin-top:2.3rem;
 }
-.wrap-draft_collect .empty i{
+.wrap-draft-list .empty i{
 	display:block;
 	margin-top:1.9rem;
 	text-align:center;
@@ -35,30 +35,31 @@ body{background:#f6f6f6;}
 	line-height:3.7rem;
 	border-radius:3.7rem;
 }
-.wrap-draft_collect .list{
+.wrap-draft-list .list{
 	background:#fff;
 }
-.wrap-draft_collect .list li{
+.wrap-draft-list .list li{
 	padding:1.5rem;
 	border-bottom:0.5px solid #e6e6e6;
 }
-.wrap-draft_collect .list li .img-list{
+.wrap-draft-list .list li .img-list{
 	width:7rem;
 	height:7rem;
 	float:left;
+	border-radius:0.5rem;
 }
-.wrap-draft_collect .list li .con{
+.wrap-draft-list .list li .con{
 	float:right;
 	width:25.3rem;
 }
-.wrap-draft_collect .list li .con h3{
+.wrap-draft-list .list li .con h3{
 	font-size:1.5rem;
 	color:#333;
 	line-height:1.5rem;
 	padding-top:0.5rem;
 	font-weight:normal;
 }
-.wrap-draft_collect .list li .con p{
+.wrap-draft-list .list li .con p{
 	font-size:1.3rem;
 	color:#666;
 	line-height:1.8rem;
