@@ -454,7 +454,7 @@ $(function(){
         }
     });
 	clipboard.on('success', function(e) {
-	    showToast(['下载地址已复制至剪贴板','请到电脑端下载']);
+	    showConfirm(['下载地址已复制至剪贴板','请到电脑端下载']);
 	});
 
 	clipboard.on('error', function(e) {
