@@ -242,7 +242,7 @@ html, body {
 </div>
 <ul class="shelf-btn clearFix">
 	{if condition="!$book.in_shelf"}<li data-type="1">放入书架</li>{/if}
-	{if condition="!$book.get_chapter_demo"}<li data-type="2" {if condition="$book.in_shelf"}style="margin-left:2.5rem;"{/if}>申请样书</li>{/if}
+	{if condition="!$book.get_chapter_demo"}<li data-type="2" {if condition="!$book.in_shelf"}style="margin-left:2.5rem;"{/if}>申请样书</li>{/if}
 </ul>
 <div class="swiper-container">
 	<div class="swiper-wrapper">
