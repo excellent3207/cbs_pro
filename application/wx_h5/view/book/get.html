@@ -241,8 +241,8 @@ html, body {
 	<li data-id="1" class="cur">简介</li>
 	<li data-id="3">课件</li>
 	<li data-id="4">样章</li>
-	<li data-id="5" class="bigger">课程标准</li>
 	<li data-id="6">试卷</li>
+	<li data-id="5" class="bigger">课程标准</li>
 	{if condition="!$book.hasVideo"}<li data-id="2">视频</li>{/if}
 </ul>
 <div class="download" data-url="" style="display:none;">
@@ -293,19 +293,19 @@ html, body {
 			</div>
 		</div>
 		<div class="swiper-slide">
-			<div class="standard">
+			<div class="paper">
 				<div class="scroller">
-					<div class="con">
-						{$book.standard|raw}
+					<div class="con">dfsdf
+						{$book.paper_img|raw}
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="swiper-slide">
-			<div class="paper">
+			<div class="standard">
 				<div class="scroller">
 					<div class="con">
-						{$book.paper_img|raw}
+						{$book.standard|raw}
 					</div>
 				</div>
 			</div>
