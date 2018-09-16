@@ -34,6 +34,8 @@ var swiperBanner = new Swiper('.swiper-banner', {
 	spaceBetween: remToPx(0.6),
 	centeredSlides: true,
 	loop: true,
+	autoplay: 2000,
+	autoplayDisableOnInteraction:false
 });
 $('.banner-img').on('click', function(){
 	location.href = $(this).data('url');
