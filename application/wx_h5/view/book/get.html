@@ -102,9 +102,14 @@ html, body {
 	border-top:26.5rem solid #f6f6f6;
 	margin-top:0;
 }
+.wrap-book-get .description  .con{
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	padding-top:5.6rem;
+}
 .wrap-book-get .description .book-img-wrap{
 	position:relative;
-	margin:5.5rem 0 0 7.5rem;
 	width:22.1rem;
 	height:30rem;
 }
@@ -113,30 +118,36 @@ html, body {
 	height:30rem;
 	position:relative;
 	z-index:10;
+	border-radius:1rem;
 }
 .wrap-book-get .description .book-img-wrap .corner{
 	width:3.2rem;
 	height:2.5rem;
 	position:absolute;
-	right:0.05rem;
+	right:-1px;
 	top:0;
 	z-index:11;
 }
 .wrap-book-get .description .book-img-wrap .border{
 	width:1.6rem;
-	height:30.1rem;
+	height:30.15rem;
 	position:absolute;
-	right:-0.15rem;
+	right:-0.45rem;
 	top:0;
 }
 .wrap-book-get .description .info{
 	color:#333;
 	font-size:1.4rem;
 	line-height:1.4rem;
-	padding:5.3rem 0 0 8rem;
+	padding:5.3rem 0 0 0;
 }
 .wrap-book-get .description .info li{
 	margin-top:0.8rem;
+}
+.wrap-book-get .description .info li span{
+	display:inline-block;
+	text-align:right;
+	width:8rem;
 }
 .wrap-book-get .con img{
 	max-width:100%;
@@ -265,10 +276,10 @@ html, body {
 							<img src="/wx_h5/img/icons/border_info.png" alt="" class="border" />
 						</div>
 						<ul class="info">
-							<li>征订号：{$book.book_no}</li>
-							<li>作者：{$book.author}</li>
-							<li>定价：{$book.price}元</li>
-							<li>出版时间：{$book.publishtime}</li>
+							<li><span>征订号：</span>{$book.book_no}</li>
+							<li><span>作者：</span>{$book.author}</li>
+							<li><span>定价：</span>{$book.price}元</li>
+							<li><span>出版时间：</span>{$book.publishtime}</li>
 						</ul>
 					</div>
 				</div>
