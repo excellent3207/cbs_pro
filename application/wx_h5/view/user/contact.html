@@ -29,11 +29,12 @@ body{background:#f6f6f6;}
 	display:flex;
 	display:-webkit-flex;
 }
-.wrap-contact .item ul li span{
+.wrap-contact .item ul li span,.wrap-contact .item ul li a{
 	line-height:2.4rem;
 	font-size:1.4rem;
 	color:#333;
 	padding-left:0.9rem;
+	text-decoration:none;
 }
 .wrap-contact .item ul li img{
 	width:2.4rem;
@@ -46,11 +47,11 @@ body{background:#f6f6f6;}
 	<ul class="clearFix">
 		<li>
 			<img src="/wx_h5/img/icons/call.png" alt="" />
-			<span>{$item.office_phone}</span>
+			<a href="tel:{$item.office_phone}#mp.weixin.qq.com">{$item.office_phone}</a>
 		</li>
 		<li>
 			<img src="/wx_h5/img/icons/phone.png" alt="" />
-			<span>{$item.phone}</span>
+			<a href="tel:{$item.office_phone}#mp.weixin.qq.com">{$item.phone}</a>
 		</li>
 		<li>
 			<img src="/wx_h5/img/icons/qq.png" alt="" />
