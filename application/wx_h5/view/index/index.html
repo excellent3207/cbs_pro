@@ -52,7 +52,31 @@ body{background:#f6f6f6;}
 	height:3rem;
 	margin-top:0.8rem;
 }
-.wrap-index .book-recommend .img-wrap img{width:9.3rem;height:12.6rem;}
+.wrap-index .book-recommend .img-wrap{
+	position:relative;
+}
+.wrap-index .book-recommend .img-wrap .img{
+	width:9.3rem;
+	height:12.6rem;
+	border-radius:0.5rem;
+	position:relative;
+	z-index:2;
+}
+.wrap-index .book-recommend .img-wrap .corner{
+	width:1.6rem;
+	height:1.6rem;
+	position:absolute;
+	right:-1px;
+	top:-1px;
+	z-index:3;
+}
+.wrap-index .book-recommend .img-wrap .border{
+	width:0.9rem;
+	height:12.6rem;
+	position:absolute;
+	right:-0.35rem;
+	top:0;
+}
 .wrap-index .draft-recommend{
 	padding:0 1.5rem 5rem;
 	position:relative;
@@ -115,7 +139,9 @@ body{background:#f6f6f6;}
   	{foreach name="books" item="book"}
     <li data-id="{$book.id}">
     	<div class="img-wrap">
-    		<img src="{:formatUrl($book.img_list)}" alt="" />
+    		<img src="{:formatUrl($book.img_list)}" alt="" class="img" />
+    		<img src="/wx_h5/img/icons/corner_index.png" alt="" class="corner" />
+    		<img src="/wx_h5/img/icons/border_index.png" alt="" class="border" />
     	</div>
     	<p>{$book.name}</p>
     </li>
