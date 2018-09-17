@@ -1,6 +1,6 @@
 <?php
 /**
- * 负责人务层
+ * 负责人业务层
  */
 namespace app\wx_h5\biz;
 
