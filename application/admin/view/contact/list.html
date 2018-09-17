@@ -1,0 +1,120 @@
+{include file="common/top" title="" metas='' /}
+<link rel="stylesheet" type="text/css" href="/admin/cleanzone/js/jquery.gritter/css/jquery.gritter.css" />
+ <link rel="stylesheet" type="text/css" href="/admin/cleanzone/js/jquery.niftymodals/css/component.css" />
+<div class="page-head">
+	<h2>负责人列表</h2>
+	<ol class="breadcrumb">
+	  <li><a href="#">联系方式</a></li>
+	  <li class="active">负责人列表</li>
+	</ol>
+</div>	
+<div class="cl-mcont">
+	<div class="con-wrap">
+		<div class="search-wrap">
+			{if condition="checkAuth('contact-save')"}<a href="/admin/contact/save" class="btn btn-info pull-left" id="btn-add">添加</a>{/if}
+			{if condition="checkAuth('contact-del')"}<a class="btn btn-default pull-right" id="btn-del">删除</a>{/if}
+		</div>
+		<table class="table table-bordered table-hover" id="main-table" >
+			<thead>
+				<tr>
+					<th><input type="checkbox" data-id="0" class="check-all" /></th>
+					<th>编号</th>
+					<th>负责人</th>
+					<th>办公室电话</th>
+					<th>个人电话</th>
+					<th>qq</th>
+					<th>负责区域</th>
+					<th>排序</th>
+					<th width="120">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{foreach name="list" item="item"}
+				<tr data-id="{$item.id}" data-title="{$item.name}">
+					<td><input type="checkbox" data-id="{$item.id}" class="check" /></td>
+					<td>{$item.id}</td>
+					<td>{$item.name}</td>
+					<td>{$item.office_phone}</td>
+					<td>{$item.phone}</td>
+					<td>{$item.qq}</td>
+					<td>{$item.addr}</td>
+					<td class="order cursor-pointer">{$item.orderid}</td>
+					<td class="center">
+						{if condition="checkAuth('contact-save')"}
+						<a class="btn btn-primary btn-xs" href="/admin/contact/save?id={$item.id}" title="编辑">
+							<i class="fa fa-pencil"></i>
+						</a>{/if}
+					</td>
+				</tr>
+				{/foreach}
+			</tbody>
+		</table>
+	</div>
+</div>
+<script>
+	$('.check-all').on('click', function(){
+		if(this.checked){
+			$('.check').prop('checked', true);
+		}else{
+			$('.check').prop('checked', false);
+		}
+	});
+	var checkLength = $('.check').length;
+	$('.check').on('click', function(){
+		if($('.check:checked').length == checkLength){
+			$('.check-all').prop('checked', true);
+		}else{
+			$('.check-all').prop('checked', false);
+		}
+	});
+	$('#btn-del').on('click', function(){
+		var checked = $('.check:checked');
+		if(checked.length <= 0){
+			syhWarn('没有选择要删除的负责人');
+			return;
+		}
+		var ids = [];
+		var titles = [];
+		checked.each(function(index, ele){
+			ids.push($(ele).data('id'));
+			titles.push($(ele).parent().parent().data('title'));
+		});
+		ids = ids.join(',');
+		titles = titles.join(',');
+		syhConfirm('确定要删除负责人 ' + titles + ' 吗？', function(flag){
+			if(flag){
+				$.post('/admin/contact/del', {ids:ids}, function(res){
+					if(res.errorcode == 0){
+						syhSuccess('删除负责人 ' + titles + ' 成功', function(){
+							location.reload();;
+						});
+					}else{
+						syhError(res.msg);
+					}
+				}, 'json');
+			}
+		});
+	});
+	$('#main-table .order').dblclick(function(){
+		if(!$(this).data('flag')){
+			$(this).data('flag', true);
+			var orderid = $(this).html();
+			$(this).html('<input type="text" class="inp-order" value="'+orderid+'" style="width:50px;" />');
+			$('.inp-order').focus();
+			$('.inp-order').blur(function(){
+				$.post('/admin/contact/editorder', 
+					{id:$(this).parent().parent().data('id'), orderid:this.value}, function(res){
+					if(res.errorcode == 0){
+						//location.reload();
+					}else{
+						syError(res.msg);
+					}
+				}, 'json');
+				$(this).parent().data('flag', false);
+				$(this).parent().html(this.value);
+			});
+		}
+	});
+</script>
+<script type="text/javascript" src="/admin/cleanzone/js/jquery.niftymodals/js/jquery.modalEffects.js"></script>  
+{include file="common/bottom" /}

@@ -74,6 +74,13 @@ Route::group('admin', function(){
         Route::post('dovideoshow', 'admin/Book/doVideoShow');
         Route::post('cancelvideoshow', 'admin/Book/cancelVideoShow');
     });
+    Route::group('contact', function(){
+        Route::get('list', 'admin/Contact/list')->middleware(AdminNav::class, 'contact-list');
+        Route::get('save', 'admin/Contact/save')->middleware(AdminNav::class, 'contact-save');
+        Route::post('save', 'admin/Contact/save');
+        Route::post('del', 'admin/Contact/del');
+        Route::post('editorder', 'admin/Contact/editOrder');
+    });
     Route::group('bookcate', function(){
         Route::get('list', 'admin/BookCate/list')->middleware(AdminNav::class, 'bookcate-list');
         Route::get('save', 'admin/BookCate/save')->middleware(AdminNav::class, 'bookcate-save');
