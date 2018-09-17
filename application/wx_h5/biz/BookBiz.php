@@ -67,6 +67,7 @@ class BookBiz{
      * @param unknown $searchKey
      */
     public function recordSearch($searchKey){
+        if(!$searchKey) return;
         $user = config('user');
         $redis = AppRedis::instance();
         $keys = $redis->hget(self::SEARCH_RECORD_KEY, $user->id);
