@@ -11,6 +11,7 @@ use app\wx_h5\biz\UserBiz;
 use app\common\validate\UserValidate;
 use app\common\validate\UserAddrValidate;
 use app\wx_h5\biz\UserAddrBiz;
+use app\wx_h5\biz\ContactBiz;
 
 class User{
     protected $request;
@@ -163,7 +164,13 @@ class User{
      * 联系我们
      */
     public function contact(){
-        return view('', []);
+        try{
+            $biz = new ContactBiz();
+            $list = $biz->all();
+        }catch(\Exception $e){
+            return view('common/error', ['msg' => $e->getMessage()]);
+        }
+        return view('', ['list' => $list]);
     }
     /**
      * 地址管理

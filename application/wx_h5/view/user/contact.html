@@ -40,69 +40,29 @@ body{background:#f6f6f6;}
 	height:2.4rem
 }
 </style>
+{foreach name="list" item="item"}
 <div class="item">
-	<div class="title">薛飞丽</div>
+	<div class="title">{$item.name}</div>
 	<ul class="clearFix">
 		<li>
 			<img src="/wx_h5/img/icons/call.png" alt="" />
-			<span>18146521223</span>
+			<span>{$item.office_phone}</span>
 		</li>
 		<li>
 			<img src="/wx_h5/img/icons/phone.png" alt="" />
-			<span>13661388177</span>
+			<span>{$item.phone}</span>
 		</li>
 		<li>
 			<img src="/wx_h5/img/icons/qq.png" alt="" />
-			<span>25538606</span>
+			<span>{$item.qq}</span>
 		</li>
 		<li>
 			<img src="/wx_h5/img/icons/map.png" alt="" />
-			<span>津浙苏鲁</span>
+			<span>{$item.addr}</span>
 		</li>
 	</ul>
 </div>
-<div class="item">
-	<div class="title">杨祎</div>
-	<ul class="clearFix">
-		<li>
-			<img src="/wx_h5/img/icons/call.png" alt="" />
-			<span>1311970521</span>
-		</li>
-		<li>
-			<img src="/wx_h5/img/icons/phone.png" alt="" />
-			<span>13581693701</span>
-		</li>
-		<li>
-			<img src="/wx_h5/img/icons/qq.png" alt="" />
-			<span>369432924</span>
-		</li>
-		<li>
-			<img src="/wx_h5/img/icons/map.png" alt="" />
-			<span>京湘鄂闻桂晋</span>
-		</li>
-	</ul>
-</div>
-<div class="item">
-	<div class="title">王长栋</div>
-	<ul class="clearFix">
-		<li>
-			<img src="/wx_h5/img/icons/call.png" alt="" />
-			<span>1362210690</span>
-		</li>
-		<li>
-			<img src="/wx_h5/img/icons/phone.png" alt="" />
-			<span>15101185344</span>
-		</li>
-		<li>
-			<img src="/wx_h5/img/icons/qq.png" alt="" />
-			<span>525665048</span>
-		</li>
-		<li>
-			<img src="/wx_h5/img/icons/map.png" alt="" />
-			<span>豫粤皖沪琼</span>
-		</li>
-	</ul>
-</div>
+{/foreach}
 <script>
 </script>
 {include file="common/bottom" /}
