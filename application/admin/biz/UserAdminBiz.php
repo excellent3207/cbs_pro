@@ -149,7 +149,7 @@ class UserAdminBiz{
     private function formatNavs($role){
         if(!empty($role) && $role['navids']){
             $navs = NavAdminModel::where([['navid', 'in', $role['navids']]])
-                ->hidden(NavAdminModel::hiddenFields())->order('orderid', 'asc')->select();
+                ->hidden(NavAdminModel::hiddenFields())->order('orderid', 'desc')->select();
             $data = [];
             $dataTag = [];
             foreach($navs as $v){
