@@ -19,10 +19,11 @@ class UserAdminBiz{
     public function doLogin($data){
         if(!isset($data['username']) || !$data['username']) throw new AppException('用户名不能为空');
         if(!isset($data['pass']) || !$data['pass']) throw new AppException('密码不能为空');
-        $user = UserAdminModel::get(['username' => $data['username']])->hideField();
+        $user = UserAdminModel::get(['username' => $data['username']]);
+        if(empty($user)) throw new AppException('用户不存在');
+        $user = $user->hideField();
         $user['role'] = $user->role->hideField();
         $user['nav'] = $this->formatNavs($user['role']);
-        if(empty($user)) throw new AppException('用户不存在');
         if($user['pass'] != md5($data['pass'])) throw new AppException('用户名或密码错误');
         UserAdminModel::where('id', $user['id'])->update(['logintime' => $_SERVER['REQUEST_TIME']]);
         $user['logintime'] = $_SERVER['REQUEST_TIME'];
