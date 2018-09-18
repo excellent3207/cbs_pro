@@ -100,7 +100,7 @@ class UserAdmin{
      * @return \think\response\View
      */
     public function list(){
-        setPageHistory(['userList' => \think\facade\Request::url()], true);
+        setPageHistory(['userAdminList' => \think\facade\Request::url()], true);
         $params = $this->request->get();
         $biz = new UserAdminBiz();
         $cond = [];
@@ -141,14 +141,14 @@ class UserAdmin{
                 $data['error'] = $error;
                 return redirect('useradmin/add')->with('user_add_data', $data);
             }else{
-                return redirect(getPageHistory('userList'));
+                return redirect(getPageHistory('userAdminList'));
             }
         }
         $user = session('user_add_data');
         if(empty($user)) $user = [];
         $roleBiz = new RoleAdminBiz();
         $roleList = $roleBiz->all();
-        return view('', ['data' => $user, 'roleList' => $roleList, 'prePage' => getPageHistory('userList')]);
+        return view('', ['data' => $user, 'roleList' => $roleList, 'prePage' => getPageHistory('userAdminList')]);
     }
     /**
      * 编辑用户
@@ -173,7 +173,7 @@ class UserAdmin{
                 $data['error'] = $error;
                 return redirect('useradmin/edit')->with('user_edit_data', $data);
             }else{
-                return redirect(getPageHistory('userList'));
+                return redirect(getPageHistory('userAdminList'));
             }
         }
         $biz = new UserAdminBiz();
@@ -184,7 +184,7 @@ class UserAdmin{
         }
         $roleBiz = new RoleAdminBiz();
         $roleList = $roleBiz->all();
-        return view('', ['data' => $user, 'roleList' => $roleList, 'prePage' => getPageHistory('userList')]);
+        return view('', ['data' => $user, 'roleList' => $roleList, 'prePage' => getPageHistory('userAdminList')]);
     }
     /**
      * 删除用户

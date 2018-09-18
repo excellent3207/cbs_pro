@@ -49,6 +49,9 @@ Route::group('admin', function(){
         Route::post('delnav', 'admin/UserAdmin/delNav');
         Route::get('logout', 'admin/UserAdmin/logout');
     });
+    Route::group('user', function(){
+        Route::get('list', 'admin/User/list')->middleware(AdminNav::class, 'app-user-list');
+    });
     Route::group('media', function(){
         Route::get('test', 'admin/Media/test');
         Route::post('vodauth', 'admin/Media/vodAuth');
