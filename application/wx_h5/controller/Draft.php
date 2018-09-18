@@ -50,7 +50,7 @@ class Draft{
      * 文稿列表
      * @return \think\response\View
      */
-    public function listView(){
+    public function index(){
         return view('', []);
     }
     /**

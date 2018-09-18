@@ -164,8 +164,7 @@ body{background:#f6f6f6;}
 </div>
 <div class="empty" style="display:none;">
 	<img src="/wx_h5/img/icons/shelf_empty.png" alt="" />
-	<p>您的书架空空如也～</p>
-	<i>去找你要的书</i>
+	<p>没有相关书籍～</p>
 </div>
 <script src="/wx_h5/js/iscroll.js"></script>
 <script src="/wx_h5/js/iscroll-probe.js"></script>
@@ -250,6 +249,9 @@ $('.search-wrap b').on('click', function(){
 	curStatus = 1;
 	$(this).hide();
 	getNexPageData();
+});
+$('.empty i').on('click', function(){
+	
 });
 function getNexPageData(){
 	if(!dataLoading){

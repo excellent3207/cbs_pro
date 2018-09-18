@@ -121,7 +121,7 @@ Route::group('wx_h5', function(){
     Route::group('draft', function(){
         Route::get('recommend', 'wx_h5/Draft/recommend');
         Route::get('get', 'wx_h5/Draft/get');
-        Route::get('listview', 'wx_h5/Draft/listView');
+        Route::get('index', 'wx_h5/Draft/index');
         Route::post('list', 'wx_h5/Draft/list');
     });
     Route::group('user', function(){

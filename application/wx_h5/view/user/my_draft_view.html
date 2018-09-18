@@ -77,8 +77,8 @@ body{background:#f6f6f6;}
 </div>
 <div class="empty" style="display:none;">
 	<img src="/wx_h5/img/icons/shelf_empty.png" alt="" />
-	<p>您的书架空空如也～</p>
-	<i>去找你要的书</i>
+	<p>没有收藏文稿～</p>
+	<i>去阅览文稿</i>
 </div>
 <script src="/wx_h5/js/iscroll.js"></script>
 <script src="/wx_h5/js/iscroll-probe.js"></script>
@@ -116,14 +116,14 @@ body{background:#f6f6f6;}
 					page = curPage + 1;
 					var list = res.data.list;
 					var count = res.data.count;
-					if(list.length<=0){
-						dataLoading = false;
-						return;
-					}
 					if(count <= 0){
 						$('.empty').show();
 						$('.search').hide();
 					}else{
+						if(list.length<=0){
+							dataLoading = false;
+							return;
+						}
 						$('.empty').hide();
 						$('.search').show();
 						$('.list').show();
@@ -143,6 +143,9 @@ body{background:#f6f6f6;}
 			}, 'json');
 		}
 	}
+	$('.empty i').on('click', function(){
+		location.href = '/wx_h5/draft/index';
+	});
 	function generateLis(data, page){
 		var lis = '';
 		if(data.length <= 0) return lis;
