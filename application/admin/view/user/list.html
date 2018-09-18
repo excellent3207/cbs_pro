@@ -54,7 +54,6 @@
 		<table class="table table-bordered table-hover" id="main-table" >
 			<thead>
 				<tr>
-					<th><input type="checkbox" data-id="0" class="check-all" /></th>
 					<th>编号</th>
 					<th>昵称</th>
 					<th>手机号</th>
@@ -68,7 +67,6 @@
 			<tbody>
 				{foreach name="list" item="item"}
 				<tr data-id="{$item.id}" data-title="{$item.alias}">
-					<td><input type="checkbox" data-id="{$item.id}" class="check" /></td>
 					<td>{$item.id}</td>
 					<td>{$item.alias}</td>
 					<td>{$item.phone}</td>

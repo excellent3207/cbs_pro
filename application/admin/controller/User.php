@@ -42,7 +42,7 @@ class User{
         }
         $page = $this->request->get('page', 1);
         $pageSize = 10;
-        $res = $biz->list($cond, $cateid, $page, $pageSize);
+        $res = $biz->list($cond,$page, $pageSize);
         $list = $res['list'];
         $pagination = new Pagination($page, $pageSize, $res['count']);
         return view('', ['list' => $list, 'params' => $params, 'pagination' => $pagination]);
