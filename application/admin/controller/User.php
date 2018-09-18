@@ -44,7 +44,7 @@ class User{
         $pageSize = 10;
         $res = $biz->list($cond, $cateid, $page, $pageSize);
         $list = $res['list'];
-        $pagination = new Pagination($page, $pageSize, $$res['count']);
+        $pagination = new Pagination($page, $pageSize, $res['count']);
         return view('', ['list' => $list, 'params' => $params, 'pagination' => $pagination]);
     }
 }
