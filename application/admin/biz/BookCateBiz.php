@@ -35,7 +35,7 @@ class BookCateBiz{
      * @return unknown
      */
     public function list($cond, int $page, int $pageSize){
-        $books = BookCateModel::where($cond)->hidden(BookCateModel::hiddenFields())->order('orderid')->page($page, $pageSize)->select();
+        $books = BookCateModel::where($cond)->hidden(BookCateModel::hiddenFields())->page($page, $pageSize)->select();
         return $books;
     }
     /**
