@@ -314,11 +314,26 @@ $('#paper-btn').on('click', function(){
 $('#paperFile').on('change', function(){
 	uploadFile(this.files[0], '#paper-bar', '.paper-url', 'paper_source');
 });
+//---------答案原文件上传-----------
+$('#answer-btn').on('click', function(){
+	$('#answerFile')[0].click();
+});
 $('#answerFile').on('change', function(){
 	uploadFile(this.files[0], '#answer-bar', '.answer-url', 'answer_source');
 });
+//---------拓展源件上传-----------
+$('#expand-btn').on('click', function(){
+	$('#expandFile')[0].click();
+});
 $('#expandFile').on('change', function(){
 	uploadFile(this.files[0], '#expand-bar', '.expand-url', 'expand_source');
+});
+//---------课标原文件上传-----------
+$('#standard-btn').on('click', function(){
+	$('#standardFile')[0].click();
+});
+$('#standardFile').on('change', function(){
+	uploadFile(this.files[0], '#standard-bar', '.standard-url', 'standard_source');
 });
 var kConfig = {
 	items:['source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',
