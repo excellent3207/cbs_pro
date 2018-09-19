@@ -18,7 +18,7 @@ class BookBiz{
      * @return unknown
      */
     public function recommend($pageSize){
-        $hiddenFields = ['book_no','author','img_info','price','plotter','ppt_img','ppt_source','demo_chapter','standard',
+        $hiddenFields = ['book_no','author','img_info','price','plotter','ppt','ppt_source','demo_chapter','standard',
             'paper_img','paper_source','publishtime','show_time','recommend_time','description'];
         $hiddenFields = array_merge($hiddenFields, BookModel::hiddenFields());
         return BookModel::where([['show_time', '<>', 0],['recommend_time', '<>', 0]])->order('recommend_time desc')->hidden($hiddenFields)->select();
@@ -32,7 +32,7 @@ class BookBiz{
      * @return unknown
      */
     public function list($cond, $order, $page, $pageSize){
-        $hiddenFields = ['img_info','plotter','ppt_img','ppt_source','demo_chapter','standard',
+        $hiddenFields = ['img_info','plotter','ppt','ppt_source','demo_chapter','standard',
             'paper_img','paper_source','show_time','recommend_time','description'];
         $hiddenFields = array_merge($hiddenFields, BookModel::hiddenFields());
         $books = BookModel::where([['show_time', '<>', 0]])->order($order)->where($cond)->order('recommend_time desc')->hidden($hiddenFields)->page($page, $pageSize)->select();
@@ -48,8 +48,9 @@ class BookBiz{
      * @return \app\common\model\BookModel
      */
     public function get($id){
-        $res = BookModel::get($id)->hideField();
+        $res = BookModel::get($id);
         if(!empty($res)){
+            $res = $res->hideField();
             $res->videos = $res->videos()->where([['show_time', '<>', 0]])->select()->hidden(BookVideoModel::hiddenFields());
             $res->img_list = formatUrl($res->img_list);
             $res->img_info = formatUrl($res->img_info);
@@ -61,6 +62,17 @@ class BookBiz{
             $res->hasVideo = $res->videos->isEmpty();
         }
         return $res;
+    }
+    /**
+     * 图书下视频列表
+     * @param unknown $bookid
+     */
+    public function videos($bookid){
+        $bookModel = new BookModel();
+        $bookModel->id = $bookid;
+        $videos = $bookModel->videos()->where([['show_time', '<>', 0]])->select()->hidden(BookVideoModel::hiddenFields());;
+        if($videos->isEmpty()) throw new \Exception('该图书下没有视频');
+        return $videos;
     }
     /**
      * 搜索记录

@@ -14,8 +14,9 @@ class BookModel extends Model{
     protected $pk = 'id';
     protected $table = 'cbs_book';
     protected $fields = array(
-        'id','name','cateid','type','book_no','author','img_list','img_info','price','plotter','ppt_img','ppt_source','demo_chapter','standard',
-        'paper_img','paper_source','publishtime','show_time','recommend_time','description','count_view'
+        'id','name','cateid','type','book_no','author','img_list','img_info','price','plotter','ppt','ppt_source','demo_chapter','standard',
+        'standard_source','paper_img','paper_source','answer','answer_source','expand','expand_source','publishtime','show_time','recommend_time',
+        'description','count_view'
     );
     
     public function hideField(){

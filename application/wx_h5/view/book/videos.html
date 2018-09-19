@@ -1,0 +1,103 @@
+{include file="common/top" title="图书视频" keywords="" wrapclass="wrap-book-videos" /}
+<link rel="stylesheet" href="//g.alicdn.com/de/prismplayer/2.7.2/skins/default/aliplayer-min.css" />
+<style>
+body{background:#f6f6f6;}
+.wrap-book-videos .player{
+	position:fixed;
+	left:0;
+	top:0;
+	width:100%;
+	height:20rem;
+}
+.wrap-book-videos ul{
+	margin-top:21rem;
+	background:#fff;
+	min-height:40rem;
+	padding:2.1rem 1.5rem;
+}
+.wrap-book-videos .list li{
+	margin-bottom:0.9rem;
+	line-height:2.4rem;
+	background:url('/wx_h5/img/icons/video_noplay.png') center left no-repeat content-box;
+	background-size:2.4rem;
+}
+.wrap-book-videos .list li.cur{
+	background:url('/wx_h5/img/icons/video_play.png') center left no-repeat content-box;
+	background-size:2.4rem;
+}
+.wrap-book-videos .list li.cur p,.wrap-book-videos .video ul li.cur span{color:#63B075;}
+.wrap-book-videos .list li p{
+	font-size:1.5rem;
+	color:#333;
+	float:left;
+	margin-left:3.3rem;
+}
+.wrap-book-videos .list li span{
+	font-size:1.3rem;
+	color:#999;
+	float:right;
+}
+</style>
+<div id="player" class="player"></div>
+<ul class="list">
+	{foreach name="videos" item="item"}
+	<li class="clearFix" data-vid="{$item.ali_vid}" data-id="{$item.id}">
+		<p>{$item.title}</p><span>{$item.duration_text}</span>
+	</li>
+	{/foreach}
+</ul>
+<script src="/wx_h5/js/iscroll.js"></script>
+<script charset="utf-8" type="text/javascript" src="//g.alicdn.com/de/prismplayer/2.7.2/aliplayer-min.js"></script>
+<script>
+var curVid = '{$curVid}';
+var aliPlayer = false;
+playVideo(curVid);
+$('.list li').on('click', function(){
+	showAlert('test');
+});
+function playVideo(vid){
+	$.post('/wx_h5/media/videoplayauth', {vid:vid}, function(res){
+		if(res.errorcode == 0){
+			var cover = res.data.VideoMeta.CoverURL;
+			var auth = res.data.PlayAuth;
+			if(!aliPlayer){
+				aliPlayer = new Aliplayer({
+			        id: 'player',
+			        width: '100%',
+			        height:remToPx(20),
+			        autoplay: false,
+			        vid : vid,
+		            playauth : auth,
+		            cover: cover,  
+		            useH5Prism:true,
+		            x5_type:'h5',
+		            x5_fullscreen:false,
+		            x5_video_position:'top'
+			        },function(player){
+			        	
+			    	}
+				);
+				aliPlayer.on('play', function(){
+					$('.player img').hide();
+				});
+				aliPlayer.tag.addEventListener("x5videoexitfullscreen", ()=>{
+					
+				});
+				aliPlayer.on("requestFullScreen", function(){
+				    showConfirm();
+				});
+				$('.player').show();
+			}
+		}else{
+			showToast(res.msg);
+		}
+	});
+}
+function destroyVideo(){
+	if(aliPlayer){
+		aliPlayer.dispose();
+		aliPlayer = null;
+	}
+}
+</script>
+{include file="common/bottom" /}

@@ -48,7 +48,6 @@ class Book{
             $id = $this->request->get('id');
             $biz = new BookBiz();
             $book = $biz->get($id);
-            $mediaBiz = new MediaBiz();
             if(!$book['videos']->isEmpty()){
                 $curVid = $book['videos'][0]['ali_vid'];
             }else{
@@ -58,6 +57,21 @@ class Book{
             return view('common/error', ['msg' => $e->getMessage()]);
         }
         return view('', ['book' => $book, 'curVid' => $curVid]);
+    }
+    /**
+     * 图书详情
+     * @return \think\response\View
+     */
+    public function videos(){
+        try{
+            $bookid = $this->request->get('bookid');
+            $biz = new BookBiz();
+            $videos = $biz->videos($bookid);
+            $curVid = $videos[0]['ali_vid'];
+        }catch(\Exception $e){
+            return view('common/error', ['msg' => $e->getMessage()]);
+        }
+        return view('', ['videos' => $videos, 'curVid' => $curVid]);
     }
     /**
      * 图书列表
