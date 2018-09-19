@@ -114,7 +114,7 @@
 		titles = titles.join(',');
 		syhConfirm('确定要删除图书分类 ' + titles + ' 吗？', function(flag){
 			if(flag){
-				$.post('/admin/book/del', {ids:ids}, function(res){
+				$.post('/admin/bookcate/del', {ids:ids}, function(res){
 					if(res.errorcode == 0){
 						syhSuccess('删除图书分类 ' + titles + ' 成功', function(){
 							location.reload();;
