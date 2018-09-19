@@ -288,6 +288,8 @@ $(function(){
 		KindEditor.sync('#demo_chapter');
 		KindEditor.sync('#standard');
 		KindEditor.sync('#paper');
+		KindEditor.sync('#answer');
+		KindEditor.sync('#expand');
 		$('#main-form').submit();
 	});
 });
@@ -318,6 +320,12 @@ $('#paper-btn').on('click', function(){
 });
 $('#paperFile').on('change', function(){
 	uploadFile(this.files[0], '#paper-bar', '.paper-url', 'paper_source');
+});
+$('#answerFile').on('change', function(){
+	uploadFile(this.files[0], '#answer-bar', '.answer-url', 'answer_source');
+});
+$('#expandFile').on('change', function(){
+	uploadFile(this.files[0], '#expand-bar', '.expand-url', 'expand_source');
 });
 var kConfig = {
 	items:['source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',
@@ -361,6 +369,22 @@ KindEditor.ready(function(K) {
 		syncType:'form'
 	});
 	paperEditor = K.create('#paper',{
+		height:'400px',
+		items:kConfig.items,
+		colorTable:kConfig.colorTable,
+		uploadJson:'/admin/media/editorupload',
+		fileManagerJson:'',
+		syncType:'form'
+	});
+	answerEditor = K.create('#answer',{
+		height:'400px',
+		items:kConfig.items,
+		colorTable:kConfig.colorTable,
+		uploadJson:'/admin/media/editorupload',
+		fileManagerJson:'',
+		syncType:'form'
+	});
+	expandEditor = K.create('#expand',{
 		height:'400px',
 		items:kConfig.items,
 		colorTable:kConfig.colorTable,
