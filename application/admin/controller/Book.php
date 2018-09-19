@@ -310,4 +310,20 @@ class Book{
         }
         return json($ret);
     }
+    /**
+     * 图书批量导入
+     * @return \think\response\Redirect
+     */
+    public function import(){
+        $file = $this->request->file('file');
+        if(!empty($file)){
+            $biz = new BookBiz();
+            $tmpName = $file->getFileInfo()->getPathname();
+            $res = $biz->import($tmpName);
+            return redirect('book/import')->with('book_import_data', $res);
+        }else{
+            $data = session('book_import_data');
+            return view('', ['prePage' => getPageHistory('bookList'), 'data' => $data]);
+        }
+    }
 }

@@ -10,6 +10,7 @@ use app\common\model\BookCateModel;
 use think\Db;
 use think\Exception;
 use app\common\model\BookVideoModel;
+use app\common\AppExcel;
 
 class BookBiz{
     public function getRole(){
@@ -195,6 +196,52 @@ class BookBiz{
     public function cancelVideoShow($id){
         $model = new BookVideoModel();
         return $model->save(['show_time' => 0], ['id' => $id]);
+    }
+    public function import($filename){
+        $datas = AppExcel::import($filename);
+        $errorDatas = [];
+        $insertDatas = [];
+        $num = 0;
+        foreach($datas as $data){
+            try{
+                if(count($data) > 8){
+                    throw new \Exception('数据字段小于7个');
+                }
+                if(count($data) < 8){
+                    throw new \Exception('数据字段大于7个');
+                }
+                if(trim($data[0]) == '书名') continue;
+                $publishtime = strtotime(trim($data[5]));
+                if(!$publishtime){
+                    throw new \Exception('出版时间格式错误');
+                }
+                $cate = BookCateModel::where('catename', trim($data[7]))->find();
+                if(empty($cate)) throw new \Exception('图书分类（'+$data[7]+'）不存在');
+                $count = BookModel::where('name', trim($data[0]))->count('id');
+                if($count > 0) throw new \Exception('图书（'.$data[0].'）已经存在');
+                switch(trim($data[6])){
+                    case '高职高专':
+                        $type = 2;
+                        break;
+                    case '本科精品':
+                        $type = 1;
+                        break;
+                    default:
+                        throw new \Exception('教材类型只有‘高职高专’和‘本科精品’，你输入的是‘'.$data[6].'’');
+                }
+                array_push($insertDatas, ['name' => $data[0], 'book_no' => $data[1], 'author' => $data[2],
+                    'price' => $data[3], 'plotter' => $data[4], 'publishtime' => $data[5], 'type' => $type, 'cateid' => $cate['id']]);
+                $num++;
+            }catch(\Exception $e){
+                array_push($errorDatas, ['data' => $data, 'error' => $e->getMessage()]);
+                continue;
+            }
+        }
+        if(!empty($insertDatas)){
+            $bookModel = new BookModel();
+            $bookModel->saveAll($insertDatas);
+        }
+        return ['count' => $num, 'error' => $errorDatas];
     }
 }
 

@@ -76,6 +76,7 @@ Route::group('admin', function(){
         Route::post('delvideo', 'admin/Book/delVideo');
         Route::post('dovideoshow', 'admin/Book/doVideoShow');
         Route::post('cancelvideoshow', 'admin/Book/cancelVideoShow');
+        Route::rule('import', 'admin/Book/import')->middleware(AdminNav::class, 'book-bundle-import');
     });
     Route::group('contact', function(){
         Route::get('list', 'admin/Contact/list')->middleware(AdminNav::class, 'contact-list');

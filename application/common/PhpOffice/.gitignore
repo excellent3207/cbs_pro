@@ -1,0 +1,10 @@
+/tests/codeCoverage
+/analysis
+/phpunit.xml
+/.php_cs.cache
+
+## IDE support
+*.buildpath
+*.project
+/.settings
+/.idea
