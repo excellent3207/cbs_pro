@@ -19,7 +19,7 @@ class BookBiz{
      */
     public function recommend($pageSize){
         $hiddenFields = ['book_no','author','img_info','price','plotter','ppt','ppt_source','demo_chapter','standard',
-            'paper_img','paper_source','publishtime','show_time','recommend_time','description'];
+            'paper','paper_source','publishtime','show_time','recommend_time','description'];
         $hiddenFields = array_merge($hiddenFields, BookModel::hiddenFields());
         return BookModel::where([['show_time', '<>', 0],['recommend_time', '<>', 0]])->order('recommend_time desc')->hidden($hiddenFields)->select();
     }
@@ -33,7 +33,7 @@ class BookBiz{
      */
     public function list($cond, $order, $page, $pageSize){
         $hiddenFields = ['img_info','plotter','ppt','ppt_source','demo_chapter','standard',
-            'paper_img','paper_source','show_time','recommend_time','description'];
+            'paper','paper_source','show_time','recommend_time','description'];
         $hiddenFields = array_merge($hiddenFields, BookModel::hiddenFields());
         $books = BookModel::where([['show_time', '<>', 0]])->order($order)->where($cond)->order('recommend_time desc')->hidden($hiddenFields)->page($page, $pageSize)->select();
         foreach($books as &$book){

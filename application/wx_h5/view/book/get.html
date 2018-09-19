@@ -201,7 +201,7 @@ html, body {
 }
 </style>
 <div class="hide-bar"></div>
-<ul class="top-nav" style="opacity:0;">
+<ul class="top-nav">
 	<li data-id="1" class="cur">简介</li>
 	<li data-id="3">课件</li>
 	<li data-id="4">样章</li>
@@ -261,7 +261,7 @@ html, body {
 			<div class="paper">
 				<div class="scroller">
 					<div class="con">
-						{$book.paper_img|raw}
+						{$book.paper|raw}
 					</div>
 				</div>
 			</div>
@@ -302,6 +302,9 @@ html, body {
 <script>
 var pptSourceUrl = '{$book.ppt_source}';
 var paperSourceUrl = '{$book.paper_source}';
+var standardSourceUrl = '{$book.standard_source}';
+var answerSourceUrl = '{$book.answer_source}';
+var expandSourceUrl = '{$book.expand_source}';
 var curUrl = '';
 var bookid = {$book.id};
 var curVid = '{$curVid}';
@@ -365,6 +368,10 @@ function showNavCon(ele){
 		demoChapterScroll.refresh();
 		break;
 	case 5://课程标准
+		if(standardSourceUrl){
+			$('.download').show();
+			curUrl = standardSourceUrl;
+		}
 		$('.download').hide();
 		break;
 	case 6://试卷
@@ -373,6 +380,18 @@ function showNavCon(ele){
 			curUrl = paperSourceUrl;
 		}
 		paperScroll.refresh();
+		break;
+	case 7://答案
+		if(answerSourceUrl){
+			$('.download').show();
+			curUrl = answerSourceUrl;
+		}
+		break;
+	case 8://扩展
+		if(expandSourceUrl){
+			$('.download').show();
+			curUrl = expandSourceUrl;
+		}
 		break;
 	}
 }
