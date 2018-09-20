@@ -117,7 +117,7 @@
 				$.post('/admin/bookcate/del', {ids:ids}, function(res){
 					if(res.errorcode == 0){
 						syhSuccess('删除图书分类 ' + titles + ' 成功', function(){
-							location.reload();;
+							location.href = location.href + '&' + (new Date()).valueOf();
 						});
 					}else{
 						syhError(res.msg);

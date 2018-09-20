@@ -111,7 +111,7 @@ body{background:#f6f6f6;}
 	width:100%;
 	border-top-left-radius:1rem;
 	border-top-right-radius:1rem;
-	z-index:11;
+	z-index:16;
 	/*transition:all 0.5s;
 	-webkit-transition:all 0.5s;*/
 }
@@ -158,6 +158,7 @@ body{background:#f6f6f6;}
 	-webkit-flex-direction:column;
 	align-items:center;
 	-webkit-align-items:center;
+	z-index:10;
 }
 .wrap-book-index .empty img{
 	width:5.3rem;
@@ -250,7 +251,7 @@ mainScroll.on('scrollEnd', function() {
 		getNexPageData();
 	}
 });
-$('.wrap-book-index .top .right').on('click', function(){
+$('.wrap-book-index .top .right').on('tap', function(){
 	location.href = '/wx_h5/book/search';
 });
 $(function(){
