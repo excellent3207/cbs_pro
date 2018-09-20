@@ -12,6 +12,7 @@ use app\common\validate\BookValidate;
 use app\common\Pagination;
 use app\admin\biz\BookCateBiz;
 use app\common\validate\BookVideoValidate;
+use app\admin\biz\Qrcode;
 
 class Book{
     protected $request;
@@ -64,6 +65,14 @@ class Book{
         $cateBiz = new BookCateBiz();
         $cates = $cateBiz->all();
         return view('', ['list' => $list, 'params' => $params, 'pagination' => $pagination, 'cates' => $cates]);
+    }
+    /**
+     * 图书二维码
+     */
+    public function qrcode(){
+        $bookid = $this->request->get('bookid');
+        $biz = new Qrcode();
+        $biz->download('http://h5.igniter.vip/book/get?id='.$bookid);
     }
     /**
      * 编辑
