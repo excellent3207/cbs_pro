@@ -216,7 +216,7 @@ class BookBiz{
                     throw new \Exception('出版时间格式错误');
                 }
                 $cate = BookCateModel::where('catename', trim($data[7]))->find();
-                if(empty($cate)) throw new \Exception('图书分类（'+$data[7]+'）不存在');
+                if(empty($cate)) throw new \Exception('图书分类（'.$data[7].'）不存在');
                 $count = BookModel::where('name', trim($data[0]))->count('id');
                 if($count > 0) throw new \Exception('图书（'.$data[0].'）已经存在');
                 switch(trim($data[6])){
