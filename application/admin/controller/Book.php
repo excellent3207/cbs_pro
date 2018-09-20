@@ -72,7 +72,7 @@ class Book{
     public function qrcode(){
         $bookid = $this->request->get('bookid');
         $biz = new Qrcode();
-        $biz->download('http://h5.igniter.vip/book/get?id='.$bookid);
+        $biz->download('http://h5.igniter.vip/wx_h5/book/get?id='.$bookid);
     }
     /**
      * 编辑
