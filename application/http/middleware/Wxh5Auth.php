@@ -17,6 +17,7 @@ class Wxh5Auth {
         $user = serialize($user);*/
         $user = session('user');
         $wxBiz = new CbsWxBiz();
+        $url = 'http://h5.igniter.vip'.$_SERVER['REQUEST_URI'];
         if(empty($user)){
             $res = $wxBiz->authLogin($url, $code);
             switch($res['action']){
@@ -39,7 +40,6 @@ class Wxh5Auth {
         }else{
             config('user', unserialize($user));
         }
-        $url = 'http://h5.igniter.vip'.$_SERVER['REQUEST_URI'];
         config('wxConfig', $wxBiz->createJsConfig($url));
         return $next($request);
     }
