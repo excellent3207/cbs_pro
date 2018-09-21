@@ -15,6 +15,7 @@ class Wxh5Auth {
         });*/
         /*$user = UserModel::get(1);
         $user = serialize($user);*/
+        $code = $request->get('code');
         $user = session('user');
         $wxBiz = new CbsWxBiz();
         $url = 'http://h5.igniter.vip'.$_SERVER['REQUEST_URI'];
