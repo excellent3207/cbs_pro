@@ -14,11 +14,11 @@ class Wxh5Auth {
         dump($explain);
         });*/
         $wxBiz = new CbsWxBiz();
+        $url = 'http://h5.igniter.vip'.$request->url();
         $user = UserModel::get(1);
         config('user', $user);
         /*$code = $request->get('code');
         $user = session('user');
-        $url = 'http://h5.igniter.vip'.$request->url();
         if(empty($user)){
             $res = $wxBiz->authLogin($url, $code);
             switch($res['action']){
