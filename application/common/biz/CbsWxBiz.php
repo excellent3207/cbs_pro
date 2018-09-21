@@ -15,7 +15,7 @@ class CbsWxBiz{
      */
     public function createJsConfig($url){
         $model = new CbsWxModel();
-        $model->createJsConfig($url);
+        return $model->createJsConfig($url);
     }
     /**
      * 微信认证
