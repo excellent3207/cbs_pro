@@ -14,7 +14,7 @@ class UserModel extends Model{
     protected $pk = 'id';
     protected $table = 'cbs_user';
     protected $fields = array(
-        'id','wx_openid','phone','alias','face','sex','birth','school','professional'
+        'id','wx_openid','phone','alias','face','sex','birth','school','professional','issubscribe'
     );
     
     public function hideField(){

@@ -3,6 +3,7 @@ namespace app\http\middleware;
 
 use think\Db;
 use app\common\model\UserModel;
+use app\common\biz\CbsWxBiz;
 
 class Wxh5Auth {
     public function handle($request, \Closure $next){
@@ -12,10 +13,34 @@ class Wxh5Auth {
         // 查看性能分析结果
         dump($explain);
         });*/
-        $user = UserModel::get(1);
-        $user = serialize($user);
-        //$user = session('user');
-        config('user', unserialize($user));
+        /*$user = UserModel::get(1);
+        $user = serialize($user);*/
+        $user = session('user');
+        $wxBiz = new CbsWxBiz();
+        if(empty($user)){
+            $res = $wxBiz->authLogin($url, $code);
+            switch($res['action']){
+                case 'redirect':
+                    header('Location:'.$res['data']);exit;
+                    break;
+                case 'info':
+                    $userModel = new UserModel();
+                    $openid = $res['data']['openid'];
+                    $user = $userModel->get(['wx_openid' => $openid]);
+                    if(empty($user)){
+                        $data = ['wx_openid' => $openid, 'issubscribe' => $res['data']['issubscribe'] ? 1 : 0];
+                        $res = $userModel->save($data);
+                        if(!($res)) throw new \Exception('创建用户失败');
+                        $user = $userModel->get($userModel->id);
+                    }
+                    session('user', serialize($user));
+                    config('user', $user);
+            }
+        }else{
+            config('user', unserialize($user));
+        }
+        $url = 'http://h5.igniter.vip'.$_SERVER['REQUEST_URI'];
+        config('wxConfig', $wxBiz->createJsConfig($url));
         return $next($request);
     }
 }
