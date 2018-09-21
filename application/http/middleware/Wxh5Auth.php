@@ -13,11 +13,11 @@ class Wxh5Auth {
         // 查看性能分析结果
         dump($explain);
         });*/
+        $wxBiz = new CbsWxBiz();
         $user = UserModel::get(1);
         config('user', $user);
         /*$code = $request->get('code');
         $user = session('user');
-        $wxBiz = new CbsWxBiz();
         $url = 'http://h5.igniter.vip'.$request->url();
         if(empty($user)){
             $res = $wxBiz->authLogin($url, $code);
