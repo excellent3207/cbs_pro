@@ -28,9 +28,12 @@ class Wxh5Auth {
                 case 'info':
                     $userModel = new UserModel();
                     $openid = $res['data']['openid'];
+                    $alias = $res['data']['alias'];
+                    $face = $res['data']['headimgurl'];
                     $user = $userModel->get(['wx_openid' => $openid]);
                     if(empty($user)){
-                        $data = ['wx_openid' => $openid, 'issubscribe' => $res['data']['issubscribe'] ? 1 : 0];
+                        $data = ['wx_openid' => $openid, 'issubscribe' => $res['data']['issubscribe'] ? 1 : 0, 'alias' => $alias,
+                            'face' => $face];
                         $res = $userModel->save($data);
                         if(!($res)) throw new \Exception('创建用户失败');
                         $user = $userModel->get($userModel->id);
