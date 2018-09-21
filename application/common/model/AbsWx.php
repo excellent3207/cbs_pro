@@ -645,7 +645,7 @@ abstract class AbsWx{
     /**
      * 网页授权登录
      */
-    public function authLogin(string $url, string $code){
+    public function authLogin($url, $code){
         $ret = ['action' => 'info', 'data' => ''];
         $url = urlencode($url);
         if($code){
