@@ -28,7 +28,7 @@ class Wxh5Auth {
                 case 'info':
                     $userModel = new UserModel();
                     $openid = $res['data']['openid'];
-                    $alias = $res['data']['alias'];
+                    $alias = $res['data']['nickname'];
                     $face = $res['data']['headimgurl'];
                     $user = $userModel->get(['wx_openid' => $openid]);
                     if(empty($user)){
