@@ -18,7 +18,7 @@ class Wxh5Auth {
         $code = $request->get('code');
         $user = session('user');
         $wxBiz = new CbsWxBiz();
-        $url = 'http://h5.igniter.vip'.$_SERVER['REQUEST_URI'];
+        $url = 'http://h5.igniter.vip'.$request->url();
         if(empty($user)){
             $res = $wxBiz->authLogin($url, $code);
             switch($res['action']){
