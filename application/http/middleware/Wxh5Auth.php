@@ -13,9 +13,9 @@ class Wxh5Auth {
         // 查看性能分析结果
         dump($explain);
         });*/
-        /*$user = UserModel::get(1);
-        $user = serialize($user);*/
-        $code = $request->get('code');
+        $user = UserModel::get(1);
+        config('user', $user);
+        /*$code = $request->get('code');
         $user = session('user');
         $wxBiz = new CbsWxBiz();
         $url = 'http://h5.igniter.vip'.$request->url();
@@ -40,7 +40,7 @@ class Wxh5Auth {
             }
         }else{
             config('user', unserialize($user));
-        }
+        }*/
         config('wxConfig', $wxBiz->createJsConfig($url));
         return $next($request);
     }
