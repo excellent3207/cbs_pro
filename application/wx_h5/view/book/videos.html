@@ -41,21 +41,39 @@ body{background:#f6f6f6;}
 <div id="player" class="player"></div>
 <ul class="list">
 	{foreach name="videos" item="item"}
-	<li class="clearFix" data-vid="{$item.ali_vid}" data-id="{$item.id}">
+	<li class="clearFix" data-vid="{$item.ali_vid}">
 		<p>{$item.title}</p><span>{$item.duration_text}</span>
 	</li>
 	{/foreach}
 </ul>
-<script src="/wx_h5/js/iscroll.js"></script>
-<script charset="utf-8" type="text/javascript" src="//g.alicdn.com/de/prismplayer/2.7.2/aliplayer-min.js"></script>
+<!-- <script charset="utf-8" type="text/javascript" src="//g.alicdn.com/de/prismplayer/2.7.2/aliplayer-min.js"></script> -->
+<script src="/wx_h5/js/aliplayer.js"></script>
 <script>
 var curVid = '{$curVid}';
 var aliPlayer = false;
-playVideo(curVid);
+var curIndex = 0;
+var videoCount = $('.list li').length;
+playVideo(curIndex);
 $('.list li').on('click', function(){
-	showAlert('test');
+	var index = $(this).index();
+	playVideo(index);
 });
-function playVideo(vid){
+function nextVideo(){
+	if(curIndex < videoCount - 1){
+		playVideo(curIndex + 1);
+	}
+}
+function preVideo(){
+	if(curIndex > 0){
+		playVideo(curIndex - 1);
+	}
+}
+function playVideo(index){
+	var ele = $('.list li').eq(index);
+	var vid = ele.data('vid');
+	curIndex = index;
+	$('.list li').removeClass('cur');
+	ele.addClass('cur');
 	$.post('/wx_h5/media/videoplayauth', {vid:vid}, function(res){
 		if(res.errorcode == 0){
 			var cover = res.data.VideoMeta.CoverURL;
@@ -70,28 +88,27 @@ function playVideo(vid){
 		            playauth : auth,
 		            cover: cover,  
 		            useH5Prism:true,
-		            x5_type:'h5',
-		            x5_fullscreen:false,
-		            x5_video_position:'top'
 			        },function(player){
 			        	
 			    	}
 				);
 				aliPlayer.on('play', function(){
-					$('.player img').hide();
-				});
-				aliPlayer.tag.addEventListener("x5videoexitfullscreen", ()=>{
 					
 				});
-				aliPlayer.on("requestFullScreen", function(){
-				    showConfirm();
+				aliPlayer.on('ended', function(){
+					nextVideo();
 				});
-				$('.player').show();
+				aliPlayer.on('ready', handleReady);
+			}else{
+				aliPlayer.replayByVidAndPlayAuth(vid, auth);
 			}
 		}else{
 			showToast(res.msg);
 		}
 	});
+}
+function handleReady(){
+	aliPlayer.play();
 }
 function destroyVideo(){
 	if(aliPlayer){

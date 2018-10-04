@@ -160,6 +160,7 @@ Route::group('wx_h5', function(){
         Route::get('get', 'wx_h5/Book/get');
         Route::get('recommend', 'wx_h5/Book/recommend');
         Route::get('videos', 'wx_h5/Book/videos');
+        Route::get('test', 'wx_h5/Book/test');
     });
     Route::group('media', function(){
         Route::post('videoplayauth', 'wx_h5/Media/videoPlayAuth');

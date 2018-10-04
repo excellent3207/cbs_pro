@@ -15,9 +15,9 @@ class Wxh5Auth {
         });*/
         $wxBiz = new CbsWxBiz();
         $url = 'http://h5.igniter.vip'.$request->url();
-        /*$user = UserModel::get(1);
-        config('user', $user);*/
-        $code = $request->get('code');
+        $user = UserModel::get(1);
+        config('user', $user);
+       /* $code = $request->get('code');
         $user = session('user');
         if(empty($user)){
             $res = $wxBiz->authLogin($url, $code);
@@ -43,7 +43,7 @@ class Wxh5Auth {
             }
         }else{
             config('user', unserialize($user));
-        }
+        }*/
         config('wxConfig', $wxBiz->createJsConfig($url));
         return $next($request);
     }
