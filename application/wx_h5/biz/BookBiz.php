@@ -63,6 +63,7 @@ class BookBiz{
             $res->in_shelf = $userBiz->checkInShelf($res->id);
             $res->get_chapter_demo = $userBiz->checkHasDemoChapter($res->id);
             $res->hasVideo = $res->videos->isEmpty();
+            $res->demo_chapter = formatUrl($res->demo_chapter);
         }
         return $res;
     }

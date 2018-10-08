@@ -210,10 +210,16 @@ html, body {
 	<li data-id="7">答案</li>
 	<li data-id="8">拓展</li>
 </ul>
-<div class="download" data-url="" style="display:none;">
+<div class="download" id="download" data-url="" style="display:none;">
 	<i></i>
 	<img src="/wx_h5/img/icons/download.png" alt="" />
 </div>
+{if condition="$book.demo_chapter"}
+<div class="download" id="showpdf" data-url="{$book.demo_chapter}" style="display:none;">
+	<i></i>
+	<img src="/wx_h5/img/icons/download.png" alt="" />
+</div>
+{/if}
 <ul class="shelf-btn clearFix">
 	{if condition="!$book.in_shelf"}<li data-type="1">放入书架</li>{/if}
 	{if condition="!$book.get_chapter_demo"}<li style="display:none;" data-type="2" {if condition="!$book.in_shelf"}style="margin-left:2.5rem;"{/if}>申请样书</li>{/if}
@@ -243,7 +249,7 @@ html, body {
 			<div class="demo-chapter">
 				<div class="scroller">
 					<div class="con">
-						{$book.demo_chapter|raw}
+						
 					</div>
 				</div>
 			</div>
@@ -351,45 +357,45 @@ $('.shelf-btn li').on('click', function(){
 });
 function showNavCon(ele){
 	var id = ele.data('id');
+	$('#download').hide();
+	$('#showpdf').hide();
 	switch(id){
 	case 1://简介
 		descScroll.refresh();
-		$('.download').hide();
 		break;
 	case 3://课件
 		if(pptSourceUrl){
-			$('.download').show();
+			$('#download').show();
 			curUrl = pptSourceUrl;
 		}
 		pptScroll.refresh();
 		break;
 	case 4://样章
-		$('.download').hide();
+		$('#showpdf').show();
 		demoChapterScroll.refresh();
 		break;
 	case 5://课程标准
 		if(standardSourceUrl){
-			$('.download').show();
+			$('#download').show();
 			curUrl = standardSourceUrl;
 		}
-		$('.download').hide();
 		break;
 	case 6://试卷
 		if(paperSourceUrl){
-			$('.download').show();
+			$('#download').show();
 			curUrl = paperSourceUrl;
 		}
 		paperScroll.refresh();
 		break;
 	case 7://答案
 		if(answerSourceUrl){
-			$('.download').show();
+			$('#download').show();
 			curUrl = answerSourceUrl;
 		}
 		break;
 	case 8://扩展
 		if(expandSourceUrl){
-			$('.download').show();
+			$('#download').show();
 			curUrl = expandSourceUrl;
 		}
 		break;
@@ -431,7 +437,7 @@ var paperScroll = new IScroll('.paper', {
     tap:true
 });
 $(function(){
-	var clipboard = new ClipboardJS('.download', {
+	var clipboard = new ClipboardJS('#download', {
         text: function() {
             return curUrl;
         }
@@ -445,6 +451,9 @@ $(function(){
 	    console.error('Trigger:', e.trigger);
 	});
 	descScroll.refresh();
+	$('#showpdf').on('click', function(){
+		location.href = $(this).data('url');
+	});
 });
 </script>
 {include file="common/bottom" /}
