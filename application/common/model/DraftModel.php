@@ -35,5 +35,11 @@ class DraftModel extends Model{
     public function getDigestTextAttr($value, $data){
         return 'test';
     }
+    public function setContentAttr($value){
+        return base64_encode(gzcompress($value, 6));
+    }
+    public function getContentAttr($value){
+        return gzuncompress(base64_decode($value));
+    }
 }
 ?>
