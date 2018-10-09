@@ -6,8 +6,6 @@
  */
 namespace app\admin\controller;
 
-use think\Db;
-
 class Index{
     public function index(){
         return view('', ['user' => config('user')]);
