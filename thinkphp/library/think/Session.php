@@ -189,6 +189,7 @@ class Session
         if (!empty($config['type'])) {
             // 读取session驱动
             $class = false !== strpos($config['type'], '\\') ? $config['type'] : '\\think\\session\\driver\\' . ucwords($config['type']);
+
             // 检查驱动类
             if (!class_exists($class) || !session_set_save_handler(new $class($config))) {
                 throw new ClassNotFoundException('error session handler:' . $class, $class);
@@ -196,8 +197,7 @@ class Session
         }
 
         if ($isDoStart) {
-            session_start();
-            $this->init = true;
+            $this->start();
         } else {
             $this->init = false;
         }
@@ -218,7 +218,7 @@ class Session
 
         if (false === $this->init) {
             if (PHP_SESSION_ACTIVE != session_status()) {
-                session_start();
+                $this->start();
             }
             $this->init = true;
         }
