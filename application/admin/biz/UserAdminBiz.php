@@ -117,7 +117,7 @@ class UserAdminBiz{
      * @throws AppException
      */
     public function edit($data){
-        $count = UserAdminModel::where('username', $data['username'])->count('id');
+        $count = UserAdminModel::where('username', $data['username'])->where('id', '<>', $data['id'])->count('id');
         if($count > 0) throw new AppException('用户名已经被占用');
         $model = new UserAdminModel();
         return $model->allowField(TRUE)->save($data, ['id' => $data['id']]);
