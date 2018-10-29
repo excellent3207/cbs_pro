@@ -215,10 +215,10 @@ html, body {
 	<img src="/wx_h5/img/icons/download.png" alt="" />
 </div>
 {if condition="$book.demo_chapter"}
-<div class="download" id="showpdf" data-url="{$book.demo_chapter}" style="display:none;">
+<!-- <div class="download" id="showpdf" data-url="{$book.demo_chapter}" style="display:none;">
 	<i></i>
 	<img src="/wx_h5/img/icons/download.png" alt="" />
-</div>
+</div> -->
 {/if}
 <ul class="shelf-btn clearFix">
 	{if condition="!$book.in_shelf"}<li data-type="1">放入书架</li>{/if}
@@ -249,7 +249,7 @@ html, body {
 			<div class="demo-chapter">
 				<div class="scroller">
 					<div class="con">
-						
+						{$book.demo_chapter|raw}
 					</div>
 				</div>
 			</div>
@@ -358,7 +358,7 @@ $('.shelf-btn li').on('click', function(){
 function showNavCon(ele){
 	var id = ele.data('id');
 	$('#download').hide();
-	$('#showpdf').hide();
+	//$('#showpdf').hide();
 	switch(id){
 	case 1://简介
 		descScroll.refresh();
@@ -371,7 +371,7 @@ function showNavCon(ele){
 		pptScroll.refresh();
 		break;
 	case 4://样章
-		$('#showpdf').show();
+		//$('#showpdf').show();
 		demoChapterScroll.refresh();
 		break;
 	case 5://课程标准
@@ -451,9 +451,9 @@ $(function(){
 	    console.error('Trigger:', e.trigger);
 	});
 	descScroll.refresh();
-	$('#showpdf').on('click', function(){
+	/*$('#showpdf').on('click', function(){
 		location.href = $(this).data('url');
-	});
+	});*/
 });
 </script>
 {include file="common/bottom" /}
