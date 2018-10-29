@@ -176,7 +176,7 @@ abstract class AbsWx{
     public function createJsConfig(string $url){
         $config = array(
             'jsapi_ticket' => $this->getJsApiTicket(),
-            'noncestr' => md5(time() + 'chubanshe'),
+            'noncestr' => md5(time().'chubanshe'),
             'timestamp' => $_SERVER['REQUEST_TIME'],
             'url' => $url
         );
