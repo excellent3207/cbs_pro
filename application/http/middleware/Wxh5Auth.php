@@ -15,13 +15,15 @@ class Wxh5Auth {
         });*/
         $wxBiz = new CbsWxBiz();
         $url = 'http://h5.igniter.vip'.$request->url();
-        if($request->get('token') == 'chubanshe'){
-            $user = UserModel::get(1);
-            config('user', $user);
-        }else{
-            $code = $request->get('code');
-            $user = session('user');
-            if(empty($user)){
+        
+        $code = $request->get('code');
+        $user = session('user');
+        if(empty($user)){
+            if($request->get('token') == 'chubanshe'){
+                $user = UserModel::get(1);
+                config('user', $user);
+                session('user', serialize($user));
+            }else{
                 $res = $wxBiz->authLogin($url, $code);
                 switch($res['action']){
                     case 'redirect':
@@ -43,9 +45,9 @@ class Wxh5Auth {
                         session('user', serialize($user));
                         config('user', $user);
                 }
-            }else{
-                config('user', unserialize($user));
             }
+        }else{
+            config('user', unserialize($user));
         }
         config('wxConfig', $wxBiz->createJsConfig($url));
         return $next($request);
