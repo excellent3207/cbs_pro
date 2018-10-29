@@ -198,7 +198,7 @@
 			  	<input type="text" name="expand_source" style="opacity:0;" value="{$data.expand_source??''}" />
 			  </div>
 			</div> 
-			<div class="form-group"> 
+			<!-- <div class="form-group"> 
 			  <label class="col-xs-1 control-label">样章</label>
 			  <div class="col-xs-8">
 			  	<input type="file" style="display:none;" id="demo_chapterFile" />
@@ -215,7 +215,7 @@
               	</div>
 			  	<input type="text" name="demo_chapter" style="opacity:0;" value="{$data.demo_chapter??''}" />
 			  </div>
-			</div> 
+			</div>  -->
 			<div class="form-group"> 
 			  <label class="col-xs-1 control-label">电子课件</label>
 			  <div class="col-xs-8">
@@ -248,6 +248,13 @@
 			  <label class="col-xs-1 control-label">知识拓展</label>
 			  <div class="col-xs-8">
                   <textarea id="expand" name="expand" data-parsley-errors-container="#areaError" class="form-control">{$data.expand??''}</textarea>		
+			  	  <div id="areaError"></div>
+			  </div>
+			</div>
+			<div class="form-group"> 
+			  <label class="col-xs-1 control-label">样章</label>
+			  <div class="col-xs-8">
+                  <textarea id="demo_chapter" name="demo_chapter" data-parsley-errors-container="#areaError" class="form-control">{$data.demo_chapter??''}</textarea>		
 			  	  <div id="areaError"></div>
 			  </div>
 			</div>
@@ -346,12 +353,12 @@ $('#standardFile').on('change', function(){
 	uploadFile(this.files[0], '#standard-bar', '.standard-url', 'standard_source');
 });
 //---------课标原文件上传-----------
-$('#demo_chapter-btn').on('click', function(){
+/*$('#demo_chapter-btn').on('click', function(){
 	$('#demo_chapterFile')[0].click();
 });
 $('#demo_chapterFile').on('change', function(){
 	uploadFile(this.files[0], '#demo_chapter-bar', '.demo_chapter-url', 'demo_chapter');
-});
+});*/
 var kConfig = {
 	items:['source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',
 		'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
@@ -402,6 +409,14 @@ KindEditor.ready(function(K) {
 		syncType:'form'
 	});
 	expandEditor = K.create('#expand',{
+		height:'400px',
+		items:kConfig.items,
+		colorTable:kConfig.colorTable,
+		uploadJson:'/admin/media/editorupload',
+		fileManagerJson:'',
+		syncType:'form'
+	});
+	expandEditor = K.create('#demo_chapter',{
 		height:'400px',
 		items:kConfig.items,
 		colorTable:kConfig.colorTable,
