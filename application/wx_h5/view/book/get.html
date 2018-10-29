@@ -199,6 +199,7 @@ html, body {
 	text-align:center;
 	background:#fff;
 }
+.video-url{text-decoration:underline;}
 </style>
 <div class="hide-bar"></div>
 <ul class="top-nav">
@@ -240,6 +241,7 @@ html, body {
 							<li><span>作者：</span>{$book.author}</li>
 							<li><span>定价：</span>{$book.price}元</li>
 							<li><span>出版时间：</span>{$book.publishtime}</li>
+							{if condition="$book.hasVideo"}<li><span>图书视频：</span><span class="video-url">点击</span></li>{/if}
 						</ul>
 					</div>
 				</div>
@@ -454,6 +456,9 @@ $(function(){
 	/*$('#showpdf').on('click', function(){
 		location.href = $(this).data('url');
 	});*/
+	$('.video-url').on('click', function(){
+		location.href = '/wx_h5/book/videos?bookid={$book.id}';
+	});
 });
 </script>
 {include file="common/bottom" /}
