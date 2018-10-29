@@ -107,12 +107,11 @@
 			ids.push($(ele).data('id'));
 		});
 		ids = ids.join(',');
-		titles = titles.join(',');
 		syhConfirm('确定要删除banner吗？', function(flag){
 			if(flag){
 				$.post('/admin/banner/del', {ids:ids}, function(res){
 					if(res.errorcode == 0){
-						syhSuccess('删除banner ' + titles + ' 成功', function(){
+						syhSuccess('删除banner成功', function(){
 							location.reload();;
 						});
 					}else{
