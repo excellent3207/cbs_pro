@@ -44,7 +44,7 @@ class Draft{
     }
     /**
      * 编辑文稿
-     * @return \think\response\Redirect|unknown
+     * @return \think\response\Redirect
      */
     public function save(){
         $data = $this->request->post();

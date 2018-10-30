@@ -40,7 +40,7 @@ class Banner{
     }
     /**
      * 编辑用户
-     * @return \think\response\Redirect|unknown
+     * @return \think\response\Redirect
      */
     public function save(){
         $data = $this->request->post();

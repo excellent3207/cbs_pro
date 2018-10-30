@@ -61,7 +61,7 @@ class BookCate{
     }
     /**
      * 编辑图书分类
-     * @return \think\response\Redirect|unknown
+     * @return \think\response\Redirect
      */
     public function save(){
         $data = $this->request->post();

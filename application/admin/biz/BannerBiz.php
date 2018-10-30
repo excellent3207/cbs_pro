@@ -13,7 +13,7 @@ class BannerBiz{
     }
     /**
      * 获取banner详情
-     * @param unknown $id
+     * @param $id
      * @return \app\common\model\BannerModel
      */
     public function get($id){
@@ -22,10 +22,10 @@ class BannerBiz{
     }
     /**
      * banner列表
-     * @param unknown $cond
+     * @param  $cond
      * @param int $page
      * @param int $pageSize
-     * @return unknown
+     * @return 
      */
     public function list($cond, int $page, int $pageSize){
         $drafts = BannerModel::where($cond)->hidden(BannerModel::hiddenFields())->page($page, $pageSize)->select();
@@ -33,15 +33,15 @@ class BannerBiz{
     }
     /**
      * banner列表数量
-     * @param unknown $cond
-     * @return unknown
+     * @param  $cond
+     * @return 
      */
     public function listCount($cond){
         return BannerModel::where($cond)->count('id');
     }
     /**
      * 编辑
-     * @param unknown $data
+     * @param  $data
      * @throws AppException
      * @return boolean
      */
@@ -59,8 +59,8 @@ class BannerBiz{
     }
     /**
      * 删除
-     * @param unknown $navid
-     * @return unknown
+     * @param  $navid
+     * @return 
      */
     public function del($ids){
         return BannerModel::destroy(function($query) use ($ids){
@@ -69,8 +69,8 @@ class BannerBiz{
     }
     /**
      * 前端展示banner
-     * @param unknown $id
-     * @return unknown
+     * @param  $id
+     * @return 
      */
     public function doShow($id){
         $model = new BannerModel();
@@ -78,8 +78,8 @@ class BannerBiz{
     }
     /**
      * 取消前端展示banner
-     * @param unknown $id
-     * @return unknown
+     * @param  $id
+     * @return 
      */
     public function cancelShow($id){
         $model = new BannerModel();
@@ -87,8 +87,8 @@ class BannerBiz{
     }
     /**
      * banner排序
-     * @param unknown $id
-     * @return unknown
+     * @param  $id
+     * @return 
      */
     public function editOrder($id, $orderid){
         $model = new BannerModel();

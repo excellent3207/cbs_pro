@@ -120,7 +120,7 @@ class UserAdmin{
     }
     /**
      * 创建用户
-     * @return \think\response\Redirect|unknown
+     * @return \think\response\Redirect
      */
     public function add(){
         $data = $this->request->post();
@@ -152,7 +152,7 @@ class UserAdmin{
     }
     /**
      * 编辑用户
-     * @return \think\response\Redirect|unknown
+     * @return \think\response\Redirect
      */
     public function edit(){
         $data = $this->request->post();
@@ -230,7 +230,7 @@ class UserAdmin{
     }
     /**
      * 角色编辑
-     * @return \think\response\Redirect|unknown
+     * @return \think\response\Redirect
      */
     public function roleEdit(){
         $data = $this->request->post();
@@ -266,7 +266,7 @@ class UserAdmin{
     }
     /**
      * 创建角色
-     * @return \think\response\Redirect|unknown
+     * @return \think\response\Redirect
      */
     public function roleAdd(){
         $data = $this->request->post();

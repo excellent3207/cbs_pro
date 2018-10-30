@@ -76,7 +76,7 @@ class Book{
     }
     /**
      * 编辑
-     * @return \think\response\Redirect|unknown
+     * @return \think\response\Redirect
      */
     public function save(){
         $data = $this->request->post();
@@ -214,7 +214,6 @@ class Book{
         $params = $this->request->get();
         $biz = new BookBiz();
         $cond = [];
-        $cateid = 0;
         $bookid = $this->request->get('bookid');
         if(isset($params['id']) && $params['id']){
             array_push($cond, ['id', '=', $params['id']]);
@@ -236,7 +235,7 @@ class Book{
     }
     /**
      * 编辑视频
-     * @return \think\response\Redirect|unknown
+     * @return \think\response\Redirect
      */
     public function saveVideo(){
         $data = $this->request->post();

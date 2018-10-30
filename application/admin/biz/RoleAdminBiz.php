@@ -10,7 +10,7 @@ use app\common\exception\AppException;
 class RoleAdminBiz{
     /**
      * 根据ID获取角色
-     * @param unknown $id
+     * @param  $id
      * @return \app\admin\model\RoleAdminModel
      */
     public function get($id){
@@ -18,7 +18,7 @@ class RoleAdminBiz{
     }
     /**
      * 角色列表（全部）
-     * @return unknown
+     * @return 
      */
     public function all(){
         $hiddens = array_merge(RoleAdminModel::hiddenFields(), ['navids']);
@@ -26,7 +26,7 @@ class RoleAdminBiz{
     }
     /**
      * 编辑角色
-     * @param unknown $data
+     * @param  $data
      * @throws AppException
      * @return boolean
      */
@@ -37,9 +37,9 @@ class RoleAdminBiz{
     }
     /**
      * 创建角色
-     * @param unknown $data
+     * @param  $data
      * @throws AppException
-     * @return unknown
+     * @return 
      */
     public function add($data){
         $model = new RoleAdminModel();
@@ -49,7 +49,7 @@ class RoleAdminBiz{
     }
     /**
      * 删除角色
-     * @param unknown $ids
+     * @param  $ids
      * @throws AppException
      * @return boolean
      */

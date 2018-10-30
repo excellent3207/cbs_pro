@@ -19,9 +19,9 @@ class NavAdminBiz{
     }
     /**
      * 创建导航
-     * @param unknown $data
+     * @param  $data
      * @throws AppException
-     * @return unknown
+     * @return 
      */
     public function add($data){
         if(!isset($data['tag']) || !$data['tag']) throw new AppException('导航唯一标示(tag)不能为空');
@@ -42,7 +42,7 @@ class NavAdminBiz{
     }
     /**
      * 编辑
-     * @param unknown $data
+     * @param  $data
      * @throws AppException
      * @return boolean
      */
@@ -56,8 +56,8 @@ class NavAdminBiz{
     }
     /**
      * 删除
-     * @param unknown $navid
-     * @return unknown
+     * @param  $navid
+     * @return 
      */
     public function del($navid){
         return NavAdminModel::destroy(function($query) use ($navid){

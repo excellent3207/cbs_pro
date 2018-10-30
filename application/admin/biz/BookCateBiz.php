@@ -13,7 +13,7 @@ class BookCateBiz{
     }
     /**
      * 获取书籍详情
-     * @param unknown $id
+     * @param  $id
      * @return \app\common\model\BookCateModel
      */
     public function get($id){
@@ -29,10 +29,10 @@ class BookCateBiz{
     }
     /**
      * 图书分类列表
-     * @param unknown $cond
+     * @param  $cond
      * @param int $page
      * @param int $pageSize
-     * @return unknown
+     * @return 
      */
     public function list($cond, int $page, int $pageSize){
         $books = BookCateModel::where($cond)->hidden(BookCateModel::hiddenFields())->page($page, $pageSize)->select();
@@ -40,15 +40,15 @@ class BookCateBiz{
     }
     /**
      * 图书分类列表数量
-     * @param unknown $cond
-     * @return unknown
+     * @param  $cond
+     * @return 
      */
     public function listCount($cond){
         return BookCateModel::where($cond)->count('id');
     }
     /**
      * 编辑
-     * @param unknown $data
+     * @param  $data
      * @throws AppException
      * @return boolean
      */
@@ -66,8 +66,8 @@ class BookCateBiz{
     }
     /**
      * 删除
-     * @param unknown $navid
-     * @return unknown
+     * @param  $navid
+     * @return 
      */
     public function del($ids){
         return BookCateModel::destroy(function($query) use ($ids){
@@ -76,8 +76,8 @@ class BookCateBiz{
     }
     /**
      * 分类排序
-     * @param unknown $id
-     * @return unknown
+     * @param  $id
+     * @return 
      */
     public function editOrder($id, $orderid){
         $model = new BookCateModel();

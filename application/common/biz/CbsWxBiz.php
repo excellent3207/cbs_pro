@@ -11,7 +11,7 @@ use app\common\model\CbsWxModel;
 class CbsWxBiz{
     /**
      * 获取js配置
-     * @param unknown $url
+     * @param  $url
      */
     public function createJsConfig($url){
         $model = new CbsWxModel();
@@ -19,8 +19,8 @@ class CbsWxBiz{
     }
     /**
      * 微信认证
-     * @param unknown $url
-     * @param unknown $code
+     * @param  $url
+     * @param  $code
      * @return string[]|number[]|boolean[]|mixed[]
      */
     public function authLogin($url, $code){

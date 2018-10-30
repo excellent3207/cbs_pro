@@ -39,16 +39,16 @@ class AliOOS{
 	];
 	/**
 	 * 获取上传sts
-	 * @param unknown $policy_actions
-	 * @param unknown $paths
+	 * @param  $policy_actions
+	 * @param  $paths
 	 */
 	public function uploadSts($policy_actions, $paths){
 	    return $this->sts($policy_actions, $paths, $this->uploadArn);
 	}
 	/**
 	 * 基础获取sts
-	 * @param unknown $policy_actions
-	 * @param unknown $paths
+	 * @param  $policy_actions
+	 * @param  $paths
 	 * @return NULL[]
 	 */
 	private function sts($policy_actions, $paths, $roleArn){
@@ -137,7 +137,7 @@ class AliOOS{
 	}
 	/**
 	 * 创建点播视频凭证
-	 * @return unknown|mixed
+	 * @return |mixed
 	 */
 	public function create_upload_video(){
 		$client = $this->init_vod_client();
@@ -165,8 +165,8 @@ class AliOOS{
 	}
 	/**
 	 * 刷新视频凭证
-	 * @param unknown $vid
-	 * @return unknown|mixed
+	 * @param  $vid
+	 * @return |mixed
 	 */
 	public function refresh_upload_video($vid){
 		$client = $this->init_vod_client();
@@ -178,8 +178,8 @@ class AliOOS{
 	}
 	/**
 	 * 获取点播视频信息
-	 * @param unknown $videoId
-	 * @return unknown|mixed
+	 * @param  $videoId
+	 * @return |mixed
 	 */
 	public function get_video_info($videoId) {
 		$client = $this->init_vod_client();

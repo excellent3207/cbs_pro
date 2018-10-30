@@ -9,10 +9,10 @@ use app\common\model\UserModel;
 class UserBiz{
     /**
      * 用户列表
-     * @param unknown $cond
-     * @param unknown $page
-     * @param unknown $pageSize
-     * @return unknown[]
+     * @param  $cond
+     * @param  $page
+     * @param  $pageSize
+     * @return []
      */
     public function list($cond, $page, $pageSize){
         $users = UserModel::where($cond)->order('create_time desc')->page($page, $pageSize)->select();

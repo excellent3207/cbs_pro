@@ -1,7 +1,7 @@
 <?php
 /**
  * 判断权限
- * @param unknown $tag
+ * @param $tag
  */
 function checkAuth($tag){
     $user = config('user');
@@ -45,7 +45,7 @@ function delPageHistory(array $keys){
 /**
  * 获取历史页面
  * @param string $key
- * @return string|unknown
+ * @return string
  */
 function getPageHistory(string $key, string $default = ''){
     $history = cookie('history');

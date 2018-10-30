@@ -7,11 +7,6 @@
 namespace app\admin\controller;
 
 use think\Request;
-use app\admin\biz\BookBiz;
-use app\common\validate\BookValidate;
-use app\common\Pagination;
-use app\admin\biz\BookCateBiz;
-use app\common\validate\BookVideoValidate;
 use app\admin\biz\ContactBiz;
 use app\common\validate\ContactValidate;
 
@@ -26,14 +21,13 @@ class Contact{
      */
     public function list(){
         setPageHistory(['contactList' => \think\facade\Request::url()], true);
-        $params = $this->request->get();
         $biz = new ContactBiz();
         $list = $biz->all();
         return view('', ['list' => $list]);
     }
     /**
      * 编辑
-     * @return \think\response\Redirect|unknown
+     * @return \think\response\Redirect
      */
     public function save(){
         $data = $this->request->post();

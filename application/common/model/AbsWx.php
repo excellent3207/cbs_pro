@@ -147,9 +147,9 @@ abstract class AbsWx{
     abstract protected function getLocationCallback($toUser, $fromUser,$latitude, $longitude, $precision, $createtime);
     /**
      * 点击菜单拉取消息时的事件推送
-     * @param unknown $toUser 开发者微信号
-     * @param unknown $fromUser 用户openid
-     * @param unknown $eventKey 事件KEY值，与自定义菜单接口中KEY值对应
+     * @param  $toUser 开发者微信号
+     * @param  $fromUser 用户openid
+     * @param  $eventKey 事件KEY值，与自定义菜单接口中KEY值对应
      * @param int $createtime 消息时间
      */
     abstract protected function clickMenuMsgCallback($toUser, $fromUser, $eventKey, $createtime);
@@ -210,9 +210,9 @@ abstract class AbsWx{
     }
     /**
      * 获取带参二维码基本方法
-     * @param unknown $isLong
-     * @param unknown $sceneid
-     * @param unknown $expire
+     * @param  $isLong
+     * @param  $sceneid
+     * @param  $expire
      * @param string $isSceneStr
      * @throws WxException
      * @return string
@@ -255,7 +255,7 @@ abstract class AbsWx{
     }
     /**
      * 接收微信服务器响应处理
-     * @param unknown $postData
+     * @param  $postData
      * @throws WxException
      * @return string
      */
@@ -480,11 +480,11 @@ abstract class AbsWx{
     }
     /**
      * 发送小程序卡片（要求小程序与公众号已关联）
-     * @param unknown $toUser 用户openid
-     * @param unknown $title 卡片标题
-     * @param unknown $appid 小程序的appid，要求小程序的appid需要与公众号有关联关系
-     * @param unknown $pagepath 小程序的页面路径，跟app.json对齐，支持参数，比如pages/index/index?foo=bar
-     * @param unknown $thumbMediaId 缩略图ID
+     * @param  $toUser 用户openid
+     * @param  $title 卡片标题
+     * @param  $appid 小程序的appid，要求小程序的appid需要与公众号有关联关系
+     * @param  $pagepath 小程序的页面路径，跟app.json对齐，支持参数，比如pages/index/index?foo=bar
+     * @param  $thumbMediaId 缩略图ID
      */
     public function sendKfMsgMinipro($toUser, $title, $appid, $pagepath, $thumbMediaId){
         $data = [
@@ -519,10 +519,10 @@ abstract class AbsWx{
     }
     /**
      * 发送模版消息基础方法
-     * @param unknown $toUser 用户openid
-     * @param unknown $templateId 模版消息的模版ID
-     * @param unknown $url 消息跳转的url
-     * @param unknown $data 模版数据，格式为['first' => ['value' => '恭喜你', 'color' => '#173177'], 'second' => [],...]
+     * @param  $toUser 用户openid
+     * @param  $templateId 模版消息的模版ID
+     * @param  $url 消息跳转的url
+     * @param  $data 模版数据，格式为['first' => ['value' => '恭喜你', 'color' => '#173177'], 'second' => [],...]
      * @param string $appid 所需跳转到的小程序appid（该小程序appid必须与发模板消息的公众号是绑定关联关系）,不传代表不跳转小程序
      * @param string $pagepath 所需跳转到小程序的具体页面路径，支持带参数,（示例index?foo=bar）
      * @throws WxException
@@ -548,7 +548,7 @@ abstract class AbsWx{
     }
     /**
      * 通过openid获取用户信息
-     * @param unknown $openid
+     * @param  $openid
      * @return boolean|mixed
      */
     public function getInfoByOpenid($openid){
@@ -569,7 +569,7 @@ abstract class AbsWx{
     }
     /**
      * 获取短链接
-     * @param unknown $longURL
+     * @param  $longURL
      * @return mixed|boolean
      */
     public function getShortURL($longURL){
@@ -593,7 +593,7 @@ abstract class AbsWx{
     }
     /**
      * 获取token
-     * @return unknown|mixed|\think\cache\Driver|boolean
+     * @return |mixed|\think\cache\Driver|boolean
      */
     protected function getToken(){
         $token = AppRedis::instance()->get($this->wxCacheKey);
@@ -611,7 +611,7 @@ abstract class AbsWx{
     }
     /**
      * 获取js ticket
-     * @return mixed|unknown
+     * @return mixed|
      */
     protected function getJsApiTicket(){
         $ticket = AppRedis::instance()->get($this->wxCacheTiket);

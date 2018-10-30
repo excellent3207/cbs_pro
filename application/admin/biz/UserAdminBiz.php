@@ -68,7 +68,7 @@ class UserAdminBiz{
     }
     /**
      * 获取用户
-     * @param unknown $id
+     * @param  $id
      * @return \app\admin\model\UserAdminModel|NULL
      */
     public function get($id){
@@ -77,10 +77,10 @@ class UserAdminBiz{
     }
     /**
      * 后台用户列表
-     * @param unknown $cond
+     * @param  $cond
      * @param int $page
      * @param int $pageSize
-     * @return unknown
+     * @return 
      */
     public function list($cond, int $page, int $pageSize){
         $users = UserAdminModel::with('role')->where($cond)->hidden(UserAdminModel::hiddenFields())->page($page, $pageSize)->select();
@@ -91,17 +91,17 @@ class UserAdminBiz{
     }
     /**
      * 用户列表数量
-     * @param unknown $cond
-     * @return unknown
+     * @param  $cond
+     * @return 
      */
     public function listCount($cond){
         return UserAdminModel::where($cond)->count('id');
     }
     /**
      * 创建用户
-     * @param unknown $data
+     * @param  $data
      * @throws AppException
-     * @return unknown
+     * @return 
      */
     public function add($data){
         $count = UserAdminModel::where('username', $data['username'])->count('id');
@@ -113,7 +113,7 @@ class UserAdminBiz{
     }
     /**
      * 编辑用户
-     * @param unknown $data
+     * @param  $data
      * @throws AppException
      */
     public function edit($data){
@@ -124,8 +124,8 @@ class UserAdminBiz{
     }
     /**
      * 删除
-     * @param unknown $navid
-     * @return unknown
+     * @param  $navid
+     * @return 
      */
     public function del($ids){
         return UserAdminModel::destroy(function($query) use ($ids){
@@ -134,8 +134,8 @@ class UserAdminBiz{
     }
     /**
      * 重置密码
-     * @param unknown $navid
-     * @return unknown
+     * @param  $navid
+     * @return 
      */
     public function resetPwd($id){
         $model = new UserAdminModel();
@@ -144,8 +144,8 @@ class UserAdminBiz{
     }
     /**
      * 格式化导航数据
-     * @param unknown $role
-     * @return array[]|unknown[][]|array
+     * @param  $role
+     * @return array[]|[][]|array
      */
     private function formatNavs($role){
         if(!empty($role) && $role['navids']){

@@ -9,11 +9,12 @@ namespace app\common\biz;
 use app\common\model\AliOOS;
 use app\common\AppTool;
 use app\common\model\Services_JSON;
+use think\Response;
 
 class MediaBiz{
     /**
      * 测试获取sts凭证 注意：$dir必须选择
-     * @throws SyhException
+     * @throws \Exception
      * @return string[]|NULL[]
      */
     public function testSts(){
@@ -28,7 +29,7 @@ class MediaBiz{
     }
     /**
      * 图片获取sts凭证 注意：$dir必须选择
-     * @throws SyhException
+     * @throws \Exception
      * @return string[]|NULL[]
      */
     public function imgSts(){
@@ -43,7 +44,7 @@ class MediaBiz{
     }
     /**
      * 文件获取sts凭证 注意：$dir必须选择
-     * @throws SyhException
+     * @throws \Exception
      * @return string[]|NULL[]
      */
     public function fileSts(){
@@ -58,8 +59,8 @@ class MediaBiz{
     }
     /**
      * 获取视频播放凭证
-     * @param unknown $vid
-     * @return unknown|mixed
+     * @param ... $vid
+     * @return ...|mixed
      */
     public function videoPlayAuth($vid){
         $ali = new AliOOS();
@@ -67,7 +68,7 @@ class MediaBiz{
     }
     /**
      * 获取视频上传凭证
-     * @return \app\media\model\unknown|mixed
+     * @return \app\media\model\...|mixed
      */
     public function vodCreateVideo(){
         $ali = new AliOOS();
@@ -76,8 +77,8 @@ class MediaBiz{
     }
     /**
      * 刷新视频上传凭证
-     * @param unknown $vid
-     * @return \app\media\model\unknown|mixed
+     * @param ... $vid
+     * @return \app\media\model\...|mixed
      */
     public function vodRefreshVideo($vid){
         $ali = new AliOOS();
@@ -94,7 +95,7 @@ class MediaBiz{
             $mediaBiz = new MediaBiz();
             $vodAuth = $mediaBiz->vodCreateVideo();
             $ret['data'] = $vodAuth;
-        }catch(SyhException $e){
+        }catch(\Exception $e){
             $ret['errorcode'] = 1;
             $ret['msg'] = $e->getMessage();
         }
@@ -111,7 +112,7 @@ class MediaBiz{
             $mediaBiz = new MediaBiz();
             $vodAuth = $mediaBiz->vodRefreshVideo($vid);
             $ret['data'] = $vodAuth;
-        }catch(SyhException $e){
+        }catch(\Exception $e){
             $ret['errorcode'] = 1;
             $ret['msg'] = $e->getMessage();
         }
@@ -173,7 +174,7 @@ class MediaBiz{
                 $json = new Services_JSON();
                 echo $json->encode(array('error' => 0, 'url' => $mediaUrl));
                 exit;
-            }catch(SyhException $e){
+            }catch(\Exception $e){
                 $this->alert($e->getMessage());
             }
         }

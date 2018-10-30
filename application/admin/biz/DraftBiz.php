@@ -13,7 +13,7 @@ class DraftBiz{
     }
     /**
      * 获取文稿详情
-     * @param unknown $id
+     * @param  $id
      * @return \app\common\model\DraftModel
      */
     public function get($id){
@@ -22,10 +22,10 @@ class DraftBiz{
     }
     /**
      * 文稿列表
-     * @param unknown $cond
+     * @param  $cond
      * @param int $page
      * @param int $pageSize
-     * @return unknown
+     * @return 
      */
     public function list($cond, int $page, int $pageSize){
         $drafts = DraftModel::where($cond)->order('create_time desc')->hidden(DraftModel::hiddenFields())->page($page, $pageSize)->select();
@@ -33,15 +33,15 @@ class DraftBiz{
     }
     /**
      * 文稿列表数量
-     * @param unknown $cond
-     * @return unknown
+     * @param  $cond
+     * @return 
      */
     public function listCount($cond){
         return DraftModel::where($cond)->count('id');
     }
     /**
      * 编辑
-     * @param unknown $data
+     * @param  $data
      * @throws AppException
      * @return boolean
      */
@@ -59,8 +59,8 @@ class DraftBiz{
     }
     /**
      * 删除
-     * @param unknown $navid
-     * @return unknown
+     * @param  $navid
+     * @return 
      */
     public function del($ids){
         return DraftModel::destroy(function($query) use ($ids){
@@ -69,8 +69,8 @@ class DraftBiz{
     }
     /**
      * 前端展示文稿
-     * @param unknown $id
-     * @return unknown
+     * @param  $id
+     * @return 
      */
     public function doShow($id){
         $model = new DraftModel();
@@ -78,8 +78,8 @@ class DraftBiz{
     }
     /**
      * 取消前端展示文稿
-     * @param unknown $id
-     * @return unknown
+     * @param  $id
+     * @return 
      */
     public function cancelShow($id){
         $model = new DraftModel();
@@ -87,8 +87,8 @@ class DraftBiz{
     }
     /**
      * 推荐文稿
-     * @param unknown $id
-     * @return unknown
+     * @param  $id
+     * @return 
      */
     public function doRecomm($id){
         $model = new DraftModel();
@@ -96,8 +96,8 @@ class DraftBiz{
     }
     /**
      * 取消推荐文稿
-     * @param unknown $id
-     * @return unknown
+     * @param  $id
+     * @return 
      */
     public function cancelRecomm($id){
         $model = new DraftModel();

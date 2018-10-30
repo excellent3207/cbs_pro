@@ -14,7 +14,7 @@ class ContactBiz{
     }
     /**
      * 获取联系方式详情
-     * @param unknown $id
+     * @param  $id
      * @return \app\common\model\BookModel
      */
     public function get($id){
@@ -23,17 +23,17 @@ class ContactBiz{
     }
     /**
      * 联系方式列表
-     * @param unknown $cond
+     * @param  $cond
      * @param int $page
      * @param int $pageSize
-     * @return unknown
+     * @return 
      */
     public function all(){
         return ContactModel::all()->hidden(BookModel::hiddenFields());
     }
     /**
      * 编辑
-     * @param unknown $data
+     * @param  $data
      * @throws AppException
      * @return boolean
      */
@@ -51,8 +51,8 @@ class ContactBiz{
     }
     /**
      * 删除
-     * @param unknown $navid
-     * @return unknown
+     * @param  $navid
+     * @return 
      */
     public function del($ids){
         return ContactModel::destroy(function($query) use ($ids){
@@ -61,8 +61,8 @@ class ContactBiz{
     }
     /**
      * 排序
-     * @param unknown $id
-     * @return unknown
+     * @param  $id
+     * @return 
      */
     public function editOrder($id, $orderid){
         $model = new ContactModel();

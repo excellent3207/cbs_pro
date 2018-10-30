@@ -7,8 +7,6 @@ namespace app\admin\biz;
 use app\common\exception\AppException;
 use app\common\model\BookModel;
 use app\common\model\BookCateModel;
-use think\Db;
-use think\Exception;
 use app\common\model\BookVideoModel;
 use app\common\AppExcel;
 
@@ -18,7 +16,7 @@ class BookBiz{
     }
     /**
      * 获取书籍详情
-     * @param unknown $id
+     * @param  $id
      * @return \app\common\model\BookModel
      */
     public function get($id){
@@ -27,10 +25,10 @@ class BookBiz{
     }
     /**
      * 书籍列表
-     * @param unknown $cond
+     * @param  $cond
      * @param int $page
      * @param int $pageSize
-     * @return unknown
+     * @return 
      */
     public function list($cond, $cateid, int $page, int $pageSize){
         $books = BookModel::where($cond)->order('create_time desc')->hidden(BookModel::hiddenFields())->page($page, $pageSize)->select();
@@ -40,7 +38,7 @@ class BookBiz{
     }
     /**
      * 编辑
-     * @param unknown $data
+     * @param  $data
      * @throws AppException
      * @return boolean
      */
@@ -58,8 +56,8 @@ class BookBiz{
     }
     /**
      * 删除
-     * @param unknown $navid
-     * @return unknown
+     * @param  $navid
+     * @return 
      */
     public function del($ids){
         return BookModel::destroy(function($query) use ($ids){
@@ -68,8 +66,8 @@ class BookBiz{
     }
     /**
      * 前端展示图书
-     * @param unknown $id
-     * @return unknown
+     * @param  $id
+     * @return 
      */
     public function doShow($id){
         $model = new BookModel();
@@ -77,8 +75,8 @@ class BookBiz{
     }
     /**
      * 取消前端展示图书
-     * @param unknown $id
-     * @return unknown
+     * @param  $id
+     * @return 
      */
     public function cancelShow($id){
         $model = new BookModel();
@@ -86,8 +84,8 @@ class BookBiz{
     }
     /**
      * 推荐图书
-     * @param unknown $id
-     * @return unknown
+     * @param  $id
+     * @return 
      */
     public function doRecomm($id){
         $model = new BookModel();
@@ -95,8 +93,8 @@ class BookBiz{
     }
     /**
      * 取消推荐图书
-     * @param unknown $id
-     * @return unknown
+     * @param  $id
+     * @return 
      */
     public function cancelRecomm($id){
         $model = new BookModel();
@@ -104,8 +102,8 @@ class BookBiz{
     }
     /**
      * 图书添加分类
-     * @param unknown $bookid
-     * @param unknown $cateids
+     * @param  $bookid
+     * @param  $cateids
      */
     public function addCate($bookid, $cateid){
         $cateid = $cateid?$cateid:0;
@@ -114,18 +112,18 @@ class BookBiz{
     }
     /**
      * 书籍列表数量
-     * @param unknown $cond
-     * @return unknown
+     * @param  $cond
+     * @return 
      */
     public function listCount($cond, $cateid){
         return BookModel::where($cond)->count('id');
     }
     /**
      * 视频列表
-     * @param unknown $cond
+     * @param  $cond
      * @param int $page
      * @param int $pageSize
-     * @return unknown
+     * @return 
      */
     public function videos($bookid, $cond, int $page, int $pageSize){
         $model = new BookModel();
@@ -135,7 +133,7 @@ class BookBiz{
     }
     /**
      * 获取视频信息
-     * @param unknown $id
+     * @param  $id
      * @return \app\common\model\BookVideoModel|NULL
      */
     public function getVideo($id){
@@ -143,8 +141,8 @@ class BookBiz{
     }
     /**
      * 视频列表数量
-     * @param unknown $cond
-     * @return unknown
+     * @param  $cond
+     * @return 
      */
     public function videoCount($bookid, $cond){
         $model = new BookModel();
@@ -153,7 +151,7 @@ class BookBiz{
     }
     /**
      * 编辑
-     * @param unknown $data
+     * @param  $data
      * @throws AppException
      * @return boolean
      */
@@ -171,8 +169,8 @@ class BookBiz{
     }
     /**
      * 删除视频
-     * @param unknown $navid
-     * @return unknown
+     * @param  $navid
+     * @return 
      */
     public function delVideo($ids){
         return BookVideoModel::destroy(function($query) use ($ids){
@@ -181,8 +179,8 @@ class BookBiz{
     }
     /**
      * 前端展示视频
-     * @param unknown $id
-     * @return unknown
+     * @param  $id
+     * @return 
      */
     public function doVideoShow($id){
         $model = new BookVideoModel();
@@ -190,8 +188,8 @@ class BookBiz{
     }
     /**
      * 取消前端展示视频
-     * @param unknown $id
-     * @return unknown
+     * @param  $id
+     * @return 
      */
     public function cancelVideoShow($id){
         $model = new BookVideoModel();
